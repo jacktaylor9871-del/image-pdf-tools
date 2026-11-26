@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Passport Photo Maker — Free Online | US 2×2 inch, UK, Canada & Australia Sizes</title>
+    <meta name="description" content="Free passport photo maker online. Create exact-size passport photos for the US (2×2 inch), UK, Canada and Australia at 300 DPI. Resize to KB for online applications and download a printable sheet — no sign-up, no watermark." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+
+      :root {
+        --bg: #f4f6f5;
+        --surface: #ffffff;
+        --surface-2: #eef2f0;
+        --ink: #17211d;
+        --ink-soft: #4c5a54;
+        --line: #d8dfdb;
+        --accent: #0e6b4f;
+        --accent-strong: #09573f;
+        --accent-ink: #ffffff;
+        --amber: #b97d10;
+        --amber-bg: #fdf3dd;
+        --danger: #b3261e;
+        --frame-bg: #202825;
+        --shadow: 0 1px 2px rgba(23,33,29,.06), 0 8px 24px rgba(23,33,29,.07);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101614;
+          --surface: #1a211e;
+          --surface-2: #232c28;
+          --ink: #e8efec;
+          --ink-soft: #a7b5af;
+          --line: #33403a;
+          --accent: #2fae83;
+          --accent-strong: #3cc496;
+          --accent-ink: #0b1512;
+          --amber: #e0aa3e;
+          --amber-bg: #2c2413;
+          --danger: #f08078;
+          --frame-bg: #0a0e0c;
+          --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.35);
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: ui-sans-system, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.55;
+        font-size: 16px;
+      }
+      h1, h2, h3 { font-family: "Archivo", ui-sans-system, system-ui, sans-serif; line-height: 1.15; margin: 0; }
+      p { margin: 0; }
+      button { font: inherit; cursor: pointer; }
+      input, select { font: inherit; color: inherit; }
+      a { color: var(--accent); }
+
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px 64px; }
+
+      header.hero { padding: 34px 0 8px; }
+      .hero h1 { font-size: clamp(30px, 6vw, 46px); font-weight: 800; letter-spacing: -0.02em; max-width: 18ch; }
+      .hero h1 .hl { color: var(--accent); }
+      .hero .sub { margin-top: 12px; font-size: 17px; color: var(--ink-soft); max-width: 64ch; }
+      .hero .sub strong { color: var(--ink); }
+      .trust-row { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; font-size: 14px; color: var(--ink-soft); }
+      .trust-row span { display: inline-flex; align-items: center; gap: 6px; }
+      .trust-row svg { flex: none; }
+
+      .tool {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "steps" "preview" "download";
+        gap: 20px;
+        margin-top: 26px;
+      }
+      .steps-col { grid-area: steps; }
+      .preview-col { grid-area: preview; }
+      .download-col { grid-area: download; }
+      @media (min-width: 880px) {
+        .tool {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+          grid-template-areas: "steps preview" "download preview";
+          align-items: start;
+        }
+        .preview-col { position: sticky; top: 16px; }
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+      .card + .card { margin-top: 20px; }
+      .step-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+      .step-num {
+        font-family: "Archivo Narrow", sans-serif; font-weight: 700; font-size: 13px;
+        background: var(--accent); color: var(--accent-ink);
+        border-radius: 6px; padding: 2px 8px; letter-spacing: .04em; flex: none;
+      }
+      .step-head h2 { font-size: 19px; font-weight: 700; }
+      .step-head .hint { margin-left: auto; font-size: 13px; color: var(--ink-soft); text-align: right; }
+
+      .dropzone {
+        border: 2px dashed var(--line);
+        border-radius: 12px;
+        padding: 26px 18px;
+        text-align: center;
+        background: var(--surface-2);
+        transition: border-color .15s, background .15s;
+      }
+      .dropzone.dragging { border-color: var(--accent); }
+      .dropzone .dz-icon { color: var(--accent); margin-bottom: 8px; }
+      .dropzone p { font-size: 15px; color: var(--ink-soft); }
+      .dropzone p strong { color: var(--ink); display: block; font-size: 16px; margin-bottom: 2px; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        border-radius: 10px; border: 1px solid transparent;
+        padding: 9px 18px; font-weight: 600; font-size: 15px;
+        background: var(--accent); color: var(--accent-ink);
+        transition: background .15s, transform .05s;
+        min-height: 44px;
+      }
+      .btn:hover { background: var(--accent-strong); }
+      .btn:active { transform: translateY(1px); }
+      .btn.secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+      .btn.secondary:hover { background: var(--surface-2); }
+      .btn.small { min-height: 40px; padding: 7px 14px; font-size: 14px; }
+      .btn:disabled { opacity: .45; cursor: not-allowed; }
+      .btn:disabled:hover { background: var(--accent); }
+      .btn.secondary:disabled:hover { background: var(--surface); }
+      .dz-actions { margin-top: 14px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      .file-meta { margin-top: 12px; font-size: 13.5px; color: var(--ink-soft); word-break: break-all; }
+      .file-meta:empty { display: none; }
+
+      .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      @media (max-width: 420px) { .preset-grid { grid-template-columns: 1fr; } }
+      .preset {
+        text-align: left; background: var(--surface); border: 1.5px solid var(--line);
+        border-radius: 12px; padding: 12px 14px; min-height: 44px;
+        display: flex; flex-direction: column; gap: 1px;
+      }
+      .preset:hover { border-color: var(--accent); }
+      .preset[aria-pressed="true"] { border-color: var(--accent); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--accent); }
+      .preset .p-name { font-weight: 700; font-size: 15px; font-family: "Archivo", sans-serif; }
+      .preset .p-size { font-size: 13px; color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+      .preset .p-use { font-size: 12.5px; color: var(--ink-soft); }
+      .size-readout {
+        margin-top: 14px; padding: 10px 14px; border-radius: 10px;
+        background: var(--amber-bg); color: var(--ink); font-size: 14px;
+      }
+      .size-readout strong { font-variant-numeric: tabular-nums; }
+
+      .frame-shell {
+        background: var(--frame-bg);
+        border-radius: 12px;
+        padding: 22px 16px;
+        display: flex; flex-direction: column; align-items: center; gap: 14px;
+      }
+      .frame-box { position: relative; width: min(100%, 320px); }
+      canvas#stage {
+        display: block; width: 100%; height: auto;
+        background:
+          repeating-conic-gradient(#3a4540 0% 25%, #2c3531 0% 50%) 0 0 / 18px 18px;
+        touch-action: none; cursor: grab;
+        outline: 2px solid rgba(255,255,255,.85); outline-offset: 0;
+      }
+      canvas#stage:active { cursor: grabbing; }
+      .guide-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+      .frame-empty {
+        position: absolute; inset: 0; display: flex; flex-direction: column; gap: 6px;
+        align-items: center; justify-content: center; text-align: center;
+        color: #cfe0d9; font-size: 14px; padding: 16px; pointer-events: none;
+      }
+      .frame-caption { color: #cfe0d9; font-size: 13px; text-align: center; font-variant-numeric: tabular-nums; }
+      .frame-caption strong { color: #fff; }
+
+      .controls { display: grid; gap: 14px; margin-top: 16px; }
+      .ctl-row { display: grid; grid-template-columns: 92px 1fr 52px; align-items: center; gap: 10px; }
+      .ctl-row label { font-size: 14px; font-weight: 600; }
+      .ctl-row output { font-size: 13.5px; color: var(--ink-soft); text-align: right; font-variant-numeric: tabular-nums; }
+      input[type="range"] { width: 100%; accent-color: var(--accent); min-height: 36px; }
+      .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+      .toggle-row { display: flex; align-items: center; gap: 10px; font-size: 14.5px; }
+      .toggle-row input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); flex: none; }
+
+      .dl-block { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+      .dl-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+      .dl-block h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+      .dl-block p { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; }
+      .dl-inline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      select {
+        padding: 8px 10px; border-radius: 10px; border: 1.5px solid var(--line);
+        background: var(--surface); min-height: 44px; font-size: 15px;
+      }
+      .est-size { font-size: 13.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+      .status-line { font-size: 14px; margin-top: 10px; min-height: 1.4em; }
+      .status-line.ok { color: var(--accent); font-weight: 600; }
+      .status-line.err { color: var(--danger); font-weight: 600; }
+
+      section.info { margin-top: 40px; }
+      section.info h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 14px; }
+      .rules-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+      @media (min-width: 720px) { .rules-grid { grid-template-columns: 1fr 1fr; } }
+      .rule {
+        background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start;
+      }
+      .rule svg { flex: none; margin-top: 2px; }
+      .rule .ok { color: var(--accent); }
+      .rule .no { color: var(--danger); }
+      .rule p { font-size: 15px; }
+      .rule p strong { display: block; font-family: "Archivo", sans-serif; font-size: 15.5px; margin-bottom: 2px; }
+      .rule p span { color: var(--ink-soft); font-size: 14px; }
+
+      .faq { display: grid; gap: 10px; }
+      details.faq-item {
+        background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 18px;
+      }
+      details.faq-item summary { font-weight: 600; font-size: 15.5px; padding: 12px 0; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+      details.faq-item p { padding: 0 0 14px; font-size: 14.5px; color: var(--ink-soft); }
+
+      footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 18px; font-size: 13.5px; color: var(--ink-soft); }
+      .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <header class="hero">
+        <h1>Passport Photo Maker — <span class="hl">exact size, instant download</span></h1>
+        <p class="sub">Upload any photo, crop it to the official size, and download a file that's ready to submit. Includes <strong>US 2×2 inch, UK 35×45 mm, Canada 50×70 mm and Australia 35×45 mm</strong> — plus a <strong>KB-limited file</strong> for online applications and a <strong>printable sheet of copies</strong> for printing at home or at a store. Free, with no sign-up.</p>
+        <div class="trust-row">
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Your photo is processed in your browser — never uploaded to a server</span>
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> No sign-up, no watermark</span>
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> 300 DPI print quality</span>
+        </div>
+      </header>
+
+      <div class="tool">
+        <div class="steps-col">
+        <div>
+          <div class="card">
+            <div class="step-head">
+              <span class="step-num">STEP 1</span>
+              <h2>Upload your photo</h2>
+              <span class="hint">JPG, PNG or WebP</span>
+            </div>
+            <div class="dropzone" id="dropzone">
+              <div class="dz-icon">
+                <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.6-4.6a2 2 0 0 0-2.8 0L6 18"/></svg>
+              </div>
+              <p><strong>Drag &amp; drop your photo here</strong>or use the button below to choose a file — photos from your phone gallery work too.</p>
+              <div class="dz-actions">
+                <button type="button" class="btn" id="pickBtn">Choose photo</button>
+              </div>
+              <p class="file-meta" id="fileMeta" aria-live="polite"></p>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" class="sr-only" aria-label="Choose a photo file" />
+          </div>
+
+          <div class="card">
+            <div class="step-head">
+              <span class="step-num">STEP 2</span>
+              <h2>Choose your size</h2>
+              <span class="hint">Match your application</span>
+            </div>
+            <div class="preset-grid" id="presetGrid" role="group" aria-label="Passport photo size presets"></div>
+            <div class="size-readout" id="sizeReadout" aria-live="polite"></div>
+          </div>
+
+        </div>
+
+        <div class="preview-col">
+          <div class="card">
+            <div class="step-head">
+              <span class="step-num">STEP 3</span>
+              <h2>Adjust your photo</h2>
+            </div>
+            <div class="frame-shell">
+              <div class="frame-box" id="frameBox">
+                <canvas id="stage" width="600" height="600" aria-label="Passport photo preview. Drag the photo to position the face inside the frame."></canvas>
+                <svg class="guide-svg" id="guideSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <ellipse cx="50" cy="42" rx="21" ry="27" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>
+                  <line x1="6" y1="86" x2="94" y2="86" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>
+                </svg>
+                <div class="frame-empty" id="frameEmpty">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+                  <span>Upload a photo in Step 1 first.<br/>Position your face inside the oval guide.</span>
+                </div>
+              </div>
+              <p class="frame-caption" id="frameCaption">Output: <strong>2 × 2 inch</strong> · 600 × 600 px · 300 DPI</p>
+            </div>
+
+            <div class="controls">
+              <div class="ctl-row">
+                <label for="zoom">Zoom</label>
+                <input type="range" id="zoom" min="100" max="300" value="100" step="1" disabled />
+                <output id="zoomOut">100%</output>
+              </div>
+              <div class="ctl-row">
+                <label for="bright">Brightness</label>
+                <input type="range" id="bright" min="60" max="140" value="100" step="1" disabled />
+                <output id="brightOut">100%</output>
+              </div>
+              <div class="ctl-row">
+                <label for="contrast">Contrast</label>
+                <input type="range" id="contrast" min="60" max="140" value="100" step="1" disabled />
+                <output id="contrastOut">100%</output>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn secondary small" id="rotateBtn" disabled>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+                  Rotate 90°
+                </button>
+                <button type="button" class="btn secondary small" id="centerBtn" disabled>Center face</button>
+              </div>
+              <label class="toggle-row">
+                <input type="checkbox" id="guideToggle" checked />
+                Show face guide (preview only — it won't appear in your photo)
+              </label>
+              <p style="font-size:13.5px;color:var(--ink-soft);">Tip: <strong>Drag</strong> to reposition the photo and use the zoom slider to resize it. Keep your face inside the oval and your shoulders near the line below it.</p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="download-col">
+          <div class="card">
+            <div class="step-head">
+              <span class="step-num">STEP 4</span>
+              <h2>Download</h2>
+            </div>
+
+            <div class="dl-block">
+              <h3>Single photo (JPG)</h3>
+              <p>One photo at the exact official size — ready to upload to your application.</p>
+              <div class="dl-inline">
+                <button type="button" class="btn" id="dlSingle" disabled>Download photo</button>
+                <span class="est-size" id="estSize"></span>
+              </div>
+            </div>
+
+            <div class="dl-block">
+              <h3>File under a KB limit — for online applications</h3>
+              <p>Many online applications set a strict file-size limit — for example, the US DS-160 visa form requires a photo under <strong>240 KB</strong>, and many passport and visa portals require <strong>under 200 KB</strong>. Choose a limit and your file will be created under it.</p>
+              <div class="dl-inline">
+                <label for="kbTarget" class="sr-only">Maximum file size</label>
+                <select id="kbTarget">
+                  <option value="50">Under 50 KB</option>
+                  <option value="100">Under 100 KB</option>
+                  <option value="200" selected>Under 200 KB</option>
+                  <option value="240">Under 240 KB — US DS-160</option>
+                  <option value="300">Under 300 KB</option>
+                </select>
+                <button type="button" class="btn" id="dlKb" disabled>Download KB-limited photo</button>
+              </div>
+              <p class="status-line" id="kbStatus" aria-live="polite"></p>
+            </div>
+
+            <div class="dl-block">
+              <h3>Print sheet — multiple copies on one page</h3>
+              <p>For printing at home, at a pharmacy, or at a print shop. Print on photo paper and cut along the guide lines.</p>
+              <div class="dl-inline">
+                <label for="sheetSize" class="sr-only">Sheet size</label>
+                <select id="sheetSize">
+                  <option value="4x6" selected>4 × 6 inch sheet</option>
+                  <option value="letter">Letter sheet (8.5 × 11 in)</option>
+                  <option value="a4">A4 sheet</option>
+                </select>
+                <button type="button" class="btn" id="dlSheet" disabled>Download print sheet</button>
+                <span class="est-size" id="sheetInfo"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <section class="info" aria-labelledby="rulesH">
+        <h2 id="rulesH">Passport photo rules — avoid a rejection</h2>
+        <div class="rules-grid">
+          <div class="rule">
+            <svg class="ok" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></svg>
+            <p><strong>Use a plain, light background</strong><span>Stand in front of a plain white or off-white wall. There should be no people, furniture, patterns, or shadows behind you. This is required in the US, UK, Canada, and Australia.</span></p>
+          </div>
+          <div class="rule">
+            <svg class="ok" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></svg>
+            <p><strong>Face the camera directly</strong><span>Both eyes open, mouth closed with a neutral expression, head straight — not tilted or turned. Your face should be centered and fill most of the frame.</span></p>
+          </div>
+          <div class="rule">
+            <svg class="no" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m6 6 12 12M18 6 6 18"/></svg>
+            <p><strong>No glasses, hats, or filters</strong><span>Sunglasses, hats, headphones, and beauty filters will cause a rejection. In the US and UK, everyday glasses must also be removed for passport photos.</span></p>
+          </div>
+          <div class="rule">
+            <svg class="no" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m6 6 12 12M18 6 6 18"/></svg>
+            <p><strong>No old photos or angled selfies</strong><span>Your photo must be taken within the last 6 months. Avoid angled selfies — ask someone to take a straight, eye-level photo of you instead.</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="info" aria-labelledby="faqH">
+        <h2 id="faqH">Frequently asked questions</h2>
+        <div class="faq">
+          <details class="faq-item">
+            <summary>What size passport photo do I need?</summary>
+            <p>It depends on your country. <strong>United States:</strong> 2 × 2 inches (51 × 51 mm). <strong>United Kingdom &amp; Australia:</strong> 35 × 45 mm. <strong>Canada:</strong> 50 × 70 mm. Always check the size listed on your application first, then choose the matching preset above.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What size is a US passport and visa photo?</summary>
+            <p>A US passport and visa photo is <strong>2 × 2 inches (51 × 51 mm)</strong>. Choose the “US Passport &amp; Visa” preset — your download will be 600 × 600 px at 300 DPI. For the online DS-160 visa form, also use the “Under 240 KB” download option.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What about UK, Canada, and Australia?</summary>
+            <p><strong>UK:</strong> 35 × 45 mm for passports and most visas — the same size is used for EU / Schengen visas. <strong>Canada:</strong> 50 × 70 mm for passports. <strong>Australia:</strong> 35 × 45 mm for passports. All three presets are included above at 300 DPI.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is my photo uploaded to a server?</summary>
+            <p>No. Your photo is cropped and resized entirely inside your browser. There is no upload, no account, and no storage — everything is cleared when you close the page.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How many copies fit on a print sheet?</summary>
+            <p>It depends on the photo and sheet size you choose — the exact count is shown next to the sheet selector. For example, a 2 × 2 inch photo fits 2 copies on a 4 × 6 inch sheet and many more on Letter or A4. When printing, set your printer to “Actual size / 100%” — not “Fit to page.”</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do I get a white background?</summary>
+            <p>This tool crops and resizes your photo — it does not replace the background. For a compliant white background, take your photo in front of a plain white wall in bright, even light. That is the safest method for US, UK, Canadian, and Australian applications.</p>
+          </details>
+        </div>
+      </section>
+
+      <footer>
+        <p>Passport Photo Maker — free online tool for the US, UK, Canada, and Australia. Your photo is processed only on your device; no file is uploaded or saved on a server. Before you submit, always double-check the size and file-size limit in your official application instructions.</p>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var PRESETS = [
+          { id: "us",  name: "US Passport & Visa", size: "2 × 2 inch", use: "US passport, visa, USCIS & DS-160 photos", wMm: 51, hMm: 51, wPx: 600, hPx: 600 },
+          { id: "uk",  name: "UK Passport", size: "35 × 45 mm", use: "UK passport & ID — also EU / Schengen visa", wMm: 35, hMm: 45 },
+          { id: "ca",  name: "Canada Passport", size: "50 × 70 mm", use: "Canadian passport & citizenship photos", wMm: 50, hMm: 70 },
+          { id: "au",  name: "Australia Passport", size: "35 × 45 mm", use: "Australian passport & visa photos", wMm: 35, hMm: 45 },
+          { id: "id",  name: "Small ID Photo", size: "25 × 35 mm", use: "ID cards, badges & small application photos", wMm: 25, hMm: 35 }
+        ];
+        function mmToPx(mm) { return Math.round(mm / 25.4 * 300); }
+
+        var preset = PRESETS[0];
+        if (!preset.wPx) { preset.wPx = mmToPx(preset.wMm); preset.hPx = mmToPx(preset.hMm); }
+
+        var img = null;
+        var imgURL = null;
+        var rotation = 0;
+        var zoom = 1;
+        var offX = 0, offY = 0;
+        var brightness = 100, contrast = 100;
+
+        var $ = function (id) { return document.getElementById(id); };
+        var stage = $("stage"), ctx = stage.getContext("2d");
+        var frameBox = $("frameBox"), frameEmpty = $("frameEmpty"), frameCaption = $("frameCaption");
+        var guideSvg = $("guideSvg"), guideToggle = $("guideToggle");
+        var fileInput = $("fileInput"), dropzone = $("dropzone"), fileMeta = $("fileMeta");
+        var zoomEl = $("zoom"), brightEl = $("bright"), contrastEl = $("contrast");
+        var estSize = $("estSize"), kbStatus = $("kbStatus"), sheetInfo = $("sheetInfo");
+
+        var presetGrid = $("presetGrid");
+        PRESETS.forEach(function (p) {
+          if (!p.wPx) { p.wPx = mmToPx(p.wMm); p.hPx = mmToPx(p.hMm); }
+          var b = document.createElement("button");
+          b.type = "button"; b.className = "preset";
+          b.setAttribute("aria-pressed", p === preset ? "true" : "false");
+          b.innerHTML = '<span class="p-name"></span><span class="p-size"></span><span class="p-use"></span>';
+          b.querySelector(".p-name").textContent = p.name;
+          b.querySelector(".p-size").textContent = p.size + " · " + p.wPx + " × " + p.hPx + " px";
+          b.querySelector(".p-use").textContent = p.use;
+          b.addEventListener("click", function () { selectPreset(p); });
+          presetGrid.appendChild(b);
+          p._btn = b;
+        });
+
+        function selectPreset(p) {
+          preset = p;
+          PRESETS.forEach(function (q) { q._btn.setAttribute("aria-pressed", q === p ? "true" : "false"); });
+          stage.width = p.wPx; stage.height = p.hPx;
+          guideSvg.setAttribute("viewBox", "0 0 100 " + (100 * p.hPx / p.wPx).toFixed(1));
+          frameCaption.innerHTML = "Output: <strong>" + p.size + "</strong> · " + p.wPx + " × " + p.hPx + " px · 300 DPI";
+          $("sizeReadout").innerHTML = "Selected: <strong>" + p.name + "</strong> — <strong>" + p.size + "</strong>, output <strong>" + p.wPx + " × " + p.hPx + " px</strong> at 300 DPI. " + p.use + ".";
+          clampOffsets();
+          render();
+          updateSheetInfo();
+        }
+
+        $("pickBtn").addEventListener("click", function () { fileInput.click(); });
+        dropzone.addEventListener("click", function (e) { if (e.target === dropzone) fileInput.click(); });
+        fileInput.addEventListener("change", function () {
+          if (fileInput.files && fileInput.files[0]) loadFile(fileInput.files[0]);
+          fileInput.value = "";
+        });
+        ["dragenter", "dragover"].forEach(function (ev) {
+          dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add("dragging"); });
+        });
+        ["dragleave", "drop"].forEach(function (ev) {
+          dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove("dragging"); });
+        });
+        dropzone.addEventListener("drop", function (e) {
+          var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (f) loadFile(f);
+        });
+
+        function loadFile(file) {
+          if (!/^image\//.test(file.type)) {
+            fileMeta.textContent = "That file isn't an image. Please choose a JPG or PNG photo.";
+            return;
+          }
+          if (imgURL) URL.revokeObjectURL(imgURL);
+          imgURL = URL.createObjectURL(file);
+          var im = new Image();
+          im.onload = function () {
+            img = im; rotation = 0; zoom = 1; offX = 0; offY = 0;
+            brightness = 100; contrast = 100;
+            zoomEl.value = 100; brightEl.value = 100; contrastEl.value = 100;
+            $("zoomOut").textContent = "100%"; $("brightOut").textContent = "100%"; $("contrastOut").textContent = "100%";
+            fileMeta.textContent = file.name + " · " + im.naturalWidth + " × " + im.naturalHeight + " px · " + formatKB(file.size);
+            setControlsEnabled(true);
+            frameEmpty.style.display = "none";
+            render();
+          };
+          im.onerror = function () { fileMeta.textContent = "That photo couldn't be loaded. Please try a different file."; };
+          im.src = imgURL;
+        }
+
+        function setControlsEnabled(on) {
+          [zoomEl, brightEl, contrastEl, $("rotateBtn"), $("centerBtn"), $("dlSingle"), $("dlKb"), $("dlSheet")].forEach(function (el) { el.disabled = !on; });
+        }
+
+        function rotatedDims() {
+          if (!img) return { w: 0, h: 0 };
+          return (rotation % 180 === 0)
+            ? { w: img.naturalWidth, h: img.naturalHeight }
+            : { w: img.naturalHeight, h: img.naturalWidth };
+        }
+        function baseScale() {
+          var d = rotatedDims();
+          return Math.max(stage.width / d.w, stage.height / d.h);
+        }
+        function clampOffsets() {
+          if (!img) return;
+          var d = rotatedDims(), s = baseScale() * zoom;
+          var maxX = Math.max(0, (d.w * s - stage.width) / 2);
+          var maxY = Math.max(0, (d.h * s - stage.height) / 2);
+          offX = Math.min(maxX, Math.max(-maxX, offX));
+          offY = Math.min(maxY, Math.max(-maxY, offY));
+        }
+
+        function drawInto(c, tw, th) {
+          var k = tw / stage.width;
+          var d = rotatedDims(), s = baseScale() * zoom * k;
+          c.save();
+          c.fillStyle = "#ffffff";
+          c.fillRect(0, 0, tw, th);
+          c.filter = "brightness(" + brightness + "%) contrast(" + contrast + "%)";
+          c.translate(tw / 2 + offX * k, th / 2 + offY * k);
+          c.rotate(rotation * Math.PI / 180);
+          c.scale(s, s);
+          c.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+          c.restore();
+        }
+
+        var estTimer = null;
+        function render() {
+          ctx.clearRect(0, 0, stage.width, stage.height);
+          if (!img) { estSize.textContent = ""; return; }
+          drawInto(ctx, stage.width, stage.height);
+          clearTimeout(estTimer);
+          estTimer = setTimeout(updateEstimate, 250);
+        }
+
+        function outputCanvas() {
+          var c = document.createElement("canvas");
+          c.width = preset.wPx; c.height = preset.hPx;
+          drawInto(c.getContext("2d"), c.width, c.height);
+          return c;
+        }
+        function canvasBlob(c, quality) {
+          return new Promise(function (res) { c.toBlob(res, "image/jpeg", quality); });
+        }
+        function formatKB(bytes) {
+          if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+          return Math.max(1, Math.round(bytes / 1024)) + " KB";
+        }
+        function updateEstimate() {
+          if (!img) return;
+          canvasBlob(outputCanvas(), 0.92).then(function (b) {
+            if (b) estSize.textContent = "File size: ~" + formatKB(b.size);
+          });
+        }
+
+        var dragging = false, lastX = 0, lastY = 0;
+        stage.addEventListener("pointerdown", function (e) {
+          if (!img) return;
+          dragging = true; lastX = e.clientX; lastY = e.clientY;
+          stage.setPointerCapture(e.pointerId);
+        });
+        stage.addEventListener("pointermove", function (e) {
+          if (!dragging || !img) return;
+          var rect = stage.getBoundingClientRect();
+          var kx = stage.width / rect.width, ky = stage.height / rect.height;
+          offX += (e.clientX - lastX) * kx;
+          offY += (e.clientY - lastY) * ky;
+          lastX = e.clientX; lastY = e.clientY;
+          clampOffsets(); render();
+        });
+        ["pointerup", "pointercancel"].forEach(function (ev) {
+          stage.addEventListener(ev, function () { dragging = false; });
+        });
+        stage.addEventListener("wheel", function (e) {
+          if (!img) return;
+          e.preventDefault();
+          var v = Math.min(300, Math.max(100, parseInt(zoomEl.value, 10) + (e.deltaY < 0 ? 8 : -8)));
+          zoomEl.value = v; applyZoom();
+        }, { passive: false });
+
+        function applyZoom() {
+          zoom = parseInt(zoomEl.value, 10) / 100;
+          $("zoomOut").textContent = zoomEl.value + "%";
+          clampOffsets(); render();
+        }
+        zoomEl.addEventListener("input", applyZoom);
+        brightEl.addEventListener("input", function () {
+          brightness = parseInt(brightEl.value, 10);
+          $("brightOut").textContent = brightEl.value + "%"; render();
+        });
+        contrastEl.addEventListener("input", function () {
+          contrast = parseInt(contrastEl.value, 10);
+          $("contrastOut").textContent = contrastEl.value + "%"; render();
+        });
+        $("rotateBtn").addEventListener("click", function () {
+          rotation = (rotation + 90) % 360; offX = 0; offY = 0;
+          clampOffsets(); render();
+        });
+        $("centerBtn").addEventListener("click", function () { offX = 0; offY = 0; render(); });
+        guideToggle.addEventListener("change", function () {
+          guideSvg.style.display = guideToggle.checked ? "" : "none";
+        });
+
+        function download(blob, name) {
+          var a = document.createElement("a");
+          var u = URL.createObjectURL(blob);
+          a.href = u; a.download = name;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+        }
+        function slug() { return "passport-photo-" + preset.wMm + "x" + preset.hMm + "mm"; }
+
+        $("dlSingle").addEventListener("click", function () {
+          if (!img) return;
+          canvasBlob(outputCanvas(), 0.92).then(function (b) { if (b) download(b, slug() + ".jpg"); });
+        });
+
+        $("dlKb").addEventListener("click", function () {
+          if (!img) return;
+          var target = parseInt($("kbTarget").value, 10) * 1024;
+          kbStatus.textContent = "Creating your file…"; kbStatus.className = "status-line";
+          var c = outputCanvas();
+          var lo = 0.15, hi = 0.95, best = null, tries = 0;
+          function step() {
+            if (tries >= 7) {
+              if (best) {
+                download(best, slug() + "-under-" + $("kbTarget").value + "kb.jpg");
+                kbStatus.textContent = "Done — file size " + formatKB(best.size) + " (limit " + $("kbTarget").value + " KB).";
+                kbStatus.className = "status-line ok";
+              } else {
+                kbStatus.textContent = "Couldn't make the file that small — try zooming out or choosing a smaller size preset.";
+                kbStatus.className = "status-line err";
+              }
+              return;
+            }
+            tries++;
+            var q = (lo + hi) / 2;
+            canvasBlob(c, q).then(function (b) {
+              if (!b) { step(); return; }
+              if (b.size <= target) { best = b; lo = q; } else { hi = q; }
+              step();
+            });
+          }
+          step();
+        });
+
+        function sheetLayout(kind) {
+          var sheet;
+          if (kind === "a4") sheet = { w: 2480, h: 3508, label: "A4" };
+          else if (kind === "letter") sheet = { w: 2550, h: 3300, label: "Letter" };
+          else sheet = { w: 1800, h: 1200, label: "4 × 6 inch" };
+          var gap = 16, margin = 30;
+          var cols = Math.floor((sheet.w - margin * 2 + gap) / (preset.wPx + gap));
+          var rows = Math.floor((sheet.h - margin * 2 + gap) / (preset.hPx + gap));
+          // For 4x6 landscape with tall photos, also try portrait orientation if it fits more
+          if (kind === "4x6") {
+            var colsP = Math.floor((1200 - margin * 2 + gap) / (preset.wPx + gap));
+            var rowsP = Math.floor((1800 - margin * 2 + gap) / (preset.hPx + gap));
+            if (colsP * rowsP > cols * rows) {
+              sheet = { w: 1200, h: 1800, label: "4 × 6 inch" };
+              cols = colsP; rows = rowsP;
+            }
+          }
+          return { sheet: sheet, cols: Math.max(1, cols), rows: Math.max(1, rows), gap: gap };
+        }
+        function updateSheetInfo() {
+          var L = sheetLayout($("sheetSize").value);
+          sheetInfo.textContent = (L.cols * L.rows) + " copies on " + L.sheet.label + " (" + L.cols + " × " + L.rows + ")";
+        }
+        $("sheetSize").addEventListener("change", updateSheetInfo);
+
+        $("dlSheet").addEventListener("click", function () {
+          if (!img) return;
+          var kind = $("sheetSize").value;
+          var L = sheetLayout(kind);
+          var c = document.createElement("canvas");
+          c.width = L.sheet.w; c.height = L.sheet.h;
+          var g = c.getContext("2d");
+          g.fillStyle = "#ffffff"; g.fillRect(0, 0, c.width, c.height);
+          var totalW = L.cols * preset.wPx + (L.cols - 1) * L.gap;
+          var totalH = L.rows * preset.hPx + (L.rows - 1) * L.gap;
+          var x0 = (c.width - totalW) / 2, y0 = (c.height - totalH) / 2;
+          var one = outputCanvas();
+          for (var r = 0; r < L.rows; r++) {
+            for (var col = 0; col < L.cols; col++) {
+              var x = x0 + col * (preset.wPx + L.gap);
+              var y = y0 + r * (preset.hPx + L.gap);
+              g.drawImage(one, x, y);
+              g.strokeStyle = "#c9c9c9"; g.lineWidth = 2;
+              g.strokeRect(x + 1, y + 1, preset.wPx - 2, preset.hPx - 2);
+            }
+          }
+          canvasBlob(c, 0.92).then(function (b) {
+            if (b) download(b, slug() + "-print-sheet-" + kind + ".jpg");
+          });
+        });
+
+        selectPreset(preset);
+      })();
+    </script>
+  </body>
+</html>
