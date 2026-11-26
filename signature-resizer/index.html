@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Signature Resizer — Resize Signature Image Online Free</title>
+    <meta name="description" content="Resize your signature image to the exact pixel size and KB limit for job applications, bank forms, university admissions and visa applications in the US, UK, Canada and Australia. Free, private, works in your browser — no upload, no sign-up." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+
+      :root{
+        --bg:#f4f2ec;
+        --surface:#fffdf8;
+        --surface-2:#eceae2;
+        --ink:#17233b;
+        --ink-soft:#48536b;
+        --line:#d9d5c8;
+        --pen:#1d4ed8;
+        --pen-deep:#173a8f;
+        --pen-soft:#e3ebfd;
+        --good:#177245;
+        --good-soft:#e2f2e7;
+        --warn:#9a5b00;
+        --warn-soft:#fdf0d5;
+        --bad:#b3261e;
+        --bad-soft:#fbe7e5;
+        --paper:#ffffff;
+        --shadow:0 1px 2px rgba(23,35,59,.06),0 10px 30px -18px rgba(23,35,59,.35);
+        --radius:14px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#10141d;
+          --surface:#171d2a;
+          --surface-2:#1f2739;
+          --ink:#eef1f7;
+          --ink-soft:#a7b0c2;
+          --line:#2c3549;
+          --pen:#7aa2ff;
+          --pen-deep:#a9c2ff;
+          --pen-soft:#22345f;
+          --good:#5fce8f;
+          --good-soft:#173527;
+          --warn:#f2b544;
+          --warn-soft:#3d2f10;
+          --bad:#ff8a80;
+          --bad-soft:#3d1d1a;
+          --paper:#ffffff;
+          --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -18px rgba(0,0,0,.8);
+        }
+      }
+      *{box-sizing:border-box}
+      html{-webkit-text-size-adjust:100%}
+      body{
+        margin:0;background:var(--bg);color:var(--ink);
+        font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+        font-size:16px;line-height:1.55;
+      }
+      .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 56px}
+
+      /* ---------- Header ---------- */
+      header.top{padding:14px 0 6px}
+      .kicker{
+        display:inline-flex;align-items:center;gap:8px;
+        font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--pen-deep);
+      }
+      .kicker::before{content:"";width:26px;height:2px;background:var(--pen);border-radius:2px}
+      h1{font-size:clamp(1.9rem,5.4vw,3rem);line-height:1.08;margin:.35em 0 .3em;font-weight:800;letter-spacing:-.02em}
+      h1 .sign{font-family:"Caveat",cursive;font-weight:700;color:var(--pen);font-size:1.18em;letter-spacing:0;padding:0 .04em}
+      .lede{color:var(--ink-soft);max-width:62ch;margin:0;font-size:1.02rem}
+      .privacy-note{
+        display:flex;gap:10px;align-items:flex-start;margin-top:16px;
+        background:var(--good-soft);color:var(--ink);
+        border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;font-size:.92rem;max-width:640px;
+      }
+      .privacy-note svg{flex:none;margin-top:2px;color:var(--good)}
+      .privacy-note b{color:var(--good)}
+
+      /* ---------- Layout ---------- */
+      .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px}
+      @media (min-width:920px){ .grid{grid-template-columns:400px 1fr;align-items:start} }
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:18px;
+        box-shadow:var(--shadow);padding:18px;
+      }
+      .card h2{font-size:1.02rem;margin:0 0 4px;font-weight:800;letter-spacing:-.01em}
+      .card .sub{color:var(--ink-soft);font-size:.88rem;margin:0 0 14px}
+      .step-num{
+        display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;
+        background:var(--pen);color:#fff;font-size:.8rem;font-weight:800;margin-right:8px;vertical-align:2px;
+      }
+      @media (prefers-color-scheme: dark){ .step-num{color:#0d1526} }
+
+      /* ---------- Drop zone ---------- */
+      .drop{
+        border:2px dashed var(--line);border-radius:var(--radius);padding:22px 16px;text-align:center;
+        cursor:pointer;transition:border-color .15s,background .15s;background:var(--surface);
+      }
+      .drop:hover,.drop:focus-visible{border-color:var(--pen);outline:none}
+      .drop.drag{border-color:var(--pen);background:var(--pen-soft)}
+      .drop .pen-demo{font-family:"Caveat",cursive;font-size:2rem;color:var(--pen);line-height:1.1;display:block}
+      .drop p{margin:6px 0 2px;font-weight:700}
+      .drop small{color:var(--ink-soft)}
+      .drop .browse{
+        display:inline-block;margin-top:12px;background:var(--pen);color:#fff;font-weight:700;
+        padding:10px 18px;border-radius:10px;font-size:.95rem;min-height:44px;line-height:24px;
+      }
+      @media (prefers-color-scheme: dark){ .drop .browse{color:#0d1526} }
+      .filepick{display:block;margin:14px auto 0;font-size:0;max-width:100%}
+      .filepick::file-selector-button{
+        background:var(--pen);color:#fff;font-family:inherit;font-weight:700;font-size:.95rem;
+        padding:12px 22px;border:0;border-radius:10px;cursor:pointer;min-height:44px;
+      }
+      @media (prefers-color-scheme: dark){ .filepick::file-selector-button{color:#0d1526} }
+
+      .file-chip{
+        display:none;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;
+        background:var(--surface-2);border-radius:10px;font-size:.88rem;
+      }
+      .file-chip.show{display:flex}
+      .file-chip .fname{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+      .file-chip .fmeta{font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--ink-soft);white-space:nowrap}
+      .file-chip button{
+        border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;
+        padding:6px 12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.85rem;min-height:36px;
+      }
+
+      /* ---------- Controls ---------- */
+      .presets{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+      .preset{
+        border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;
+        padding:10px 12px;text-align:left;cursor:pointer;font-family:inherit;min-height:52px;
+      }
+      .preset b{display:block;font-size:.92rem;line-height:1.25}
+      .preset span{font-family:"JetBrains Mono",monospace;font-size:.74rem;color:var(--ink-soft)}
+      .preset[aria-pressed="true"]{border-color:var(--pen);background:var(--pen-soft)}
+      .preset[aria-pressed="true"] span{color:var(--pen-deep)}
+      .field{margin-top:14px}
+      .field label{display:flex;justify-content:space-between;align-items:baseline;font-weight:700;font-size:.9rem;margin-bottom:6px}
+      .field label output{font-family:"JetBrains Mono",monospace;font-size:.82rem;color:var(--pen-deep);font-weight:600}
+      .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      input[type=number],select{
+        width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;
+        background:var(--surface);color:var(--ink);font-family:inherit;font-size:1rem;font-weight:600;min-height:44px;
+      }
+      input[type=number]:focus,select:focus{border-color:var(--pen);outline:2px solid var(--pen-soft)}
+      input[type=range]{width:100%;accent-color:var(--pen);min-height:36px;cursor:pointer}
+      .checks{display:grid;gap:4px;margin-top:14px}
+      .checks label{
+        display:flex;gap:10px;align-items:flex-start;padding:10px 6px;cursor:pointer;border-radius:8px;font-size:.93rem;
+      }
+      .checks input[type=checkbox]{width:20px;height:20px;margin-top:2px;accent-color:var(--pen);flex:none}
+      .checks small{display:block;color:var(--ink-soft)}
+      .hint{font-size:.82rem;color:var(--ink-soft);margin-top:6px}
+
+      /* ---------- Preview ---------- */
+      .preview-stage{
+        background:
+          repeating-conic-gradient(var(--surface-2) 0% 25%, var(--surface) 0% 50%) 0 0/22px 22px;
+        border:1px solid var(--line);border-radius:var(--radius);
+        min-height:230px;display:grid;place-items:center;padding:22px 14px;overflow:hidden;
+      }
+      .preview-stage .empty{text-align:center;color:var(--ink-soft);padding:16px}
+      .preview-stage .empty .sign{font-family:"Caveat",cursive;font-size:2.2rem;color:var(--pen);display:block;line-height:1.1}
+      .sig-frame{background:var(--paper);box-shadow:0 4px 18px rgba(20,30,60,.22);line-height:0;max-width:100%}
+      .sig-frame img{display:block;max-width:100%;height:auto}
+      .sig-frame.actual img{image-rendering:auto}
+      .preview-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+      .seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+      .seg button{
+        border:0;background:var(--surface);color:var(--ink-soft);font-family:inherit;font-weight:700;
+        padding:8px 14px;cursor:pointer;font-size:.88rem;min-height:40px;
+      }
+      .seg button[aria-pressed="true"]{background:var(--pen);color:#fff}
+      @media (prefers-color-scheme: dark){ .seg button[aria-pressed="true"]{color:#0d1526} }
+      .zoom-note{font-size:.82rem;color:var(--ink-soft)}
+
+      .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+      @media (min-width:560px){ .stats{grid-template-columns:repeat(4,1fr)} }
+      .stat{background:var(--surface-2);border-radius:12px;padding:10px 12px}
+      .stat .k{font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
+      .stat .v{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:1.02rem;margin-top:2px;word-break:break-all}
+      .stat .v small{font-size:.75rem;color:var(--ink-soft)}
+
+      .verdict{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.93rem;display:none;gap:10px;align-items:flex-start}
+      .verdict.show{display:flex}
+      .verdict.ok{background:var(--good-soft)}
+      .verdict.warn{background:var(--warn-soft)}
+      .verdict.bad{background:var(--bad-soft)}
+      .verdict svg{flex:none;margin-top:2px}
+      .verdict.ok svg{color:var(--good)} .verdict.warn svg{color:var(--warn)} .verdict.bad svg{color:var(--bad)}
+
+      .download{
+        width:100%;margin-top:16px;border:0;border-radius:12px;cursor:pointer;
+        background:var(--pen);color:#fff;font-family:inherit;font-weight:800;font-size:1.05rem;
+        padding:15px 18px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px;
+        transition:transform .08s, opacity .15s;
+      }
+      @media (prefers-color-scheme: dark){ .download{color:#0d1526} }
+      .download:active{transform:scale(.99)}
+      .download:disabled{opacity:.45;cursor:not-allowed}
+      .download-note{text-align:center;font-size:.83rem;color:var(--ink-soft);margin-top:8px}
+
+      /* ---------- Info sections ---------- */
+      .info{margin-top:26px;display:grid;gap:18px}
+      @media (min-width:920px){ .info{grid-template-columns:1fr 1fr} }
+      .info h2{font-size:1.15rem;margin:0 0 10px;font-weight:800}
+      .info ol,.info ul{margin:0;padding-left:20px;color:var(--ink-soft)}
+      .info li{margin-bottom:7px}
+      .info li b{color:var(--ink)}
+      details{border-top:1px solid var(--line);padding:4px 0}
+      details:first-of-type{border-top:0}
+      summary{cursor:pointer;font-weight:700;padding:10px 2px;min-height:44px;display:flex;align-items:center}
+      details p{margin:0 0 12px;color:var(--ink-soft);font-size:.94rem}
+      footer{margin-top:34px;color:var(--ink-soft);font-size:.85rem;text-align:center}
+      .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <span class="kicker">Image Tools · For Online Forms</span>
+        <h1>Signature <span class="sign">Resizer</span></h1>
+        <p class="lede">Upload a photo of your signature and get it back at the <b>exact pixel size and KB limit</b> your form asks for — job applications, bank and finance forms, university admissions, visa and immigration applications, and more.</p>
+        <div class="privacy-note">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span><b>100% private.</b> Your signature is processed inside your browser only. It is never uploaded to any server — you can even use this page offline after it loads.</span>
+        </div>
+      </header>
+
+      <div class="grid">
+        <!-- ============ CONTROLS ============ -->
+        <section class="card" aria-labelledby="controls-h">
+          <h2 id="controls-h"><span class="step-num">1</span>Upload &amp; set size</h2>
+          <p class="sub">Sign with a blue or black pen on plain white paper, take a straight photo, then upload it here.</p>
+
+          <div class="drop" id="drop" role="button" tabindex="0" aria-label="Upload signature image">
+            <span class="pen-demo">Your Name</span>
+            <p>Tap to choose your signature photo</p>
+            <small>or drag &amp; drop · JPG, PNG or WebP</small>
+            <input type="file" id="file" class="filepick" accept="image/*" aria-label="Choose signature image" />
+          </div>
+          <div class="file-chip" id="fileChip">
+            <span class="fname" id="fileName"></span>
+            <span class="fmeta" id="fileMeta"></span>
+            <button type="button" id="removeFile">Remove</button>
+          </div>
+
+          <div class="field">
+            <label style="margin-bottom:8px">Form presets <span class="hint" style="margin:0">tap one, then adjust if needed</span></label>
+            <div class="presets" id="presets" role="group" aria-label="Common form signature sizes">
+              <button type="button" class="preset" data-w="400" data-h="150" data-kb="50" aria-pressed="true"><b>Job Application</b><span>400 × 150 px · max 50 KB</span></button>
+              <button type="button" class="preset" data-w="300" data-h="100" data-kb="30" aria-pressed="false"><b>Bank &amp; Finance Forms</b><span>300 × 100 px · max 30 KB</span></button>
+              <button type="button" class="preset" data-w="350" data-h="150" data-kb="50" aria-pressed="false"><b>University / College</b><span>350 × 150 px · max 50 KB</span></button>
+              <button type="button" class="preset" data-w="400" data-h="200" data-kb="100" aria-pressed="false"><b>Visa &amp; Immigration</b><span>400 × 200 px · max 100 KB</span></button>
+            </div>
+            <p class="hint">Always check the exact size in your application's instructions — every employer, bank and government portal sets its own limit.</p>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="width">Width (px)</label>
+              <input type="number" id="width" value="400" min="20" max="2000" step="1" inputmode="numeric" />
+            </div>
+            <div class="field">
+              <label for="height">Height (px)</label>
+              <input type="number" id="height" value="150" min="10" max="2000" step="1" inputmode="numeric" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="maxKb">Maximum file size <output id="maxKbOut">50 KB</output></label>
+            <input type="range" id="maxKb" min="5" max="200" step="1" value="50" />
+            <p class="hint">The output JPG is compressed to stay at or below this size.</p>
+          </div>
+
+          <div class="field">
+            <label for="padding">White margin around signature <output id="paddingOut">6%</output></label>
+            <input type="range" id="padding" min="0" max="25" step="1" value="6" />
+          </div>
+
+          <div class="checks">
+            <label>
+              <input type="checkbox" id="trim" checked />
+              <span>Auto-trim extra white space<small>Crops the empty paper around your signature so the sign fills the frame.</small></span>
+            </label>
+            <label>
+              <input type="checkbox" id="enhance" checked />
+              <span>Make ink darker &amp; paper whiter<small>Fixes grey, dull phone photos so the signature looks clean and bold.</small></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- ============ PREVIEW ============ -->
+        <section class="card" aria-labelledby="preview-h">
+          <h2 id="preview-h"><span class="step-num">2</span>Preview &amp; download</h2>
+          <p class="sub">This is exactly the file that will download — same pixels, same size.</p>
+
+          <div class="preview-stage" id="stage">
+            <div class="empty" id="emptyState">
+              <span class="sign">Sign here…</span>
+              Upload your signature photo to see the resized result.
+            </div>
+            <div class="sig-frame" id="sigFrame" hidden><img id="previewImg" alt="Resized signature preview" /></div>
+          </div>
+
+          <div class="preview-tools">
+            <div class="seg" role="group" aria-label="Preview zoom">
+              <button type="button" id="zoomActual" aria-pressed="true">Actual size</button>
+              <button type="button" id="zoomFit" aria-pressed="false">Zoom to check</button>
+            </div>
+            <span class="zoom-note">Small form sizes look tiny — use “Zoom to check” to inspect the ink.</span>
+          </div>
+
+          <div class="stats" aria-live="polite">
+            <div class="stat"><div class="k">Original</div><div class="v" id="statOrig">—</div></div>
+            <div class="stat"><div class="k">Output size</div><div class="v" id="statDims">—</div></div>
+            <div class="stat"><div class="k">File size</div><div class="v" id="statKb">—</div></div>
+            <div class="stat"><div class="k">Format</div><div class="v">JPG <small>white bg</small></div></div>
+          </div>
+
+          <div class="verdict" id="verdict" role="status"></div>
+
+          <button type="button" class="download" id="download" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+            Download Signature
+          </button>
+          <p class="download-note" id="downloadNote">Upload a signature photo first — the download button will switch on.</p>
+        </section>
+      </div>
+
+      <!-- ============ INFO ============ -->
+      <div class="info">
+        <section class="card">
+          <h2>How to get a signature that never gets rejected</h2>
+          <ol>
+            <li><b>Sign on plain white paper</b> — no lines, no notebook paper. Use a blue or black pen and sign clearly, the way you sign on official documents.</li>
+            <li><b>Photograph it straight</b> — hold your phone directly above the paper in good light. Avoid shadows and tilted angles.</li>
+            <li><b>Upload it here</b> and pick a preset for your form type, or enter the exact width, height and KB limit from the application instructions.</li>
+            <li><b>Download and check</b> — the green check above confirms your file is within the size limit before you submit your application.</li>
+          </ol>
+        </section>
+        <section class="card">
+          <h2>Common questions</h2>
+          <details>
+            <summary>Why do online forms reject my signature image?</summary>
+            <p>Almost always one of three reasons: the pixel dimensions don't match what the form requires, the file is larger than the KB limit, or the photo is blurry or gray. This tool fixes the first two exactly, and the “darker ink” option helps with the third.</p>
+          </details>
+          <details>
+            <summary>What size should my signature image be?</summary>
+            <p>Check the upload instructions on your form — they state the required size, for example “400 × 150 pixels, max 50 KB”. Common requirements are 300–400 px wide for job, bank and university applications. If no size is given, the Job Application preset (400 × 150 px, under 50 KB) works well for most online portals in the US, UK, Canada and Australia.</p>
+          </details>
+          <details>
+            <summary>Is my signature safe here?</summary>
+            <p>Yes. Resizing happens entirely on your device in your browser — your image is never uploaded to a server, and nothing is stored anywhere. No account or sign-up is needed.</p>
+          </details>
+          <details>
+            <summary>Can I use this for contracts and PDF documents?</summary>
+            <p>Yes. Resize your signature here, download the JPG with a clean white background, and insert it into Word, Google Docs or a PDF editor. For a transparent background, use a PNG signature maker instead — this tool is built for forms that require JPG on white.</p>
+          </details>
+          <details>
+            <summary>My signature looks too small in the frame. What should I do?</summary>
+            <p>Keep “Auto-trim” turned on and lower the white margin slider. If it still looks small, retake the photo closer to the paper so your signature fills more of the picture.</p>
+          </details>
+        </section>
+      </div>
+
+      <footer>Signature Resizer · Free online tool to resize a signature image for job, bank, university and visa application forms.</footer>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+        var $ = function (id) { return document.getElementById(id); };
+
+        var fileInput = $("file"), drop = $("drop"), chip = $("fileChip");
+        var widthIn = $("width"), heightIn = $("height");
+        var maxKb = $("maxKb"), maxKbOut = $("maxKbOut");
+        var padding = $("padding"), paddingOut = $("paddingOut");
+        var trimChk = $("trim"), enhanceChk = $("enhance");
+        var stage = $("stage"), emptyState = $("emptyState"), frame = $("sigFrame"), previewImg = $("previewImg");
+        var statOrig = $("statOrig"), statDims = $("statDims"), statKb = $("statKb");
+        var verdict = $("verdict"), downloadBtn = $("download"), downloadNote = $("downloadNote");
+
+        var srcImg = null;        // decoded source image
+        var srcName = "signature";
+        var srcBytes = 0;
+        var outBlob = null;       // current output blob
+        var outUrl = null;        // object URL for preview/download
+        var zoomMode = "actual";
+        var renderToken = 0;
+
+        function fmtKb(bytes) {
+          if (bytes < 1024) return bytes + " B";
+          var kb = bytes / 1024;
+          return (kb >= 100 ? Math.round(kb) : kb.toFixed(1)) + " KB";
+        }
+        function clampInt(v, lo, hi, fallback) {
+          v = parseInt(v, 10);
+          if (isNaN(v)) return fallback;
+          return Math.min(hi, Math.max(lo, v));
+        }
+
+        /* ---------- File handling ---------- */
+        function loadFile(file) {
+          if (!file) return;
+          if (!/^image\//.test(file.type) && !/\.(jpe?g|png|webp|bmp)$/i.test(file.name)) {
+            showVerdict("bad", "That file is not an image. Please choose a JPG, PNG or WebP photo of your signature.");
+            return;
+          }
+          srcBytes = file.size;
+          srcName = file.name.replace(/\.[^.]+$/, "") || "signature";
+          var url = URL.createObjectURL(file);
+          var img = new Image();
+          img.onload = function () {
+            srcImg = img;
+            $("fileName").textContent = file.name;
+            $("fileMeta").textContent = img.naturalWidth + "×" + img.naturalHeight + " · " + fmtKb(file.size);
+            chip.classList.add("show");
+            statOrig.innerHTML = img.naturalWidth + "×" + img.naturalHeight + " <small>" + fmtKb(file.size) + "</small>";
+            render();
+          };
+          img.onerror = function () {
+            URL.revokeObjectURL(url);
+            showVerdict("bad", "This image could not be opened. Try a different photo — a plain JPG from your camera works best.");
+          };
+          img.src = url;
+        }
+
+        drop.addEventListener("click", function (e) { if (e.target !== fileInput) fileInput.click(); });
+        drop.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+        });
+        fileInput.addEventListener("change", function () {
+          if (fileInput.files && fileInput.files[0]) loadFile(fileInput.files[0]);
+          fileInput.value = "";
+        });
+        ["dragenter", "dragover"].forEach(function (ev) {
+          drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("drag"); });
+        });
+        ["dragleave", "drop"].forEach(function (ev) {
+          drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("drag"); });
+        });
+        drop.addEventListener("drop", function (e) {
+          var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (f) loadFile(f);
+        });
+        document.addEventListener("paste", function (e) {
+          var items = e.clipboardData && e.clipboardData.items;
+          if (!items) return;
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf("image/") === 0) { loadFile(items[i].getAsFile()); break; }
+          }
+        });
+        $("removeFile").addEventListener("click", function () {
+          srcImg = null; outBlob = null;
+          chip.classList.remove("show");
+          frame.hidden = true; emptyState.style.display = "";
+          statOrig.textContent = "—"; statDims.textContent = "—"; statKb.textContent = "—";
+          verdict.className = "verdict"; verdict.innerHTML = "";
+          downloadBtn.disabled = true;
+          downloadNote.textContent = "Upload a signature photo first — the download button will switch on.";
+          if (outUrl) { URL.revokeObjectURL(outUrl); outUrl = null; }
+        });
+
+        /* ---------- Presets & controls ---------- */
+        var presetBtns = Array.prototype.slice.call(document.querySelectorAll(".preset"));
+        function clearPresets() {
+          presetBtns.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+        }
+        presetBtns.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            clearPresets();
+            btn.setAttribute("aria-pressed", "true");
+            widthIn.value = btn.getAttribute("data-w");
+            heightIn.value = btn.getAttribute("data-h");
+            maxKb.value = btn.getAttribute("data-kb");
+            syncLabels();
+            render();
+          });
+        });
+        [widthIn, heightIn].forEach(function (el) {
+          el.addEventListener("input", function () { clearPresets(); render(); });
+        });
+        maxKb.addEventListener("input", function () { syncLabels(); render(); });
+        padding.addEventListener("input", function () { syncLabels(); render(); });
+        trimChk.addEventListener("change", render);
+        enhanceChk.addEventListener("change", render);
+        function syncLabels() {
+          maxKbOut.textContent = maxKb.value + " KB";
+          paddingOut.textContent = padding.value + "%";
+        }
+        syncLabels();
+
+        /* ---------- Zoom toggle ---------- */
+        var zoomActual = $("zoomActual"), zoomFit = $("zoomFit");
+        function setZoom(mode) {
+          zoomMode = mode;
+          zoomActual.setAttribute("aria-pressed", mode === "actual" ? "true" : "false");
+          zoomFit.setAttribute("aria-pressed", mode === "fit" ? "true" : "false");
+          applyZoom();
+        }
+        function applyZoom() {
+          if (!srcImg) return;
+          var w = clampInt(widthIn.value, 20, 2000, 400);
+          if (zoomMode === "actual") {
+            frame.style.width = w + "px";
+            previewImg.style.width = w + "px";
+          } else {
+            frame.style.width = "";
+            previewImg.style.width = "min(560px, 100%)";
+          }
+        }
+        zoomActual.addEventListener("click", function () { setZoom("actual"); });
+        zoomFit.addEventListener("click", function () { setZoom("fit"); });
+
+        /* ---------- Image processing ---------- */
+        // Find the bounding box of non-white pixels (the ink).
+        function findInkBox(ctx, w, h) {
+          var data;
+          try { data = ctx.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+          var minX = w, minY = h, maxX = -1, maxY = -1;
+          for (var y = 0; y < h; y++) {
+            for (var x = 0; x < w; x++) {
+              var i = (y * w + x) * 4;
+              var lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+              if (lum < 235) {
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+              }
+            }
+          }
+          if (maxX < 0) return null;
+          return { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 };
+        }
+
+        // Clean the source: optionally darken ink / whiten paper.
+        function buildCleanSource() {
+          var maxSide = 1600;
+          var sw = srcImg.naturalWidth, sh = srcImg.naturalHeight;
+          var scale = Math.min(1, maxSide / Math.max(sw, sh));
+          var cw = Math.max(1, Math.round(sw * scale)), ch = Math.max(1, Math.round(sh * scale));
+          var c = document.createElement("canvas");
+          c.width = cw; c.height = ch;
+          var ctx = c.getContext("2d");
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, cw, ch);
+          ctx.drawImage(srcImg, 0, 0, cw, ch);
+          if (enhanceChk.checked) {
+            var imgData = ctx.getImageData(0, 0, cw, ch);
+            var d = imgData.data;
+            for (var i = 0; i < d.length; i += 4) {
+              for (var k = 0; k < 3; k++) {
+                var v = d[i + k];
+                // Push near-white to pure white, stretch mid-tones darker.
+                v = v > 225 ? 255 : Math.max(0, Math.round((v - 18) * 1.14));
+                d[i + k] = v;
+              }
+              d[i + 3] = 255;
+            }
+            ctx.putImageData(imgData, 0, 0);
+          }
+          return { canvas: c, ctx: ctx, w: cw, h: ch };
+        }
+
+        function canvasToBlob(canvas, quality) {
+          return new Promise(function (resolve) {
+            canvas.toBlob(function (b) { resolve(b); }, "image/jpeg", quality);
+          });
+        }
+
+        function showVerdict(kind, html) {
+          var icons = {
+            ok: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></svg>',
+            warn: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+            bad: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>'
+          };
+          verdict.className = "verdict show " + kind;
+          verdict.innerHTML = (icons[kind] || "") + "<span>" + html + "</span>";
+        }
+
+        var debounce = null;
+        function render() {
+          if (!srcImg) return;
+          clearTimeout(debounce);
+          debounce = setTimeout(doRender, 60);
+        }
+
+        async function doRender() {
+          if (!srcImg) return;
+          var token = ++renderToken;
+          var W = clampInt(widthIn.value, 20, 2000, 400);
+          var H = clampInt(heightIn.value, 10, 2000, 150);
+          var limit = parseInt(maxKb.value, 10) * 1024;
+          var padPct = parseInt(padding.value, 10) / 100;
+
+          var clean = buildCleanSource();
+          var crop = null;
+          if (trimChk.checked) crop = findInkBox(clean.ctx, clean.w, clean.h);
+          if (!crop) crop = { x: 0, y: 0, w: clean.w, h: clean.h };
+
+          // Output canvas: exact W×H, white background, signature fitted inside padding.
+          var out = document.createElement("canvas");
+          out.width = W; out.height = H;
+          var octx = out.getContext("2d");
+          octx.fillStyle = "#ffffff";
+          octx.fillRect(0, 0, W, H);
+          var innerW = W * (1 - padPct * 2), innerH = H * (1 - padPct * 2);
+          var s = Math.min(innerW / crop.w, innerH / crop.h);
+          var dw = crop.w * s, dh = crop.h * s;
+          octx.imageSmoothingEnabled = true;
+          octx.imageSmoothingQuality = "high";
+          octx.drawImage(clean.canvas, crop.x, crop.y, crop.w, crop.h, (W - dw) / 2, (H - dh) / 2, dw, dh);
+
+          // Compress: walk quality down until the JPG fits the KB limit.
+          var qualities = [0.92, 0.85, 0.78, 0.7, 0.62, 0.54, 0.46, 0.38, 0.3, 0.22, 0.15];
+          var blob = null;
+          for (var q = 0; q < qualities.length; q++) {
+            blob = await canvasToBlob(out, qualities[q]);
+            if (token !== renderToken) return;
+            if (blob && blob.size <= limit) break;
+          }
+          if (!blob) {
+            showVerdict("bad", "The resized image could not be created. Please try a different photo.");
+            return;
+          }
+          outBlob = blob;
+          if (outUrl) URL.revokeObjectURL(outUrl);
+          outUrl = URL.createObjectURL(blob);
+          previewImg.src = outUrl;
+          emptyState.style.display = "none";
+          frame.hidden = false;
+          applyZoom();
+
+          statDims.textContent = W + "×" + H + " px";
+          statKb.innerHTML = fmtKb(blob.size) + " <small>/ max " + maxKb.value + " KB</small>";
+          downloadBtn.disabled = false;
+
+          if (blob.size <= limit) {
+            showVerdict("ok", "<b>Ready to upload.</b> Your signature is " + W + " × " + H + " px and " + fmtKb(blob.size) + " — inside the " + maxKb.value + " KB limit.");
+            downloadNote.textContent = "Saved as " + srcName + "-signature-" + W + "x" + H + ".jpg";
+          } else {
+            showVerdict("warn", "<b>Still slightly over the limit</b> (" + fmtKb(blob.size) + " vs " + maxKb.value + " KB max) even at the lowest quality. Try raising the KB limit a little, or use a slightly larger pixel size if your form allows it.");
+            downloadNote.textContent = "You can still download it, but it is above the KB limit you set.";
+          }
+        }
+
+        /* ---------- Download ---------- */
+        downloadBtn.addEventListener("click", function () {
+          if (!outBlob || !outUrl) return;
+          var W = clampInt(widthIn.value, 20, 2000, 400);
+          var H = clampInt(heightIn.value, 10, 2000, 150);
+          var a = document.createElement("a");
+          a.href = outUrl;
+          a.download = srcName + "-signature-" + W + "x" + H + ".jpg";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
+      })();
+    </script>
+  </body>
+</html>
