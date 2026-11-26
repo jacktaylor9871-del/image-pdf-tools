@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>JPG to PNG Converter — Convert JPG to PNG &amp; PNG to JPG Free Online</title>
+<meta name="description" content="Free JPG to PNG converter for the US, UK, Canada & Australia. Convert JPG to PNG and PNG to JPG online in seconds — batch convert, no sign-up, no upload, no watermark. Files stay on your device." />
+<meta name="keywords" content="jpg to png, jpg to png converter, convert jpg to png, png to jpg, png to jpg converter, convert png to jpg, jpeg to png, image converter online free" />
+<meta property="og:title" content="JPG to PNG Converter — Free Online, No Upload" />
+<meta property="og:description" content="Convert JPG to PNG and PNG to JPG right in your browser. Batch conversion, JPG quality control, and transparent background handling — free, private, no sign-up." />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"JPG to PNG Converter","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free online JPG to PNG and PNG to JPG converter. Batch convert in your browser with no upload, no sign-up, and no watermark.","featureList":"JPG to PNG conversion, PNG to JPG conversion, batch conversion, JPG quality control, transparent background color, ZIP download"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root{
+    --bg:#eef1f3;
+    --surface:#ffffff;
+    --surface-2:#f6f8f9;
+    --ink:#131a1e;
+    --ink-2:#48545c;
+    --ink-3:#7c8a92;
+    --line:#d8dfe3;
+    --line-strong:#b9c5cb;
+    --teal:#0e7569;
+    --teal-dark:#0a5a52;
+    --teal-soft:#e0f0ed;
+    --coral:#e4572e;
+    --coral-soft:#fdeae3;
+    --amber:#b97d10;
+    --amber-soft:#fdf3d7;
+    --green:#1d7a3a;
+    --red:#c22e2e;
+    --shadow:0 1px 2px rgba(19,26,30,.06),0 10px 30px rgba(19,26,30,.07);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1214;
+      --surface:#161e22;
+      --surface-2:#1c262b;
+      --ink:#eef3f5;
+      --ink-2:#b3c0c7;
+      --ink-3:#7e8f98;
+      --line:#2b383e;
+      --line-strong:#43545c;
+      --teal:#2cb3a3;
+      --teal-dark:#2cb3a3;
+      --teal-soft:#123330;
+      --coral:#ff7d54;
+      --coral-soft:#3a2018;
+      --amber:#e0a92e;
+      --amber-soft:#33290f;
+      --green:#4cc46e;
+      --red:#ff6b6b;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:16px;line-height:1.5;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+  button,[role="button"],select,input{font:inherit}
+  button,select,input[type="file"]+label{min-height:44px}
+  a{color:var(--teal-dark)}
+  .wrap{max-width:1060px;margin:0 auto;padding:20px 16px 56px}
+
+  /* ---------- Header ---------- */
+  header.top{padding:14px 0 6px}
+  .format-chips{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13px;letter-spacing:.04em;
+    padding:7px 12px;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--surface);
+  }
+  .chip .dot{width:9px;height:9px;border-radius:50%}
+  .chip.jpg .dot{background:var(--coral)}
+  .chip.png .dot{background:var(--teal)}
+  .swap-arrow{color:var(--ink-3);font-weight:700;font-size:18px;line-height:1}
+  h1{font-size:clamp(30px,5.4vw,46px);line-height:1.06;font-weight:800;letter-spacing:-.02em;margin:0 0 10px}
+  h1 .to-png{color:var(--teal)}
+  .lede{color:var(--ink-2);font-size:clamp(15px,2.4vw,17.5px);max-width:680px;margin:0}
+  .lede strong{color:var(--ink)}
+  .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .trust-pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 11px}
+  .trust-pill::before{content:"✓";color:var(--teal);font-weight:800}
+  .uses{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .use-tag{font-size:13px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:6px 11px;color:var(--ink-2)}
+
+  /* ---------- Converter card ---------- */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-top:22px;overflow:hidden}
+  .card-pad{padding:20px}
+
+  /* Mode switch */
+  .mode-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .mode-label{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+  .segmented{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;flex-wrap:wrap}
+  .segmented button{
+    border:0;background:transparent;color:var(--ink-2);font-weight:600;font-size:14.5px;
+    padding:9px 14px;border-radius:9px;cursor:pointer;min-height:40px;white-space:nowrap;
+  }
+  .segmented button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+  @media (prefers-color-scheme: dark){ .segmented button[aria-pressed="true"]{background:#eef3f5;color:#131a1e} }
+  .segmented button:focus-visible,.btn:focus-visible,.dropzone:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+  /* Dropzone */
+  .dropzone{
+    border:2px dashed var(--line-strong);border-radius:var(--radius);
+    background:var(--surface-2);
+    padding:34px 18px;text-align:center;cursor:pointer;
+    transition:border-color .15s,background .15s;
+  }
+  .dropzone:hover{border-color:var(--teal)}
+  .dropzone.dragging{border-color:var(--teal);background:var(--teal-soft)}
+  .dropzone .dz-icon{width:52px;height:52px;margin:0 auto 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+  .dropzone h2{font-size:19px;margin:0 0 4px;font-weight:700}
+  .dropzone p{margin:0;color:var(--ink-2);font-size:14.5px}
+  .dropzone .browse{color:var(--teal-dark);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+  .dz-formats{margin-top:12px;font-size:12.5px;color:var(--ink-3)}
+  .file-input{display:block;margin:16px auto 2px;max-width:100%;font-size:14px;color:var(--ink-2);cursor:pointer;min-height:44px}
+  .file-input::file-selector-button{
+    font:inherit;font-weight:600;font-size:14.5px;color:#fff;background:var(--teal);
+    border:1px solid var(--teal);border-radius:10px;padding:10px 16px;margin-right:10px;cursor:pointer;min-height:44px;
+  }
+  .file-input::file-selector-button:hover{background:var(--teal-dark)}
+
+  /* Settings */
+  .settings{display:none;border-top:1px solid var(--line);margin-top:18px;padding-top:18px;gap:22px;flex-wrap:wrap}
+  .settings.show{display:flex}
+  .setting{flex:1 1 240px;min-width:220px}
+  .setting label,.setting .s-label{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:8px}
+  .setting label output,.setting .s-label output{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--teal-dark)}
+  input[type="range"]{width:100%;accent-color:var(--teal);min-height:36px;cursor:pointer}
+  .range-scale{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-top:-2px}
+  .bg-swatches{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .swatch{
+    width:44px;height:44px;border-radius:10px;border:2px solid var(--line-strong);cursor:pointer;padding:0;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+  }
+  .swatch[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-soft)}
+  .swatch.white{background:#fff;color:#5a6a72}
+  .swatch.black{background:#111;color:#eee}
+  .swatch.custom{background:conic-gradient(#e4572e,#e0a92e,#1d7a3a,#2b6cb0,#e4572e);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+  .bg-note{font-size:13px;color:var(--ink-2);margin:8px 0 0}
+  input[type="color"]{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:3px;cursor:pointer}
+
+  /* File list */
+  .list-head{display:none;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 10px;flex-wrap:wrap}
+  .list-head.show{display:flex}
+  .list-head h2{font-size:17px;margin:0}
+  .list-head .count{color:var(--ink-3);font-weight:600;font-size:14px}
+  .file-list{display:flex;flex-direction:column;gap:10px}
+  .file-item{
+    display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;
+    border:1px solid var(--line);border-radius:var(--radius);padding:12px;background:var(--surface);
+  }
+  .thumb{width:64px;height:64px;border-radius:10px;object-fit:contain;border:1px solid var(--line);
+    background:repeating-conic-gradient(var(--surface-2) 0% 25%, var(--surface) 0% 50%) 0 0/16px 16px;}
+  .file-main{min-width:0}
+  .file-name{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .file-meta{font-size:13px;color:var(--ink-2);display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:2px}
+  .badge{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;letter-spacing:.03em}
+  .badge.jpg{background:var(--coral-soft);color:var(--coral)}
+  .badge.png{background:var(--teal-soft);color:var(--teal-dark)}
+  .badge.arrow{background:transparent;color:var(--ink-3);padding:2px 0}
+  .badge.done{background:#e2f3e6;color:var(--green)}
+  @media (prefers-color-scheme: dark){ .badge.done{background:#14301c} }
+  .badge.err{background:#fbe3e3;color:var(--red)}
+  @media (prefers-color-scheme: dark){ .badge.err{background:#3a1717} }
+  .size-delta{font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+  .size-delta.down{color:var(--green)} .size-delta.up{color:var(--amber)}
+  .file-actions{display:flex;gap:8px;align-items:center}
+  .btn{
+    border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+    font-weight:600;font-size:14px;padding:9px 14px;border-radius:10px;cursor:pointer;min-height:44px;
+    display:inline-flex;align-items:center;gap:7px;text-decoration:none;white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--ink-3)}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .btn.primary:hover{background:var(--teal-dark)}
+  .btn.dark{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+  @media (prefers-color-scheme: dark){ .btn.dark{background:#eef3f5;color:#131a1e;border-color:#eef3f5} }
+  .btn.icon-only{padding:9px 11px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.small{min-height:40px;padding:7px 12px;font-size:13.5px}
+
+  .action-bar{display:none;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .action-bar.show{display:flex}
+  .action-bar .spacer{flex:1}
+  .status-line{font-size:13.5px;color:var(--ink-2);margin-top:12px;display:none}
+  .status-line.show{display:block}
+
+  /* ---------- Info sections ---------- */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  @media (max-width:720px){ .grid-2{grid-template-columns:1fr} .file-item{grid-template-columns:52px 1fr} .thumb{width:52px;height:52px} .file-actions{grid-column:1/-1} }
+  .info-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+  .info-card h2{font-size:19px;margin:0 0 12px;font-weight:700;letter-spacing:-.01em}
+  .info-card h3{font-size:15.5px;margin:18px 0 6px}
+  .info-card p,.info-card li{color:var(--ink-2);font-size:15px}
+  .info-card p{margin:0 0 10px}
+  .info-card ol,.info-card ul{margin:0;padding-left:20px}
+  .info-card li{margin-bottom:6px}
+  .info-card li strong,.info-card p strong{color:var(--ink)}
+  table.compare{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:4px}
+  table.compare th,table.compare td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.compare th{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  table.compare td:first-child{font-weight:700;white-space:nowrap}
+  table.compare tr:last-child td{border-bottom:0}
+  details{border-bottom:1px solid var(--line);padding:4px 0}
+  details:last-child{border-bottom:0}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;padding:10px 0;min-height:44px;display:flex;align-items:center}
+  details p{padding-bottom:12px}
+  .privacy-note{display:flex;gap:10px;align-items:flex-start;background:var(--teal-soft);border-radius:12px;padding:14px 16px;margin-top:16px;font-size:14.5px;color:var(--ink)}
+  .privacy-note svg{flex:none;margin-top:2px}
+  footer{margin-top:28px;color:var(--ink-3);font-size:13.5px;text-align:center}
+  .toast{
+    position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(16px);
+    background:var(--ink);color:var(--surface);padding:12px 18px;border-radius:12px;font-size:14.5px;font-weight:600;
+    opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100vw - 32px);text-align:center;z-index:50;
+  }
+  @media (prefers-color-scheme: dark){ .toast{background:#eef3f5;color:#131a1e} }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="format-chips" aria-hidden="true">
+      <span class="chip jpg"><span class="dot"></span>JPG · JPEG</span>
+      <span class="swap-arrow">⇄</span>
+      <span class="chip png"><span class="dot"></span>PNG</span>
+    </div>
+    <h1>JPG to PNG <span class="to-png">/ PNG to JPG</span> Converter</h1>
+    <p class="lede">Convert JPG to PNG and PNG to JPG free online — right in your browser, with no sign-up and no watermark. Drop in a JPG and get a PNG, or drop in a PNG and get a smaller JPG for uploads and forms. <strong>Nothing is uploaded to a server:</strong> conversion happens on your device, so IDs, resumes, and personal photos stay private.</p>
+    <div class="trust-row" aria-label="Key benefits">
+      <span class="trust-pill">100% free</span>
+      <span class="trust-pill">No sign-up</span>
+      <span class="trust-pill">No watermark</span>
+      <span class="trust-pill">No file upload</span>
+      <span class="trust-pill">Works on phone &amp; desktop</span>
+    </div>
+  </header>
+
+  <section class="card" aria-label="Converter">
+    <div class="card-pad">
+
+      <div class="mode-row">
+        <span class="mode-label" id="modeLabel">Convert direction</span>
+        <div class="segmented" role="group" aria-labelledby="modeLabel">
+          <button type="button" data-mode="auto" aria-pressed="true">Auto — flip each file</button>
+          <button type="button" data-mode="to-png" aria-pressed="false">JPG → PNG</button>
+          <button type="button" data-mode="to-jpg" aria-pressed="false">PNG → JPG</button>
+        </div>
+      </div>
+
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Add images to convert. Click to browse, or drag and drop JPG or PNG files.">
+        <div class="dz-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L6 21"/></svg>
+        </div>
+        <h2>Drag &amp; drop your images here</h2>
+        <p>or <span class="browse">click to browse files</span> — batch convert as many as you need</p>
+        <p class="dz-formats mono">Accepts .jpg · .jpeg · .png — converts both ways</p>
+        <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple aria-label="Choose JPG or PNG images to convert" />
+      </div>
+
+      <div class="settings" id="settings">
+        <div class="setting" id="qualitySetting">
+          <label for="quality">JPG quality <output id="qualityOut" for="quality">92%</output></label>
+          <input type="range" id="quality" min="10" max="100" step="1" value="92" />
+          <div class="range-scale"><span>Smaller file</span><span>Sharper image</span></div>
+        </div>
+        <div class="setting" id="bgSetting">
+          <span class="s-label">Background behind transparent PNGs</span>
+          <div class="bg-swatches">
+            <button type="button" class="swatch white" data-bg="#ffffff" aria-pressed="true" aria-label="White background">Aa</button>
+            <button type="button" class="swatch black" data-bg="#000000" aria-pressed="false" aria-label="Black background">Aa</button>
+            <button type="button" class="swatch custom" id="customBgBtn" aria-pressed="false" aria-label="Pick a custom background color">Aa</button>
+            <input type="color" id="bgColor" value="#ffffff" aria-label="Custom background color" />
+          </div>
+          <p class="bg-note">JPG doesn't support transparency, so transparent areas of a PNG are filled with this color. White is standard for documents, IDs, and most online forms.</p>
+        </div>
+      </div>
+
+      <div class="list-head" id="listHead">
+        <h2>Your files <span class="count" id="fileCount"></span></h2>
+        <button type="button" class="btn small" id="clearBtn">Clear all</button>
+      </div>
+      <div class="file-list" id="fileList"></div>
+
+      <div class="action-bar" id="actionBar">
+        <button type="button" class="btn primary" id="convertAllBtn">Convert all</button>
+        <button type="button" class="btn dark" id="downloadAllBtn" disabled>Download all</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn" id="addMoreBtn">+ Add more</button>
+      </div>
+      <p class="status-line" id="statusLine" role="status" aria-live="polite"></p>
+
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="info-card">
+      <h2>How to convert JPG to PNG (and PNG to JPG)</h2>
+      <ol>
+        <li><strong>Add your images</strong> — drag &amp; drop, click to browse, or paste. JPG, JPEG, and PNG files all work, and you can batch-convert a whole folder at once.</li>
+        <li><strong>Pick a direction</strong> — “Auto” flips each file to the other format. Choose JPG → PNG or PNG → JPG if every file should convert the same way.</li>
+        <li><strong>Adjust if needed</strong> — files convert automatically as they're added. For JPG output, set the quality and the background color used behind transparent areas.</li>
+        <li><strong>Download</strong> — save files one by one, or use “Download all” to get everything at once (multiple files download as a single ZIP).</li>
+      </ol>
+      <div class="privacy-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span><strong>Your files never leave your device.</strong> There's no server upload — conversion runs entirely in this page. That's safer for driver's licenses, passports, tax documents, and personal photos, and it works even on a slow connection.</span>
+      </div>
+      <h3>Popular uses in the US, UK, Canada &amp; Australia</h3>
+      <div class="uses">
+        <span class="use-tag">Job applications &amp; resumes</span>
+        <span class="use-tag">College &amp; university portals</span>
+        <span class="use-tag">Government forms</span>
+        <span class="use-tag">Amazon, eBay &amp; Etsy listings</span>
+        <span class="use-tag">Logos &amp; website graphics</span>
+        <span class="use-tag">Signatures &amp; screenshots</span>
+      </div>
+    </section>
+
+    <section class="info-card">
+      <h2>JPG vs. PNG — which format do you need?</h2>
+      <table class="compare">
+        <thead><tr><th></th><th>JPG</th><th>PNG</th></tr></thead>
+        <tbody>
+          <tr><td>Best for</td><td>Photos, product images, scanned documents, email attachments</td><td>Logos, screenshots, signatures, graphics with text</td></tr>
+          <tr><td>File size</td><td>Much smaller — ideal when a form or portal has a KB / MB limit</td><td>Larger, but lossless — nothing is lost</td></tr>
+          <tr><td>Transparency</td><td>No — transparent areas become a solid color</td><td>Yes — transparent background is preserved</td></tr>
+          <tr><td>Quality</td><td>Lossy — slightly compressed on every save</td><td>Lossless — pixel-perfect copy</td></tr>
+        </tbody>
+      </table>
+      <h3>Common reasons to convert</h3>
+      <p><strong>PNG → JPG:</strong> A portal, marketplace, or email rejects your PNG or says the file is too large. Converting to JPG at 85–92% quality usually cuts the size dramatically with no visible difference. Common for Indeed, LinkedIn, school portals, and seller uploads.</p>
+      <p><strong>JPG → PNG:</strong> A website or application specifically requires PNG, you need a transparent-ready lossless copy before editing, or you need crisp text and logos that JPG would blur. Common for logos, signatures, and design work.</p>
+    </section>
+  </div>
+
+  <section class="info-card" style="margin-top:16px">
+    <h2>Frequently asked questions</h2>
+    <details>
+      <summary>How do I convert a JPG to PNG for free?</summary>
+      <p>Drop your JPG into the converter above. With “Auto” or “JPG → PNG” selected, it converts instantly in your browser — no account, no watermark, and no software to install. Click Download to save the PNG. It works the same on Windows, Mac, iPhone, and Android.</p>
+    </details>
+    <details>
+      <summary>Does converting JPG to PNG improve quality?</summary>
+      <p>No. A JPG has already lost some detail to compression, and converting it to PNG can't restore that detail. What you get is a lossless copy of the JPG exactly as it is now — useful when a website, school, employer, or government form specifically requires a PNG file.</p>
+    </details>
+    <details>
+      <summary>Why convert PNG to JPG?</summary>
+      <p>File size. JPG compresses photos very efficiently, so a photo saved as PNG often becomes 70–90% smaller as a JPG — small enough for upload limits on job sites, college portals, and marketplaces like Amazon and Etsy. Use the quality slider at 85–92% for the best balance of size and sharpness.</p>
+    </details>
+    <details>
+      <summary>What happens to a transparent PNG background in JPG?</summary>
+      <p>JPG can't store transparency, so transparent areas are filled with the background color you choose above — white by default, which is what most forms, documents, and ID uploads expect. If you need to keep transparency, convert to PNG instead.</p>
+    </details>
+    <details>
+      <summary>Can I convert photos from my iPhone or Android phone?</summary>
+      <p>Yes. This converter runs entirely in your mobile browser — no app needed. Add photos from your camera roll, convert, and download. Note: iPhones often save photos as HEIC; if a file won't add, export or screenshot it as JPG first, then convert here.</p>
+    </details>
+    <details>
+      <summary>Is it safe to convert IDs, licenses, and personal documents?</summary>
+      <p>Yes — safer than most online converters. Your files are never uploaded: they're read and converted inside this browser tab and disappear when you close it. Nothing is sent to or stored on a server.</p>
+    </details>
+    <details>
+      <summary>Is there a file size or batch limit?</summary>
+      <p>There's no set limit and no daily cap — conversion runs on your device, so the only limit is your phone or computer's memory. Very large batches of high-resolution photos may be slow on older phones; converting a few at a time works better there.</p>
+    </details>
+  </section>
+
+  <footer>Free JPG ↔ PNG converter for the US, UK, Canada &amp; Australia · No sign-up · No watermark · Works offline once loaded</footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('fileInput');
+  var fileList = document.getElementById('fileList');
+  var listHead = document.getElementById('listHead');
+  var fileCount = document.getElementById('fileCount');
+  var actionBar = document.getElementById('actionBar');
+  var statusLine = document.getElementById('statusLine');
+  var settings = document.getElementById('settings');
+  var qualityInput = document.getElementById('quality');
+  var qualityOut = document.getElementById('qualityOut');
+  var convertAllBtn = document.getElementById('convertAllBtn');
+  var downloadAllBtn = document.getElementById('downloadAllBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  var addMoreBtn = document.getElementById('addMoreBtn');
+  var toast = document.getElementById('toast');
+
+  var mode = 'auto'; // 'auto' | 'to-png' | 'to-jpg'
+  var bgColor = '#ffffff';
+  var items = []; // {id, file, srcUrl, srcType, width, height, outBlob, outUrl, outName, outType, status, el refs}
+  var nextId = 1;
+  var toastTimer = null;
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+  }
+
+  function fmtSize(bytes){
+    if (bytes == null) return '—';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(1).replace(/\.0$/,'') + ' KB';
+    return (bytes/(1024*1024)).toFixed(2) + ' MB';
+  }
+
+  function srcFormat(file){
+    if (file.type === 'image/png') return 'png';
+    if (file.type === 'image/jpeg') return 'jpg';
+    var n = file.name.toLowerCase();
+    if (n.endsWith('.png')) return 'png';
+    if (n.endsWith('.jpg') || n.endsWith('.jpeg')) return 'jpg';
+    return null;
+  }
+
+  function targetFormat(item){
+    if (mode === 'to-png') return 'png';
+    if (mode === 'to-jpg') return 'jpg';
+    return item.srcType === 'png' ? 'jpg' : 'png';
+  }
+
+  function baseName(name){
+    return name.replace(/\.[^.]+$/, '');
+  }
+
+  /* ---------- Mode ---------- */
+  var modeBtns = document.querySelectorAll('.segmented button[data-mode]');
+  modeBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      mode = btn.getAttribute('data-mode');
+      modeBtns.forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+      // Re-convert everything under the new direction
+      items.forEach(function(item){ item.outBlob = null; });
+      render();
+      items.forEach(function(item){ convertItem(item); });
+    });
+  });
+
+  /* ---------- Background swatches ---------- */
+  var swatches = document.querySelectorAll('.swatch[data-bg]');
+  var customBtn = document.getElementById('customBgBtn');
+  var bgColorInput = document.getElementById('bgColor');
+  function setBg(color, source){
+    bgColor = color;
+    swatches.forEach(function(s){ s.setAttribute('aria-pressed', s.getAttribute('data-bg').toLowerCase() === color.toLowerCase() ? 'true' : 'false'); });
+    customBtn.setAttribute('aria-pressed', source === 'custom' ? 'true' : 'false');
+    if (source !== 'custom') bgColorInput.value = color;
+    reconvertJpgOutputs();
+  }
+  swatches.forEach(function(s){
+    s.addEventListener('click', function(){ setBg(s.getAttribute('data-bg'), 'preset'); });
+  });
+  customBtn.addEventListener('click', function(){ bgColorInput.focus(); bgColorInput.click(); });
+  bgColorInput.addEventListener('input', function(){ setBg(bgColorInput.value, 'custom'); });
+
+  qualityInput.addEventListener('input', function(){
+    qualityOut.textContent = qualityInput.value + '%';
+    reconvertJpgOutputs();
+  });
+
+  function reconvertJpgOutputs(){
+    items.forEach(function(item){
+      if (targetFormat(item) === 'jpg' && item.status !== 'error'){
+        item.outBlob = null;
+        convertItem(item);
+      }
+    });
+    render();
+  }
+
+  /* ---------- Adding files ---------- */
+  dropzone.addEventListener('click', function(e){ if (e.target !== fileInput) fileInput.click(); });
+  dropzone.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fileInput.click(); }
+  });
+  addMoreBtn.addEventListener('click', function(){ fileInput.click(); });
+  fileInput.addEventListener('change', function(){
+    addFiles(fileInput.files);
+    fileInput.value = '';
+  });
+  ['dragenter','dragover'].forEach(function(ev){
+    dropzone.addEventListener(ev, function(e){ e.preventDefault(); dropzone.classList.add('dragging'); });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    dropzone.addEventListener(ev, function(e){ e.preventDefault(); dropzone.classList.remove('dragging'); });
+  });
+  dropzone.addEventListener('drop', function(e){
+    if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+  document.addEventListener('dragover', function(e){ e.preventDefault(); });
+  document.addEventListener('drop', function(e){ e.preventDefault(); });
+
+  function addFiles(fileListObj){
+    var added = 0, skipped = 0;
+    Array.prototype.forEach.call(fileListObj, function(file){
+      var fmt = srcFormat(file);
+      if (!fmt){ skipped++; return; }
+      var item = {
+        id: nextId++,
+        file: file,
+        srcType: fmt,
+        srcUrl: URL.createObjectURL(file),
+        width: 0, height: 0,
+        outBlob: null, outUrl: null, outName: '', outType: '',
+        status: 'loading'
+      };
+      items.push(item);
+      added++;
+      loadItem(item);
+    });
+    if (skipped > 0) showToast(skipped + (skipped === 1 ? ' file was' : ' files were') + ' skipped — only JPG and PNG are supported.');
+    if (added > 0) showToast(added + (added === 1 ? ' image' : ' images') + ' added.');
+    render();
+  }
+
+  function loadItem(item){
+    var img = new Image();
+    img.onload = function(){
+      item.width = img.naturalWidth;
+      item.height = img.naturalHeight;
+      item.img = img;
+      item.status = 'ready';
+      convertItem(item);
+      render();
+    };
+    img.onerror = function(){
+      item.status = 'error';
+      render();
+    };
+    img.src = item.srcUrl;
+  }
+
+  /* ---------- Conversion ---------- */
+  function convertItem(item){
+    if (!item.img) return;
+    var target = targetFormat(item);
+    item.outType = target;
+    var canvas = document.createElement('canvas');
+    canvas.width = item.width;
+    canvas.height = item.height;
+    var ctx = canvas.getContext('2d');
+    if (target === 'jpg'){
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(item.img, 0, 0);
+    var mime = target === 'png' ? 'image/png' : 'image/jpeg';
+    var quality = parseInt(qualityInput.value, 10) / 100;
+    canvas.toBlob(function(blob){
+      if (!blob){ item.status = 'error'; render(); return; }
+      if (item.outUrl) URL.revokeObjectURL(item.outUrl);
+      item.outBlob = blob;
+      item.outUrl = URL.createObjectURL(blob);
+      item.outName = baseName(item.file.name) + (target === 'png' ? '.png' : '.jpg');
+      item.status = 'done';
+      render();
+    }, mime, target === 'jpg' ? quality : undefined);
+  }
+
+  /* ---------- Rendering ---------- */
+  function badgeHTML(fmt){ return '<span class="badge ' + fmt + '">' + fmt.toUpperCase() + '</span>'; }
+
+  function render(){
+    // Settings visibility: JPG options matter if any file targets JPG
+    var anyJpgTarget = items.some(function(i){ return targetFormat(i) === 'jpg'; });
+    settings.classList.toggle('show', items.length > 0 && anyJpgTarget);
+
+    listHead.classList.toggle('show', items.length > 0);
+    actionBar.classList.toggle('show', items.length > 0);
+    fileCount.textContent = items.length ? '· ' + items.length + (items.length === 1 ? ' file' : ' files') : '';
+
+    fileList.innerHTML = '';
+    items.forEach(function(item){
+      var target = targetFormat(item);
+      var row = document.createElement('div');
+      row.className = 'file-item';
+
+      var meta = '';
+      meta += badgeHTML(item.srcType) + ' <span class="badge arrow">→</span> ' + badgeHTML(target);
+      if (item.width) meta += '<span class="mono">' + item.width + '×' + item.height + '</span>';
+      meta += '<span>' + fmtSize(item.file.size) + '</span>';
+      if (item.status === 'done' && item.outBlob){
+        var diff = item.outBlob.size - item.file.size;
+        var pct = item.file.size ? Math.round(Math.abs(diff) / item.file.size * 100) : 0;
+        var cls = diff <= 0 ? 'down' : 'up';
+        var arrow = diff <= 0 ? '−' : '+';
+        meta += '<span>→ <strong>' + fmtSize(item.outBlob.size) + '</strong></span>';
+        if (item.srcType !== target) meta += '<span class="size-delta ' + cls + '">' + arrow + pct + '%</span>';
+        meta += '<span class="badge done">Ready</span>';
+      } else if (item.status === 'error'){
+        meta += '<span class="badge err">Could not read this file</span>';
+      } else {
+        meta += '<span>Converting…</span>';
+      }
+
+      var actions = '';
+      if (item.status === 'done' && item.outUrl){
+        actions = '<a class="btn primary small" href="' + item.outUrl + '" download="' + item.outName.replace(/"/g,'') + '">Download</a>' +
+                  '<button type="button" class="btn icon-only small" data-remove="' + item.id + '" aria-label="Remove ' + item.file.name.replace(/"/g,'') + '">✕</button>';
+      } else {
+        actions = '<button type="button" class="btn icon-only small" data-remove="' + item.id + '" aria-label="Remove ' + item.file.name.replace(/"/g,'') + '">✕</button>';
+      }
+
+      row.innerHTML =
+        '<img class="thumb" src="' + item.srcUrl + '" alt="" />' +
+        '<div class="file-main"><div class="file-name" title="' + item.file.name.replace(/"/g,'') + '">' + escapeHtml(item.file.name) + '</div>' +
+        '<div class="file-meta">' + meta + '</div></div>' +
+        '<div class="file-actions">' + actions + '</div>';
+      fileList.appendChild(row);
+    });
+
+    fileList.querySelectorAll('[data-remove]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = parseInt(btn.getAttribute('data-remove'), 10);
+        removeItem(id);
+      });
+    });
+
+    var doneCount = items.filter(function(i){ return i.status === 'done'; }).length;
+    downloadAllBtn.disabled = doneCount === 0;
+    downloadAllBtn.textContent = items.length > 1 && doneCount > 1 ? 'Download all (' + doneCount + ')' : 'Download all';
+    convertAllBtn.disabled = items.length === 0;
+
+    if (items.length === 0){
+      statusLine.classList.remove('show');
+      statusLine.textContent = '';
+    } else if (doneCount === items.length){
+      statusLine.textContent = 'All ' + doneCount + (doneCount === 1 ? ' file is' : ' files are') + ' converted and ready to download.';
+      statusLine.classList.add('show');
+    } else {
+      statusLine.textContent = doneCount + ' of ' + items.length + ' converted…';
+      statusLine.classList.add('show');
+    }
+  }
+
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function removeItem(id){
+    items = items.filter(function(item){
+      if (item.id === id){
+        URL.revokeObjectURL(item.srcUrl);
+        if (item.outUrl) URL.revokeObjectURL(item.outUrl);
+        return false;
+      }
+      return true;
+    });
+    render();
+  }
+
+  clearBtn.addEventListener('click', function(){
+    items.forEach(function(item){
+      URL.revokeObjectURL(item.srcUrl);
+      if (item.outUrl) URL.revokeObjectURL(item.outUrl);
+    });
+    items = [];
+    render();
+    showToast('Cleared. Add new images whenever you are ready.');
+  });
+
+  convertAllBtn.addEventListener('click', function(){
+    items.forEach(function(item){ if (item.status !== 'error') convertItem(item); });
+    render();
+    showToast('Converting…');
+  });
+
+  /* ---------- Download all ---------- */
+  function triggerDownload(url, name){
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  downloadAllBtn.addEventListener('click', function(){
+    var done = items.filter(function(i){ return i.status === 'done' && i.outBlob; });
+    if (done.length === 0) return;
+    if (done.length === 1){
+      triggerDownload(done[0].outUrl, done[0].outName);
+      return;
+    }
+    if (typeof JSZip !== 'undefined'){
+      downloadAllBtn.disabled = true;
+      downloadAllBtn.textContent = 'Preparing ZIP…';
+      var zip = new JSZip();
+      var usedNames = {};
+      done.forEach(function(item){
+        var name = item.outName;
+        if (usedNames[name]){
+          var base = name.replace(/\.[^.]+$/, ''), ext = name.slice(name.lastIndexOf('.'));
+          var n = usedNames[name] + 1;
+          usedNames[name] = n;
+          name = base + ' (' + n + ')' + ext;
+        } else usedNames[name] = 1;
+        zip.file(name, item.outBlob);
+      });
+      zip.generateAsync({ type: 'blob' }).then(function(blob){
+        var url = URL.createObjectURL(blob);
+        triggerDownload(url, 'converted-images.zip');
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+        render();
+        showToast(done.length + ' images downloaded as one ZIP file.');
+      }).catch(function(){
+        render();
+        fallbackDownloadAll(done);
+      });
+    } else {
+      fallbackDownloadAll(done);
+    }
+  });
+
+  function fallbackDownloadAll(done){
+    done.forEach(function(item, idx){
+      setTimeout(function(){ triggerDownload(item.outUrl, item.outName); }, idx * 350);
+    });
+    showToast('Downloading ' + done.length + ' files one by one…');
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
