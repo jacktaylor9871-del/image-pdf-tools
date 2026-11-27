@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta name="google-site-verification" content="1plmQOYTd2_A3vv_8wCdJy8VOgf5n9KKLGQjeG1G_TY" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZN7KZRTVC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JZN7KZRTVC');
+</script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Document Scanner — Photo to Clean PDF Scan</title>
+    <meta name="description" content="Turn phone photos of documents into a clean, scan-like PDF. Free, in your browser — no upload, no sign-up." />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+    </style>
+    <style>
+      :root{
+        --bg:#f4f6f5; --surface:#ffffff; --surface2:#eef2f0; --ink:#14201c; --muted:#5b6b65;
+        --line:#d8e0dc; --accent:#0e7a5f; --accent-ink:#ffffff; --accent-soft:#e0f2ec;
+        --warn:#b45309; --danger:#b3261e; --shadow:0 10px 30px rgba(16,42,34,.10);
+        --radius:14px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#0e1513; --surface:#16211d; --surface2:#1c2a25; --ink:#e8f0ec; --muted:#9db3aa;
+          --line:#2b3d36; --accent:#2fbf9a; --accent-ink:#06231b; --accent-soft:#173a30;
+          --warn:#f0b269; --danger:#ff9d94; --shadow:0 10px 30px rgba(0,0,0,.45);
+        }
+      }
+      *{box-sizing:border-box}
+      html,body{margin:0;padding:0}
+      body{
+        background:var(--bg); color:var(--ink);
+        font-family:"Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+        line-height:1.5; -webkit-font-smoothing:antialiased;
+      }
+      .wrap{max-width:1060px;margin:0 auto;padding:20px 16px 64px}
+      h1{font-size:clamp(26px,4.5vw,38px);line-height:1.12;margin:6px 0 8px;letter-spacing:-.02em;font-weight:800}
+      .lede{color:var(--muted);font-size:16px;max-width:640px;margin:0 0 20px}
+      .steps{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none}
+      .steps li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+      .steps .n{background:var(--accent);color:var(--accent-ink);width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+
+      .drop{
+        border:2px dashed var(--line); border-radius:var(--radius); background:var(--surface);
+        padding:30px 18px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+      }
+      .drop:hover,.drop:focus-visible{border-color:var(--accent);outline:none}
+      .drop.drag{border-color:var(--accent);background:var(--accent-soft)}
+      .drop .big{font-size:19px;font-weight:700;margin:10px 0 4px}
+      .drop .small{color:var(--muted);font-size:14px}
+      .drop svg{color:var(--accent)}
+      .btn{
+        appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:10px;padding:9px 16px;font-size:15px;font-weight:600;cursor:pointer;
+        display:inline-flex;align-items:center;gap:8px;justify-content:center;
+      }
+      .btn:hover{border-color:var(--accent)}
+      .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+      .btn.primary:hover{filter:brightness(1.06)}
+      .btn:disabled{opacity:.45;cursor:not-allowed}
+      .btn.danger{color:var(--danger)}
+      .addrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+      input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+
+      .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-top:20px}
+      .panel h2{font-size:17px;margin:0 0 4px}
+      .panel .hint{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+      .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+      .mode{
+        border:2px solid var(--line);border-radius:12px;background:var(--surface2);cursor:pointer;
+        padding:12px 10px;text-align:left;color:var(--ink);
+      }
+      .mode[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+      .mode b{display:block;font-size:15px;margin-bottom:2px}
+      .mode span{font-size:12.5px;color:var(--muted);line-height:1.35;display:block}
+      .sliders{display:grid;grid-template-columns:1fr 1fr;gap:16px 28px;margin-top:18px}
+      .sliders label{font-size:13.5px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:6px}
+      .sliders output{color:var(--muted);font-weight:500}
+      input[type=range]{width:100%;accent-color:var(--accent);min-height:2rem}
+
+      .pages-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin:26px 0 12px}
+      .pages-head h2{font-size:19px;margin:0}
+      .pages-head .count{color:var(--muted);font-size:14px}
+      .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+      .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+      .card .thumb{background:#fff;display:flex;align-items:center;justify-content:center;min-height:180px}
+      .card canvas{max-width:100%;height:auto;display:block}
+      .card .meta{padding:10px 12px 4px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+      .card .meta b{font-size:14px}
+      .card .meta span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .card .tools{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px 12px}
+      .iconbtn{
+        appearance:none;border:1px solid var(--line);background:var(--surface2);color:var(--ink);
+        border-radius:8px;min-width:38px;min-height:38px;padding:6px 9px;font-size:13px;font-weight:600;cursor:pointer;
+        display:inline-flex;align-items:center;justify-content:center;gap:5px;
+      }
+      .iconbtn:hover{border-color:var(--accent)}
+      .iconbtn:disabled{opacity:.4;cursor:not-allowed}
+      .iconbtn.danger{color:var(--danger)}
+
+      .export-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+      .field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+      .field select,.field input[type=text]{
+        width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);
+        padding:9px 12px;font-size:15px;
+      }
+      .export-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+      .status{font-size:14px;color:var(--muted)}
+      .status.err{color:var(--danger)}
+      .status.ok{color:var(--accent);font-weight:600}
+      .empty{
+        border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+        padding:26px 18px;text-align:center;color:var(--muted);font-size:15px;margin-top:14px;
+      }
+      .tips{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+      .tips h2{font-size:16px;margin:0 0 10px}
+      .tips ul{margin:0;padding-left:20px;color:var(--muted);font-size:14.5px}
+      .tips li{margin-bottom:6px}
+      .tips li b{color:var(--ink)}
+      footer{margin-top:30px;color:var(--muted);font-size:13px;text-align:center}
+      @media (max-width:560px){
+        .modes{grid-template-columns:1fr}
+        .sliders{grid-template-columns:1fr}
+        .grid{grid-template-columns:1fr 1fr;gap:10px}
+        .card .thumb{min-height:130px}
+      }
+      @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Document Scanner</h1>
+      <p class="lede">Turn a phone photo of a document into a clean, scan-like PDF. Everything runs in your browser — your photos are never uploaded.</p>
+
+      <ol class="steps">
+        <li><span class="n">1</span> Add photos</li>
+        <li><span class="n">2</span> Pick the scan look</li>
+        <li><span class="n">3</span> Download the PDF</li>
+      </ol>
+
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add document photos">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8V5a2 2 0 0 1 2-2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M12 10v4M10 12h4"/></svg>
+        <p class="big">Tap here to add photos</p>
+        <p class="small">From your camera or gallery — JPG, PNG or WebP. Add several pages at once, or drag photos here on desktop.</p>
+      </div>
+      <div class="addrow">
+        <button class="btn" id="addMoreBtn" type="button">＋ Add more photos</button>
+        <button class="btn danger" id="clearBtn" type="button" disabled>Remove all</button>
+      </div>
+
+      <section class="panel" id="lookPanel" hidden>
+        <h2>Scan look</h2>
+        <p class="hint">This applies to every page. The preview below updates right away.</p>
+        <div class="modes" role="group" aria-label="Scan mode">
+          <button class="mode" type="button" data-mode="color" aria-pressed="true"><b>Colour Scan</b><span>Clean colour with stronger contrast — best for forms and ID cards.</span></button>
+          <button class="mode" type="button" data-mode="gray" aria-pressed="false"><b>Grayscale</b><span>Greyscale only — good for notes and letters.</span></button>
+          <button class="mode" type="button" data-mode="bw" aria-pressed="false"><b>Black &amp; White</b><span>Deep scan look that clears light shadows — sharpest result on paper.</span></button>
+        </div>
+        <div class="sliders">
+          <div>
+            <label for="bright">Brightness <output id="brightOut">0</output></label>
+            <input type="range" id="bright" min="-60" max="60" value="0" step="1" />
+          </div>
+          <div>
+            <label for="contrast">Contrast <output id="contrastOut">0</output></label>
+            <input type="range" id="contrast" min="-60" max="80" value="0" step="1" />
+          </div>
+        </div>
+      </section>
+
+      <div class="pages-head" id="pagesHead" hidden>
+        <h2>Pages</h2>
+        <span class="count" id="pageCount"></span>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="emptyState">No pages yet. Add a photo of your document above — the first photo becomes Page 1.</div>
+
+      <section class="panel" id="exportPanel" hidden>
+        <h2>Make the PDF</h2>
+        <p class="hint">Pages go into the PDF in the order shown above.</p>
+        <div class="export-grid">
+          <div class="field">
+            <label for="pageSize">Page size</label>
+            <select id="pageSize">
+              <option value="a4" selected>A4</option>
+              <option value="letter">Letter (US)</option>
+              <option value="fit">Same size as the photo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fileName">File name</label>
+            <input type="text" id="fileName" value="scanned-document" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="quality">Quality — <span id="qualityOut">85%</span></label>
+            <input type="range" id="quality" min="50" max="100" value="85" step="1" style="width:100%" />
+          </div>
+        </div>
+        <div class="export-actions">
+          <button class="btn primary" id="pdfBtn" type="button">⬇ Download PDF</button>
+          <button class="btn" id="jpgBtn" type="button">Download pages as JPG</button>
+          <span class="status" id="status" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section class="tips">
+        <h2>Tips for a clean scan</h2>
+        <ul>
+          <li><b>Use good light:</b> take the photo in daylight or white light, and keep flash glare off the paper.</li>
+          <li><b>Shoot straight down:</b> hold the phone flat above the page — a tilted photo stays tilted in the PDF.</li>
+          <li><b>Use a dark surface:</b> put white paper on a dark table so the page edges stand out clearly.</li>
+          <li><b>Black &amp; White mode</b> gives the cleanest result for faint pencil writing and old paper.</li>
+        </ul>
+      </section>
+
+      <footer>Your photos never leave this page — all processing happens on your phone / in your browser.</footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+      (function(){
+        "use strict";
+        var pages = []; // {id, img:HTMLImageElement, name, rot:0|90|180|270, canvas, ctx}
+        var mode = "color";
+        var uid = 0;
+
+        var drop = document.getElementById("drop");
+        var grid = document.getElementById("grid");
+        var emptyState = document.getElementById("emptyState");
+        var lookPanel = document.getElementById("lookPanel");
+        var exportPanel = document.getElementById("exportPanel");
+        var pagesHead = document.getElementById("pagesHead");
+        var pageCount = document.getElementById("pageCount");
+        var clearBtn = document.getElementById("clearBtn");
+        var statusEl = document.getElementById("status");
+        var brightEl = document.getElementById("bright");
+        var contrastEl = document.getElementById("contrast");
+
+        function setStatus(msg, cls){
+          statusEl.textContent = msg || "";
+          statusEl.className = "status" + (cls ? " " + cls : "");
+        }
+
+        function openPicker(){
+          var inp = document.createElement("input");
+          inp.type = "file";
+          inp.accept = "image/jpeg,image/png,image/webp,image/gif";
+          inp.multiple = true;
+          inp.style.display = "none";
+          inp.addEventListener("change", function(){
+            addFiles(inp.files);
+            inp.remove();
+          });
+          document.body.appendChild(inp);
+          inp.click();
+        }
+        drop.addEventListener("click", openPicker);
+        drop.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openPicker(); } });
+        document.getElementById("addMoreBtn").addEventListener("click", openPicker);
+        ["dragenter","dragover"].forEach(function(ev){ drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add("drag"); }); });
+        ["dragleave","drop"].forEach(function(ev){ drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove("drag"); }); });
+        drop.addEventListener("drop", function(e){
+          if(e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+        });
+
+        function addFiles(fileList){
+          var files = Array.prototype.slice.call(fileList || []).filter(function(f){ return f.type.indexOf("image/") === 0; });
+          if(!files.length){ setStatus("No image file found. Please choose a JPG or PNG photo.", "err"); return; }
+          var pending = files.length;
+          files.forEach(function(file){
+            var url = URL.createObjectURL(file);
+            var img = new Image();
+            img.onload = function(){
+              pages.push({ id: ++uid, img: img, url: url, name: file.name || ("page-" + uid), rot: 0, canvas: document.createElement("canvas") });
+              pending--;
+              if(pending === 0) renderAll();
+            };
+            img.onerror = function(){
+              URL.revokeObjectURL(url);
+              pending--;
+              setStatus("One photo could not be loaded (it may be HEIC — convert it to JPG first).", "err");
+              if(pending === 0) renderAll();
+            };
+            img.src = url;
+          });
+        }
+
+        /* ---------- image processing ---------- */
+        function processPage(page, maxDim){
+          var img = page.img;
+          var rot = page.rot;
+          var swap = (rot === 90 || rot === 270);
+          var srcW = img.naturalWidth, srcH = img.naturalHeight;
+          var scale = 1;
+          var longSide = Math.max(srcW, srcH);
+          if(maxDim && longSide > maxDim) scale = maxDim / longSide;
+          var w = Math.max(1, Math.round((swap ? srcH : srcW) * scale));
+          var h = Math.max(1, Math.round((swap ? srcW : srcH) * scale));
+
+          var c = page.canvas;
+          c.width = w; c.height = h;
+          var ctx = c.getContext("2d", { willReadFrequently: true });
+          ctx.save();
+          ctx.translate(w/2, h/2);
+          ctx.rotate(rot * Math.PI / 180);
+          ctx.scale(scale, scale);
+          ctx.drawImage(img, -srcW/2, -srcH/2);
+          ctx.restore();
+
+          var bright = parseInt(brightEl.value, 10) || 0;
+          var contrast = parseInt(contrastEl.value, 10) || 0;
+          applyPixels(ctx, w, h, bright, contrast);
+          return c;
+        }
+
+        function applyPixels(ctx, w, h, bright, contrast){
+          var imageData;
+          try { imageData = ctx.getImageData(0, 0, w, h); } catch(e){ return; }
+          var d = imageData.data;
+          // scan-style base adjustments per mode
+          var baseContrast = mode === "bw" ? 45 : (mode === "color" ? 22 : 12);
+          var baseBright = mode === "bw" ? 14 : 6;
+          var totalContrast = contrast + baseContrast;
+          var totalBright = bright + baseBright;
+          var factor = (259 * (totalContrast + 255)) / (255 * (259 - totalContrast));
+          var threshold = 178; // for B&W mode
+
+          for(var i = 0; i < d.length; i += 4){
+            var r = d[i], g = d[i+1], b = d[i+2];
+            // lift shadows a little (removes grey paper shadow in scans)
+            r = Math.pow(r/255, 0.92) * 255;
+            g = Math.pow(g/255, 0.92) * 255;
+            b = Math.pow(b/255, 0.92) * 255;
+            // contrast + brightness
+            r = factor * (r - 128) + 128 + totalBright;
+            g = factor * (g - 128) + 128 + totalBright;
+            b = factor * (b - 128) + 128 + totalBright;
+
+            if(mode === "gray" || mode === "bw"){
+              var lum = 0.299*r + 0.587*g + 0.114*b;
+              if(mode === "bw"){
+                lum = lum > threshold ? 255 : (lum < 60 ? 0 : lum * 0.25);
+              }
+              d[i] = d[i+1] = d[i+2] = lum;
+            } else {
+              // slight saturation boost for colour scans
+              var avg = (r+g+b)/3;
+              d[i]   = avg + (r-avg) * 1.12;
+              d[i+1] = avg + (g-avg) * 1.12;
+              d[i+2] = avg + (b-avg) * 1.12;
+            }
+          }
+          ctx.putImageData(imageData, 0, 0);
+        }
+
+        /* ---------- rendering ---------- */
+        function renderAll(){
+          grid.innerHTML = "";
+          var has = pages.length > 0;
+          emptyState.style.display = has ? "none" : "";
+          lookPanel.hidden = !has;
+          exportPanel.hidden = !has;
+          pagesHead.hidden = !has;
+          clearBtn.disabled = !has;
+          pageCount.textContent = has ? pages.length + (pages.length === 1 ? " page" : " pages") : "";
+
+          pages.forEach(function(page, idx){
+            processPage(page, 700);
+            var card = document.createElement("div");
+            card.className = "card";
+
+            var thumb = document.createElement("div");
+            thumb.className = "thumb";
+            thumb.appendChild(page.canvas);
+            card.appendChild(thumb);
+
+            var meta = document.createElement("div");
+            meta.className = "meta";
+            var b = document.createElement("b"); b.textContent = "Page " + (idx + 1);
+            var s = document.createElement("span"); s.textContent = page.name; s.title = page.name;
+            meta.appendChild(b); meta.appendChild(s);
+            card.appendChild(meta);
+
+            var tools = document.createElement("div");
+            tools.className = "tools";
+            tools.appendChild(mkBtn("⟲ Rotate", "Rotate left", function(){ page.rot = (page.rot + 270) % 360; renderAll(); }));
+            tools.appendChild(mkBtn("⟳", "Rotate right", function(){ page.rot = (page.rot + 90) % 360; renderAll(); }));
+            var left = mkBtn("←", "Move page earlier", function(){ if(idx>0){ var t=pages[idx-1]; pages[idx-1]=pages[idx]; pages[idx]=t; renderAll(); } });
+            left.disabled = idx === 0;
+            var right = mkBtn("→", "Move page later", function(){ if(idx<pages.length-1){ var t=pages[idx+1]; pages[idx+1]=pages[idx]; pages[idx]=t; renderAll(); } });
+            right.disabled = idx === pages.length - 1;
+            tools.appendChild(left); tools.appendChild(right);
+            var del = mkBtn("✕ Remove", "Remove page", function(){
+              URL.revokeObjectURL(page.url);
+              pages.splice(idx, 1);
+              renderAll();
+            });
+            del.classList.add("danger");
+            tools.appendChild(del);
+            card.appendChild(tools);
+
+            grid.appendChild(card);
+          });
+        }
+        function mkBtn(label, title, fn){
+          var btn = document.createElement("button");
+          btn.type = "button"; btn.className = "iconbtn"; btn.textContent = label; btn.title = title; btn.setAttribute("aria-label", title);
+          btn.addEventListener("click", fn);
+          return btn;
+        }
+
+        clearBtn.addEventListener("click", function(){
+          pages.forEach(function(p){ URL.revokeObjectURL(p.url); });
+          pages = [];
+          setStatus("");
+          renderAll();
+        });
+
+        /* mode + sliders */
+        var modeBtns = document.querySelectorAll(".mode");
+        modeBtns.forEach(function(btn){
+          btn.addEventListener("click", function(){
+            mode = btn.getAttribute("data-mode");
+            modeBtns.forEach(function(x){ x.setAttribute("aria-pressed", x === btn ? "true" : "false"); });
+            if(pages.length) renderAll();
+          });
+        });
+        var rerenderTimer = null;
+        function scheduleRender(){
+          document.getElementById("brightOut").textContent = brightEl.value;
+          document.getElementById("contrastOut").textContent = contrastEl.value;
+          if(!pages.length) return;
+          clearTimeout(rerenderTimer);
+          rerenderTimer = setTimeout(renderAll, 160);
+        }
+        brightEl.addEventListener("input", scheduleRender);
+        contrastEl.addEventListener("input", scheduleRender);
+        document.getElementById("quality").addEventListener("input", function(){
+          document.getElementById("qualityOut").textContent = this.value + "%";
+        });
+
+        /* ---------- export ---------- */
+        function fullCanvas(page){
+          var c = document.createElement("canvas");
+          var keep = page.canvas;
+          page.canvas = c;
+          processPage(page, 2200);
+          page.canvas = keep;
+          return c;
+        }
+
+        document.getElementById("pdfBtn").addEventListener("click", function(){
+          if(!pages.length) return;
+          if(!window.jspdf || !window.jspdf.jsPDF){
+            setStatus("The PDF library could not load — check your connection and try again.", "err");
+            return;
+          }
+          var btn = this;
+          btn.disabled = true;
+          setStatus("Building your PDF…");
+          setTimeout(function(){
+            try {
+              var sizeSel = document.getElementById("pageSize").value;
+              var quality = (parseInt(document.getElementById("quality").value, 10) || 85) / 100;
+              var name = (document.getElementById("fileName").value || "scanned-document").trim().replace(/[^\w\- ]+/g, "") || "scanned-document";
+
+              var first = fullCanvas(pages[0]);
+              var firstOrient = first.width >= first.height ? "landscape" : "portrait";
+              var doc;
+              if(sizeSel === "fit"){
+                doc = new window.jspdf.jsPDF({ unit: "px", format: [first.width, first.height], orientation: firstOrient, hotfix: "px_scaling" });
+              } else {
+                doc = new window.jspdf.jsPDF({ unit: "mm", format: sizeSel, orientation: firstOrient });
+              }
+
+              pages.forEach(function(page, i){
+                var c = (i === 0 && sizeSel === "fit") ? first : fullCanvas(page);
+                var data = c.toDataURL("image/jpeg", quality);
+                if(i > 0){
+                  if(sizeSel === "fit"){
+                    doc.addPage([c.width, c.height], c.width >= c.height ? "landscape" : "portrait");
+                  } else {
+                    doc.addPage(sizeSel, c.width >= c.height ? "landscape" : "portrait");
+                  }
+                }
+                var pw = doc.internal.pageSize.getWidth();
+                var ph = doc.internal.pageSize.getHeight();
+                if(sizeSel === "fit"){
+                  doc.addImage(data, "JPEG", 0, 0, pw, ph);
+                } else {
+                  var scale = Math.min(pw / c.width, ph / c.height);
+                  var w = c.width * scale, h = c.height * scale;
+                  doc.addImage(data, "JPEG", (pw - w) / 2, (ph - h) / 2, w, h);
+                }
+              });
+
+              doc.save(name + ".pdf");
+              setStatus("PDF downloaded — " + pages.length + (pages.length === 1 ? " page." : " pages."), "ok");
+            } catch(err){
+              setStatus("Something went wrong while making the PDF. Try removing a page or lowering the quality.", "err");
+            }
+            btn.disabled = false;
+          }, 30);
+        });
+
+        document.getElementById("jpgBtn").addEventListener("click", function(){
+          if(!pages.length) return;
+          var quality = (parseInt(document.getElementById("quality").value, 10) || 85) / 100;
+          var base = (document.getElementById("fileName").value || "scanned-document").trim().replace(/[^\w\- ]+/g, "") || "scanned-document";
+          pages.forEach(function(page, i){
+            var c = fullCanvas(page);
+            var a = document.createElement("a");
+            a.href = c.toDataURL("image/jpeg", quality);
+            a.download = base + "-page-" + (i + 1) + ".jpg";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          });
+          setStatus("Your JPG pages are downloading.", "ok");
+        });
+
+        renderAll();
+      })();
+    </script>
+  </body>
+</html>
