@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta name="google-site-verification" content="1plmQOYTd2_A3vv_8wCdJy8VOgf5n9KKLGQjeG1G_TY" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZN7KZRTVC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JZN7KZRTVC');
+</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Job Application Ready Checker — Free Online | Check Photo, Signature &amp; Resume Before You Submit</title>
+    <meta name="description" content="Free job application ready checker. Check your photo size (600x600 or custom), signature size and resume PDF size and pages against your form's limits — all in your browser, nothing uploaded. Get green ticks before you submit." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+      :root {
+        --bg: #f4f6f5; --surface: #ffffff; --surface-2: #eef2f0;
+        --ink: #17211d; --ink-soft: #4c5a54; --line: #d8dfdb;
+        --accent: #0e6b4f; --accent-strong: #09573f; --accent-ink: #ffffff;
+        --amber: #b97d10; --amber-bg: #fdf3dd; --danger: #b3261e; --danger-bg: #fdecea;
+        --pass-bg: #e6f4ec; --frame-bg: #202825;
+        --shadow: 0 1px 2px rgba(23,33,29,.06), 0 8px 24px rgba(23,33,29,.07);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101614; --surface: #1a211e; --surface-2: #232c28;
+          --ink: #e8efec; --ink-soft: #a7b5af; --line: #33403a;
+          --accent: #2fae83; --accent-strong: #3cc496; --accent-ink: #0b1512;
+          --amber: #e0aa3e; --amber-bg: #2c2413; --danger: #f08078; --danger-bg: #3a1d1a;
+          --pass-bg: #14291f; --frame-bg: #0a0e0c;
+          --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: ui-sans-system, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.55; font-size: 16px; }
+      h1, h2, h3 { font-family: "Archivo", ui-sans-system, system-ui, sans-serif; line-height: 1.15; margin: 0; }
+      p { margin: 0; }
+      button { font: inherit; cursor: pointer; }
+      input, select { font: inherit; color: inherit; }
+      a { color: var(--accent); }
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px 64px; }
+      header.hero { padding: 34px 0 8px; }
+      .hero h1 { font-size: clamp(30px, 6vw, 46px); font-weight: 800; letter-spacing: -0.02em; max-width: 20ch; }
+      .hero h1 .hl { color: var(--accent); }
+      .hero .sub { margin-top: 12px; font-size: 17px; color: var(--ink-soft); max-width: 64ch; }
+      .hero .sub strong { color: var(--ink); }
+      .trust-row { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; font-size: 14px; color: var(--ink-soft); }
+      .back { display: inline-block; margin-top: 18px; font-size: 14px; font-weight: 600; text-decoration: none; }
+      .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; margin-top: 20px; }
+      .step-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+      .step-num { font-family: "Archivo Narrow", sans-serif; font-weight: 700; font-size: 13px; background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 2px 8px; letter-spacing: .04em; flex: none; }
+      .step-head h2 { font-size: 19px; font-weight: 700; }
+      .step-head .hint { margin-left: auto; font-size: 13px; color: var(--ink-soft); text-align: right; }
+      .muted { color: var(--ink-soft); font-size: 14px; }
+      .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+      .preset { border: 1.5px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 9px 14px; font-weight: 600; font-size: 14px; }
+      .preset[aria-pressed="true"] { border-color: var(--accent); background: var(--pass-bg); color: var(--accent-strong); }
+      .limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+      .limits label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+      .limits input { width: 100%; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+      .dropzone { border: 2px dashed var(--line); border-radius: 12px; padding: 22px 16px; text-align: center; background: var(--surface-2); transition: border-color .15s, background .15s; margin-top: 14px; cursor: pointer; }
+      .dropzone.dragging { border-color: var(--accent); }
+      .dropzone p strong { display: block; font-size: 16px; margin-bottom: 2px; }
+      .dropzone p { font-size: 14px; color: var(--ink-soft); }
+      .dropzone input[type="file"] { display: none; }
+      .file-meta { margin-top: 10px; font-size: 14px; color: var(--ink-soft); }
+      .checks { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+      .checks li { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 15px; }
+      .checks li.pass { background: var(--pass-bg); border-color: var(--accent); }
+      .checks li.fail { background: var(--danger-bg); border-color: var(--danger); }
+      .checks .mark { font-weight: 800; flex: none; width: 22px; text-align: center; }
+      .checks li.pass .mark { color: var(--accent); }
+      .checks li.fail .mark { color: var(--danger); }
+      .checks .fix { display: block; font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+      .checks li.pending { color: var(--ink-soft); border-style: dashed; }
+      .score { display: none; border-radius: var(--radius); padding: 18px 20px; margin-top: 20px; font-size: 18px; font-weight: 700; }
+      .score.ready { display: block; background: var(--pass-bg); border: 1.5px solid var(--accent); color: var(--accent-strong); }
+      .score.notready { display: block; background: var(--amber-bg); border: 1.5px solid var(--amber); color: var(--ink); }
+      .score small { display: block; font-weight: 400; font-size: 14px; margin-top: 4px; color: var(--ink-soft); }
+      .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 10px; border: 1px solid transparent; padding: 9px 18px; font-weight: 600; font-size: 15px; background: var(--accent); color: var(--accent-ink); }
+      .btn:hover { background: var(--accent-strong); }
+      .btn.secondary { background: var(--surface); color: var(--ink); border-color: var(--line); }
+      .faq details { border-top: 1px solid var(--line); padding: 12px 0; }
+      .faq summary { font-weight: 700; cursor: pointer; }
+      .faq p { margin-top: 6px; color: var(--ink-soft); font-size: 15px; }
+      footer { margin-top: 40px; font-size: 13px; color: var(--ink-soft); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <a class="back" href="../">← All Image &amp; PDF Tools</a>
+      <header class="hero">
+        <h1>Job Application <span class="hl">Ready Checker</span></h1>
+        <p class="sub">Upload your <strong>photo, signature and resume</strong> — get a green tick for every rule your form asks for, <strong>before</strong> you hit submit. No sign-up, no watermark, and your files are <strong>never uploaded</strong>: everything is checked in your own browser.</p>
+        <p class="trust-row"><span>✓ Photo, signature &amp; resume in one place</span><span>✓ Works on phone &amp; computer</span><span>✓ Free, no account</span></p>
+      </header>
+
+      <section class="card" aria-labelledby="preset-h">
+        <div class="step-head"><span class="step-num">STEP 1</span><h2 id="preset-h">Pick your form type</h2><span class="hint">Common limits — always match them with your form's own rules</span></div>
+        <p class="muted">Presets fill in the usual limits. Your form's limits are different? Change any number below — the checks update instantly.</p>
+        <div class="presets" id="presets">
+          <button class="preset" type="button" data-preset="us" aria-pressed="true">US Visa / Passport</button>
+          <button class="preset" type="button" data-preset="uk" aria-pressed="false">UK Passport</button>
+          <button class="preset" type="button" data-preset="india" aria-pressed="false">India Govt Job Form</button>
+          <button class="preset" type="button" data-preset="custom" aria-pressed="false">Custom limits</button>
+        </div>
+        <div class="limits">
+          <div><label for="photoW">Photo width (px)</label><input id="photoW" type="number" value="600" min="1" /></div>
+          <div><label for="photoH">Photo height (px)</label><input id="photoH" type="number" value="600" min="1" /></div>
+          <div><label for="photoKB">Photo max size (KB)</label><input id="photoKB" type="number" value="240" min="1" /></div>
+          <div><label for="sigW">Signature width (px)</label><input id="sigW" type="number" value="140" min="1" /></div>
+          <div><label for="sigH">Signature height (px)</label><input id="sigH" type="number" value="60" min="1" /></div>
+          <div><label for="sigKB">Signature max size (KB)</label><input id="sigKB" type="number" value="20" min="1" /></div>
+          <div><label for="resumeMB">Resume max size (MB)</label><input id="resumeMB" type="number" value="2" min="0.1" step="0.1" /></div>
+          <div><label for="resumePages">Resume max pages</label><input id="resumePages" type="number" value="5" min="1" /></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="photo-h">
+        <div class="step-head"><span class="step-num">STEP 2</span><h2 id="photo-h">Check your photo</h2><span class="hint">JPG or PNG</span></div>
+        <label class="dropzone" id="photoDrop">
+          <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" />
+          <p><strong>Tap to choose your photo</strong>or drag it here</p>
+        </label>
+        <p class="file-meta" id="photoMeta">No photo chosen yet.</p>
+        <ul class="checks" id="photoChecks">
+          <li class="pending"><span class="mark">○</span><span>Photo format is JPG or PNG</span></li>
+          <li class="pending"><span class="mark">○</span><span>Photo is the exact size your form wants</span></li>
+          <li class="pending"><span class="mark">○</span><span>Photo is under the size limit</span></li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="sig-h">
+        <div class="step-head"><span class="step-num">STEP 3</span><h2 id="sig-h">Check your signature</h2><span class="hint">JPG or PNG, usually small</span></div>
+        <label class="dropzone" id="sigDrop">
+          <input type="file" id="sigInput" accept="image/jpeg,image/png,image/webp" />
+          <p><strong>Tap to choose your signature</strong>or drag it here</p>
+        </label>
+        <p class="file-meta" id="sigMeta">No signature chosen yet.</p>
+        <ul class="checks" id="sigChecks">
+          <li class="pending"><span class="mark">○</span><span>Signature format is JPG or PNG</span></li>
+          <li class="pending"><span class="mark">○</span><span>Signature is the exact size your form wants</span></li>
+          <li class="pending"><span class="mark">○</span><span>Signature is under the size limit</span></li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="resume-h">
+        <div class="step-head"><span class="step-num">STEP 4</span><h2 id="resume-h">Check your resume (PDF)</h2><span class="hint">PDF only</span></div>
+        <label class="dropzone" id="resumeDrop">
+          <input type="file" id="resumeInput" accept="application/pdf" />
+          <p><strong>Tap to choose your resume PDF</strong>or drag it here</p>
+        </label>
+        <p class="file-meta" id="resumeMeta">No resume chosen yet.</p>
+        <ul class="checks" id="resumeChecks">
+          <li class="pending"><span class="mark">○</span><span>File is a PDF</span></li>
+          <li class="pending"><span class="mark">○</span><span>Resume is under the size limit</span></li>
+          <li class="pending"><span class="mark">○</span><span>Resume is within the page limit</span></li>
+        </ul>
+      </section>
+
+      <div class="score" id="score" role="status"></div>
+
+      <section class="card" aria-labelledby="fix-h">
+        <div class="step-head"><span class="step-num">FIX IT</span><h2 id="fix-h">Something failed? Fix it here — same site, free</h2></div>
+        <p class="muted">Photo wrong size or too big? Use the <a href="../passport-photo-maker/">Passport Photo Maker</a> for exact sizes, or the <a href="../image-compressor-resizer/">Image Compressor / Resizer</a> to shrink it to KB. Signature too big? Use the <a href="../signature-resizer/">Signature Resizer</a>. Resume too big? Use the <a href="../pdf-compressor/">PDF Compressor</a>. Then come back and check again.</p>
+        <p style="margin-top:12px"><button class="btn secondary" type="button" id="resetBtn">Check again from scratch</button></p>
+      </section>
+
+      <section class="card faq" aria-labelledby="faq-h">
+        <div class="step-head"><span class="step-num">FAQ</span><h2 id="faq-h">Common questions</h2></div>
+        <details><summary>Are my photo and resume uploaded anywhere?</summary><p>No. The check runs entirely in your browser. Your files never leave your device — close the page and everything is cleared.</p></details>
+        <details><summary>What size should my photo be?</summary><p>It depends on the form. US visa / passport photos are usually 600×600 px and under 240 KB. UK passport photos are 35×45 mm (about 413×531 px at 300 DPI). Indian government job forms commonly ask for a photo around 200×230 px (20–50 KB) and a signature around 140×60 px (10–20 KB). Pick the matching preset above — and always confirm against your own form's instructions, because limits change.</p></details>
+        <details><summary>My photo is the right size but too big in KB. What now?</summary><p>Use the <a href="../image-compressor-resizer/">Image Compressor / Resizer</a> on this site: set the same KB target and download the smaller file, then check it again here.</p></details>
+        <details><summary>Can I check a resume that is not a PDF?</summary><p>This checker reads PDF resumes only, because most job portals ask for PDF. Convert a Word or image resume with the <a href="../image-to-pdf-converter/">Image to PDF Converter</a> first, or save it as PDF and upload it here.</p></details>
+      </section>
+
+      <footer>Free tool from <a href="../">ImagePDF Tools</a> — photo, signature and resume checks for job, visa and government forms. Files are checked on your device and never uploaded.</footer>
+    </div>
+
+    <script>
+      if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+      var PRESETS = {
+        us:     { photoW: 600, photoH: 600, photoKB: 240, sigW: 140, sigH: 60, sigKB: 20, resumeMB: 2, resumePages: 5 },
+        uk:     { photoW: 413, photoH: 531, photoKB: 500, sigW: 140, sigH: 60, sigKB: 20, resumeMB: 2, resumePages: 5 },
+        india:  { photoW: 200, photoH: 230, photoKB: 50,  sigW: 140, sigH: 60, sigKB: 20, resumeMB: 2, resumePages: 5 },
+        custom: null
+      };
+      var state = { photo: null, sig: null, resume: null };
+      var $ = function(id){ return document.getElementById(id); };
+
+      function limits(){
+        return {
+          photoW: +$('photoW').value || 0, photoH: +$('photoH').value || 0, photoKB: +$('photoKB').value || 0,
+          sigW: +$('sigW').value || 0, sigH: +$('sigH').value || 0, sigKB: +$('sigKB').value || 0,
+          resumeMB: +$('resumeMB').value || 0, resumePages: +$('resumePages').value || 0
+        };
+      }
+      function fmtKB(bytes){ return bytes < 1024 ? bytes + ' B' : (bytes/1024).toFixed(1) + ' KB'; }
+      function fmtMB(bytes){ return (bytes/1048576).toFixed(2) + ' MB'; }
+
+      function setCheck(listEl, idx, ok, label, fix){
+        var li = listEl.children[idx];
+        li.className = ok ? 'pass' : 'fail';
+        li.innerHTML = '<span class="mark">' + (ok ? '✓' : '✕') + '</span><span>' + label +
+          (ok || !fix ? '' : '<span class="fix">Fix: ' + fix + '</span>') + '</span>';
+      }
+      function pending(listEl, labels){
+        for (var i = 0; i < labels.length; i++) {
+          var li = listEl.children[i];
+          li.className = 'pending';
+          li.innerHTML = '<span class="mark">○</span><span>' + labels[i] + '</span>';
+        }
+      }
+
+      function readImage(file){
+        return new Promise(function(resolve, reject){
+          var url = URL.createObjectURL(file);
+          var img = new Image();
+          img.onload = function(){ resolve({ w: img.naturalWidth, h: img.naturalHeight, url: url }); };
+          img.onerror = function(){ URL.revokeObjectURL(url); reject(new Error('Could not read this image.')); };
+          img.src = url;
+        });
+      }
+
+      function checkPhoto(){
+        var L = limits(), el = $('photoChecks');
+        if (!state.photo) { pending(el, ['Photo format is JPG or PNG','Photo is the exact size your form wants','Photo is under the size limit']); return; }
+        var f = state.photo.file, d = state.photo.dim;
+        var okType = /jpe?g|png/i.test(f.type) || /\.jpe?g$|\.png$/i.test(f.name);
+        setCheck(el, 0, okType, 'Photo format: ' + (f.type || f.name.split('.').pop().toUpperCase()) + (okType ? ' — accepted' : ' — needs JPG or PNG'),
+          'Convert it with the JPG to PNG Converter or re-save it as JPG/PNG.');
+        var okSize = d.w === L.photoW && d.h === L.photoH;
+        setCheck(el, 1, okSize, 'Photo dimensions: ' + d.w + '×' + d.h + ' px (needs ' + L.photoW + '×' + L.photoH + ' px)',
+          'Use the Passport Photo Maker or Image Cropper to make it exactly ' + L.photoW + '×' + L.photoH + ' px.');
+        var okKB = f.size <= L.photoKB * 1024;
+        setCheck(el, 2, okKB, 'Photo file size: ' + fmtKB(f.size) + ' (limit ' + L.photoKB + ' KB)',
+          'Use the Image Compressor / Resizer and set the target to ' + L.photoKB + ' KB.');
+        updateScore();
+      }
+      function checkSig(){
+        var L = limits(), el = $('sigChecks');
+        if (!state.sig) { pending(el, ['Signature format is JPG or PNG','Signature is the exact size your form wants','Signature is under the size limit']); return; }
+        var f = state.sig.file, d = state.sig.dim;
+        var okType = /jpe?g|png/i.test(f.type) || /\.jpe?g$|\.png$/i.test(f.name);
+        setCheck(el, 0, okType, 'Signature format: ' + (f.type || f.name.split('.').pop().toUpperCase()) + (okType ? ' — accepted' : ' — needs JPG or PNG'),
+          'Re-save the signature as JPG or PNG.');
+        var okSize = d.w === L.sigW && d.h === L.sigH;
+        setCheck(el, 1, okSize, 'Signature dimensions: ' + d.w + '×' + d.h + ' px (needs ' + L.sigW + '×' + L.sigH + ' px)',
+          'Use the Signature Resizer to make it exactly ' + L.sigW + '×' + L.sigH + ' px.');
+        var okKB = f.size <= L.sigKB * 1024;
+        setCheck(el, 2, okKB, 'Signature file size: ' + fmtKB(f.size) + ' (limit ' + L.sigKB + ' KB)',
+          'Use the Signature Resizer and set the target to ' + L.sigKB + ' KB.');
+        updateScore();
+      }
+      function checkResume(){
+        var L = limits(), el = $('resumeChecks');
+        if (!state.resume) { pending(el, ['File is a PDF','Resume is under the size limit','Resume is within the page limit']); return; }
+        var f = state.resume.file;
+        var okType = f.type === 'application/pdf' || /\.pdf$/i.test(f.name);
+        setCheck(el, 0, okType, 'File type: ' + (okType ? 'PDF — accepted' : 'not a PDF'),
+          'Save or convert your resume as a PDF first.');
+        var okMB = f.size <= L.resumeMB * 1048576;
+        setCheck(el, 1, okMB, 'Resume file size: ' + fmtMB(f.size) + ' (limit ' + L.resumeMB + ' MB)',
+          'Use the PDF Compressor to shrink it under ' + L.resumeMB + ' MB.');
+        if (typeof state.resume.pages === 'number') {
+          var okPages = state.resume.pages <= L.resumePages;
+          setCheck(el, 2, okPages, 'Resume pages: ' + state.resume.pages + ' (limit ' + L.resumePages + ')',
+            'Remove extra pages or shorten the resume to ' + L.resumePages + ' pages.');
+        } else {
+          var li = el.children[2];
+          li.className = 'pending';
+          li.innerHTML = '<span class="mark">○</span><span>Counting pages… (needs internet for the PDF reader)</span>';
+        }
+        updateScore();
+      }
+
+      function updateScore(){
+        var done = 0, passed = 0;
+        ['photoChecks','sigChecks','resumeChecks'].forEach(function(id){
+          Array.prototype.forEach.call($(id).children, function(li){
+            if (li.className === 'pass') { done++; passed++; }
+            else if (li.className === 'fail') { done++; }
+          });
+        });
+        var box = $('score');
+        if (!done) { box.className = 'score'; box.textContent = ''; return; }
+        if (passed === done && (state.photo || state.sig || state.resume)) {
+          box.className = 'score ready';
+          box.innerHTML = '✓ ' + passed + '/' + done + ' checks passed — Ready to submit!' +
+            '<small>All files you uploaded pass your form\u2019s limits. Double-check the form\u2019s own instructions once, then submit.</small>';
+        } else {
+          box.className = 'score notready';
+          box.innerHTML = passed + '/' + done + ' checks passed — ' + (done - passed) + ' thing' + (done - passed > 1 ? 's' : '') + ' still to fix.' +
+            '<small>Fix the red items above with the linked tools on this site, then upload the fixed file here again.</small>';
+        }
+      }
+
+      function bindDrop(dropId, inputId, onFile){
+        var drop = $(dropId), input = $(inputId);
+        drop.addEventListener('click', function(){ input.click(); });
+        input.addEventListener('change', function(){ if (input.files[0]) onFile(input.files[0]); });
+        ['dragover','dragenter'].forEach(function(ev){ drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add('dragging'); }); });
+        ['dragleave','drop'].forEach(function(ev){ drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove('dragging'); }); });
+        drop.addEventListener('drop', function(e){ var f = e.dataTransfer.files[0]; if (f) onFile(f); });
+      }
+
+      bindDrop('photoDrop', 'photoInput', function(file){
+        readImage(file).then(function(dim){
+          state.photo = { file: file, dim: dim };
+          $('photoMeta').textContent = file.name + ' — ' + dim.w + '×' + dim.h + ' px, ' + fmtKB(file.size) + '.';
+          checkPhoto();
+        }).catch(function(){ $('photoMeta').textContent = 'Could not read that image. Try a JPG or PNG file.'; });
+      });
+      bindDrop('sigDrop', 'sigInput', function(file){
+        readImage(file).then(function(dim){
+          state.sig = { file: file, dim: dim };
+          $('sigMeta').textContent = file.name + ' — ' + dim.w + '×' + dim.h + ' px, ' + fmtKB(file.size) + '.';
+          checkSig();
+        }).catch(function(){ $('sigMeta').textContent = 'Could not read that image. Try a JPG or PNG file.'; });
+      });
+      bindDrop('resumeDrop', 'resumeInput', function(file){
+        state.resume = { file: file, pages: null };
+        $('resumeMeta').textContent = file.name + ' — ' + fmtMB(file.size) + '. Counting pages…';
+        checkResume();
+        if (!window.pdfjsLib) { $('resumeMeta').textContent = file.name + ' — ' + fmtMB(file.size) + '. (Page count needs internet for the PDF reader.)'; return; }
+        file.arrayBuffer().then(function(buf){
+          return pdfjsLib.getDocument({ data: buf }).promise;
+        }).then(function(pdf){
+          state.resume.pages = pdf.numPages;
+          $('resumeMeta').textContent = file.name + ' — ' + fmtMB(file.size) + ', ' + pdf.numPages + ' page' + (pdf.numPages > 1 ? 's' : '') + '.';
+          checkResume();
+        }).catch(function(){
+          $('resumeMeta').textContent = file.name + ' — ' + fmtMB(file.size) + '. (Could not count pages — check the size checks above.)';
+        });
+      });
+
+      document.querySelectorAll('.preset').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('.preset').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+          btn.setAttribute('aria-pressed','true');
+          var p = PRESETS[btn.getAttribute('data-preset')];
+          if (p) {
+            $('photoW').value = p.photoW; $('photoH').value = p.photoH; $('photoKB').value = p.photoKB;
+            $('sigW').value = p.sigW; $('sigH').value = p.sigH; $('sigKB').value = p.sigKB;
+            $('resumeMB').value = p.resumeMB; $('resumePages').value = p.resumePages;
+          }
+          checkPhoto(); checkSig(); checkResume();
+        });
+      });
+      ['photoW','photoH','photoKB','sigW','sigH','sigKB','resumeMB','resumePages'].forEach(function(id){
+        $(id).addEventListener('input', function(){
+          document.querySelectorAll('.preset').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-preset') === 'custom' ? 'true' : 'false'); });
+          checkPhoto(); checkSig(); checkResume();
+        });
+      });
+      $('resetBtn').addEventListener('click', function(){
+        state = { photo: null, sig: null, resume: null };
+        ['photoInput','sigInput','resumeInput'].forEach(function(id){ $(id).value = ''; });
+        $('photoMeta').textContent = 'No photo chosen yet.';
+        $('sigMeta').textContent = 'No signature chosen yet.';
+        $('resumeMeta').textContent = 'No resume chosen yet.';
+        checkPhoto(); checkSig(); checkResume();
+      });
+    </script>
+  </body>
+</html>
