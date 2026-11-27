@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta name="google-site-verification" content="1plmQOYTd2_A3vv_8wCdJy8VOgf5n9KKLGQjeG1G_TY" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZN7KZRTVC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JZN7KZRTVC');
+</script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Photo Background Remover — Passport Photo White Background</title>
+    <meta name="description" content="Make your passport or job photo background white — no app needed, right in your browser. Upload a photo, the background is removed automatically, and you download it in the right size." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.75rem; }
+      * { box-sizing: border-box; }
+      :root{
+        --bg:#F2F5F4; --surface:#FFFFFF; --surface-2:#EAF0EE;
+        --ink:#12262E; --muted:#57707A; --line:#D8E2DF;
+        --accent:#0B7663; --accent-dark:#095C4E; --accent-soft:#DDEFEA;
+        --amber:#D98E1B; --amber-soft:#FBF0DA;
+        --danger:#B3261E; --danger-soft:#FBE9E7;
+        --ok:#0B7663;
+        --check-a:#E3E9E7; --check-b:#FFFFFF;
+        --shadow:0 10px 30px rgba(18,38,46,.08);
+        --radius:14px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#0C1518; --surface:#152227; --surface-2:#1B2C33;
+          --ink:#EAF3F1; --muted:#9DB4B2; --line:#2A3E45;
+          --accent:#2FBF9F; --accent-dark:#2FBF9F; --accent-soft:#173A34;
+          --amber:#E5A83E; --amber-soft:#3A2E14;
+          --danger:#F08A80; --danger-soft:#3D1D1A;
+          --check-a:#22333A; --check-b:#18262C;
+          --shadow:0 10px 30px rgba(0,0,0,.35);
+        }
+      }
+      html{ -webkit-text-size-adjust:100%; }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        line-height:1.55; font-size:16px;
+      }
+      .wrap{ max-width:1160px; margin:0 auto; padding:20px 16px 56px; }
+
+      /* ---------- Intro ---------- */
+      .intro{ padding:14px 0 20px; max-width:760px; }
+      .intro h1{ font-size:clamp(1.65rem, 4.5vw, 2.5rem); line-height:1.15; margin:0 0 10px; font-weight:800; letter-spacing:-.01em; }
+      .intro h1 .hl{ color:var(--accent); }
+      .intro p{ margin:0 0 14px; color:var(--muted); font-size:1.05rem; }
+      .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+      .chip{
+        display:inline-flex; align-items:center; gap:7px;
+        background:var(--surface); border:1px solid var(--line); border-radius:999px;
+        padding:7px 13px; font-size:.86rem; font-weight:600;
+      }
+      .chip svg{ width:16px; height:16px; flex:none; }
+      .chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none; }
+
+      /* ---------- Tool layout ---------- */
+      .tool{ display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+      @media (min-width: 960px){
+        .tool{ grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr); }
+        .panel{ position:sticky; top:16px; }
+      }
+      .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
+
+      /* Stage */
+      .stage-card{ padding:16px; }
+      .dropzone{
+        border:2px dashed var(--line); border-radius:12px; background:var(--surface-2);
+        padding:34px 18px; text-align:center; cursor:pointer;
+        transition:border-color .15s ease, background .15s ease;
+      }
+      .dropzone:hover, .dropzone:focus-visible{ border-color:var(--accent); outline:none; }
+      .dropzone.drag{ border-color:var(--accent); background:var(--accent-soft); }
+      .dropzone .dz-icon{ width:52px; height:52px; margin:0 auto 10px; color:var(--accent); }
+      .dropzone h2{ margin:0 0 6px; font-size:1.2rem; font-weight:800; }
+      .dropzone p{ margin:0; color:var(--muted); font-size:.94rem; }
+      .dropzone .browse{
+        display:inline-block; margin-top:14px; background:var(--accent); color:#fff;
+        font-weight:700; padding:11px 22px; border-radius:10px; font-size:.98rem;
+      }
+      @media (prefers-color-scheme: dark){ .dropzone .browse{ color:#06231D; } }
+      .dz-note{ margin-top:12px !important; font-size:.82rem !important; }
+
+      .stage{ display:none; }
+      .stage.on{ display:block; }
+      .canvas-box{
+        position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line);
+        background:
+          repeating-conic-gradient(var(--check-a) 0% 25%, var(--check-b) 0% 50%) 0 0/22px 22px;
+        touch-action:none; user-select:none; -webkit-user-select:none;
+      }
+      .canvas-box canvas{ display:block; width:100%; height:auto; }
+      #beforeCanvas{
+        position:absolute; inset:0; width:100%; height:100%;
+        clip-path: inset(0 100% 0 0);
+      }
+      .divider{
+        position:absolute; top:0; bottom:0; width:2px; background:#fff;
+        box-shadow:0 0 0 1px rgba(0,0,0,.25); left:0; display:none; pointer-events:none;
+      }
+      .tag{
+        position:absolute; top:10px; font-size:.72rem; font-weight:800; letter-spacing:.04em;
+        background:rgba(10,25,30,.78); color:#fff; padding:4px 9px; border-radius:6px; pointer-events:none;
+      }
+      .tag.before{ left:10px; display:none; }
+      .tag.after{ right:10px; }
+      .processing{
+        position:absolute; inset:0; display:none; align-items:center; justify-content:center;
+        flex-direction:column; gap:12px; background:rgba(10,25,30,.55); color:#fff; text-align:center; padding:20px;
+      }
+      .processing.on{ display:flex; }
+      .spinner{
+        width:42px; height:42px; border-radius:50%;
+        border:4px solid rgba(255,255,255,.3); border-top-color:#fff;
+        animation:spin 0.9s linear infinite;
+      }
+      @keyframes spin{ to{ transform:rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce){ .spinner{ animation:none; } }
+      .processing p{ margin:0; font-weight:600; font-size:.95rem; }
+
+      .compare-row{ display:none; align-items:center; gap:12px; margin-top:14px; }
+      .compare-row.on{ display:flex; }
+      .compare-row label{ font-size:.86rem; font-weight:700; white-space:nowrap; }
+      .compare-row input[type="range"]{ flex:1; accent-color:var(--accent); min-height:2.75rem; }
+      .stage-actions{ display:none; gap:10px; margin-top:12px; flex-wrap:wrap; }
+      .stage-actions.on{ display:flex; }
+
+      /* Panel */
+      .panel{ padding:18px; }
+      .panel h2{ margin:0 0 4px; font-size:1.08rem; font-weight:800; }
+      .panel .sub{ margin:0 0 14px; color:var(--muted); font-size:.9rem; }
+      .group{ border-top:1px solid var(--line); padding:14px 0; }
+      .group:first-of-type{ border-top:none; padding-top:2px; }
+      .group h3{ margin:0 0 10px; font-size:.82rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+      .swatches{ display:flex; flex-wrap:wrap; gap:8px; }
+      .swatch{
+        display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+        border:2px solid var(--line); background:var(--surface); color:var(--ink);
+        border-radius:10px; padding:8px 12px; font:inherit; font-size:.9rem; font-weight:600; min-height:2.75rem;
+      }
+      .swatch .dotc{ width:18px; height:18px; border-radius:50%; border:1px solid rgba(0,0,0,.18); flex:none; }
+      .swatch[aria-pressed="true"]{ border-color:var(--accent); background:var(--accent-soft); }
+      .swatch .transp{
+        background:repeating-conic-gradient(#C9D4D1 0% 25%, #fff 0% 50%) 0 0/8px 8px;
+      }
+      .custom-color{ display:flex; align-items:center; gap:10px; margin-top:10px; font-size:.9rem; font-weight:600; }
+      .custom-color input[type="color"]{ width:52px; height:40px; padding:2px; border:1px solid var(--line); border-radius:8px; background:var(--surface); cursor:pointer; }
+
+      .slider-row{ margin-bottom:12px; }
+      .slider-row:last-child{ margin-bottom:0; }
+      .slider-row .lab{ display:flex; justify-content:space-between; font-size:.9rem; font-weight:600; margin-bottom:2px; }
+      .slider-row .lab output{ color:var(--accent); font-weight:800; }
+      .slider-row input[type="range"]{ width:100%; accent-color:var(--accent); }
+
+      .seg{ display:flex; gap:8px; flex-wrap:wrap; }
+      .seg button{
+        flex:1 1 auto; cursor:pointer; font:inherit; font-size:.9rem; font-weight:700;
+        border:2px solid var(--line); background:var(--surface); color:var(--ink);
+        border-radius:10px; padding:9px 10px; min-height:2.75rem;
+      }
+      .seg button[aria-pressed="true"]{ border-color:var(--accent); background:var(--accent-soft); color:var(--ink); }
+      .hint{ font-size:.84rem; color:var(--muted); margin:8px 0 0; }
+
+      select{
+        width:100%; font:inherit; font-size:.95rem; font-weight:600; color:var(--ink);
+        background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px; min-height:2.75rem;
+      }
+      .field{ margin-bottom:12px; }
+      .field:last-child{ margin-bottom:0; }
+      .field label{ display:block; font-size:.9rem; font-weight:600; margin-bottom:6px; }
+
+      .btn{
+        display:inline-flex; align-items:center; justify-content:center; gap:8px;
+        font:inherit; font-weight:700; font-size:.95rem; cursor:pointer;
+        border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--ink);
+        padding:11px 16px; min-height:2.75rem; text-decoration:none;
+      }
+      .btn:disabled{ opacity:.45; cursor:not-allowed; }
+      .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; width:100%; font-size:1.02rem; padding:14px 16px; }
+      @media (prefers-color-scheme: dark){ .btn.primary{ color:#06231D; } }
+      .btn.primary:not(:disabled):hover{ background:var(--accent-dark); }
+      .btn.small{ font-size:.88rem; padding:9px 13px; }
+      .btn.danger{ color:var(--danger); border-color:var(--danger); }
+
+      .status{
+        display:none; border-radius:10px; padding:11px 13px; font-size:.9rem; font-weight:600; margin-bottom:14px;
+      }
+      .status.on{ display:block; }
+      .status.info{ background:var(--accent-soft); color:var(--ink); }
+      .status.warn{ background:var(--amber-soft); color:var(--ink); }
+      .status.err{ background:var(--danger-soft); color:var(--ink); }
+      .method-badge{
+        display:none; font-size:.78rem; font-weight:800; letter-spacing:.03em;
+        background:var(--amber-soft); border:1px solid var(--amber); color:var(--ink);
+        border-radius:999px; padding:4px 11px; margin-bottom:12px; width:fit-content;
+      }
+      .method-badge.on{ display:block; }
+      .filemeta{ font-size:.84rem; color:var(--muted); margin-top:10px; text-align:center; }
+
+      /* Steps */
+      .steps{ list-style:none; margin:22px 0 0; padding:0; display:grid; gap:10px; grid-template-columns:1fr; }
+      @media (min-width:700px){ .steps{ grid-template-columns:repeat(4,1fr); } }
+      .steps li{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px; }
+      .steps .n{
+        display:inline-flex; align-items:center; justify-content:center;
+        width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff;
+        font-weight:800; font-size:.9rem; margin-bottom:8px;
+      }
+      @media (prefers-color-scheme: dark){ .steps .n{ color:#06231D; } }
+      .steps strong{ display:block; font-size:.96rem; margin-bottom:3px; }
+      .steps span{ color:var(--muted); font-size:.87rem; }
+
+      /* Guide */
+      .guide{ display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px; }
+      @media (min-width:820px){ .guide{ grid-template-columns:1fr 1fr; } }
+      .guide .card{ padding:18px; }
+      .guide h2{ margin:0 0 10px; font-size:1.05rem; font-weight:800; }
+      .guide ul{ margin:0; padding-left:20px; color:var(--muted); font-size:.94rem; }
+      .guide li{ margin-bottom:7px; }
+      .guide li strong{ color:var(--ink); }
+      table.spec{ width:100%; border-collapse:collapse; font-size:.92rem; }
+      table.spec th, table.spec td{ text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+      table.spec th{ font-weight:800; }
+      table.spec td{ color:var(--muted); }
+      table.spec td:first-child{ color:var(--ink); font-weight:600; }
+
+      footer{ margin-top:26px; color:var(--muted); font-size:.86rem; text-align:center; }
+      .toast{
+        position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(20px);
+        background:var(--ink); color:var(--bg); font-weight:700; font-size:.92rem;
+        padding:12px 20px; border-radius:10px; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+        max-width:92vw; text-align:center; z-index:50;
+      }
+      .toast.on{ opacity:1; transform:translateX(-50%) translateY(0); }
+      .hidden-input{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <header class="intro">
+        <h1>Make your passport photo background <span class="hl">white</span> — no app needed</h1>
+        <p>Need a photo for a job application, passport, visa, or ID, but the background is wrong? Drop your photo here — the background is removed automatically and replaced with clean white. No app to install, no sign-up.</p>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span> Your photo never leaves your device — everything runs in your browser</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg> AI removes the background automatically</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 20h16"/></svg> Free download in passport size</span>
+        </div>
+      </header>
+
+      <div class="tool">
+        <!-- ===== Stage ===== -->
+        <section class="card stage-card" aria-label="Photo editor">
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload a photo">
+            <svg class="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m4.5 18 5-5 3.5 3.5L17 12l2.5 2.5"/><path d="M12 2.8v3M10.4 4.2 12 2.6l1.6 1.6"/></svg>
+            <h2>Drop your photo here</h2>
+            <p>Drag and drop your photo, or tap the button below to choose one.<br />Gallery or camera — both work.</p>
+            <span class="browse">Choose Photo</span>
+            <p class="dz-note">JPG, PNG, or WebP. HEIC photos from iPhones may not open in some browsers — convert to JPG first.</p>
+          </div>
+          <input class="hidden-input" type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/*" />
+
+          <div class="stage" id="stage">
+            <div class="canvas-box" id="canvasBox">
+              <canvas id="resultCanvas" width="600" height="600"></canvas>
+              <canvas id="beforeCanvas" width="600" height="600"></canvas>
+              <div class="divider" id="divider"></div>
+              <span class="tag before" id="tagBefore">BEFORE</span>
+              <span class="tag after" id="tagAfter">AFTER</span>
+              <div class="processing" id="processing">
+                <div class="spinner" aria-hidden="true"></div>
+                <p id="processingText">Removing background…</p>
+              </div>
+            </div>
+            <div class="compare-row" id="compareRow">
+              <label for="compareSlider">Before</label>
+              <input type="range" id="compareSlider" min="0" max="100" value="0" aria-label="Compare the before and after photo" />
+              <label for="compareSlider">After</label>
+            </div>
+            <div class="stage-actions" id="stageActions">
+              <button class="btn small" id="changePhotoBtn" type="button">Use a different photo</button>
+              <button class="btn small" id="retryAiBtn" type="button">Try AI again</button>
+              <button class="btn small" id="simpleBtn" type="button">Simple method (for plain backgrounds)</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Controls ===== -->
+        <aside class="card panel" aria-label="Settings">
+          <h2>Settings</h2>
+          <p class="sub">Upload a photo first — then adjust the background color, size, and finishing here.</p>
+
+          <div class="status" id="statusBox" role="status"></div>
+          <div class="method-badge" id="methodBadge"></div>
+
+          <div class="group">
+            <h3>Background color</h3>
+            <div class="swatches" role="group" aria-label="Background color">
+              <button type="button" class="swatch" data-bg="white" aria-pressed="true"><span class="dotc" style="background:#FFFFFF"></span>White</button>
+              <button type="button" class="swatch" data-bg="blue" aria-pressed="false"><span class="dotc" style="background:#DCE9F7"></span>Light Blue</button>
+              <button type="button" class="swatch" data-bg="grey" aria-pressed="false"><span class="dotc" style="background:#ECECEC"></span>Light Grey</button>
+              <button type="button" class="swatch" data-bg="transparent" aria-pressed="false"><span class="dotc transp"></span>Transparent</button>
+            </div>
+            <div class="custom-color">
+              <input type="color" id="customColor" value="#FDEBD0" aria-label="Pick a custom color" />
+              <label for="customColor">Or pick your own color (tap the box)</label>
+            </div>
+            <p class="hint"><strong>White</strong> is the right choice for passports, visas, and most job forms. Always double-check the form's instructions first.</p>
+          </div>
+
+          <div class="group">
+            <h3>Finishing</h3>
+            <div class="slider-row">
+              <div class="lab"><label for="featherRange">Soft edges (edge smoothing)</label><output id="featherOut">3</output></div>
+              <input type="range" id="featherRange" min="0" max="8" step="1" value="3" />
+            </div>
+            <div class="slider-row">
+              <div class="lab"><label for="brightRange">Brightness</label><output id="brightOut">0</output></div>
+              <input type="range" id="brightRange" min="-30" max="30" step="1" value="0" />
+            </div>
+            <div class="slider-row">
+              <div class="lab"><label for="contrastRange">Contrast</label><output id="contrastOut">0</output></div>
+              <input type="range" id="contrastRange" min="-30" max="30" step="1" value="0" />
+            </div>
+          </div>
+
+          <div class="group">
+            <h3>Touch-up brush</h3>
+            <div class="seg" role="group" aria-label="Brush mode">
+              <button type="button" id="brushOff" aria-pressed="true">Off</button>
+              <button type="button" id="brushErase" aria-pressed="false">Erase background</button>
+              <button type="button" id="brushRestore" aria-pressed="false">Restore</button>
+            </div>
+            <div class="slider-row" style="margin-top:12px;">
+              <div class="lab"><label for="brushSize">Brush size</label><output id="brushSizeOut">28</output></div>
+              <input type="range" id="brushSize" min="8" max="80" step="2" value="28" />
+            </div>
+            <p class="hint">If an edge got cut by mistake, drag your finger or mouse over the photo to fix it.</p>
+            <button class="btn small" id="resetTouchBtn" type="button" style="margin-top:10px;">Reset touch-up</button>
+          </div>
+
+          <div class="group">
+            <h3>Download</h3>
+            <div class="field">
+              <label for="sizeSelect">Photo size</label>
+              <select id="sizeSelect">
+                <option value="original" selected>Original size (same as your photo)</option>
+                <option value="passport-in">Passport — 2 × 2 inch (600 × 600 px)</option>
+                <option value="visa-3545">Visa / ID — 35 × 45 mm (413 × 531 px)</option>
+                <option value="id-2535">Small ID — 25 × 35 mm (295 × 413 px)</option>
+                <option value="stamp">Stamp size — 25 × 20 mm (295 × 236 px)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="formatSelect">File type</label>
+              <select id="formatSelect">
+                <option value="jpeg" selected>JPG — best for form uploads</option>
+                <option value="png">PNG — for a transparent background</option>
+              </select>
+            </div>
+            <button class="btn primary" id="downloadBtn" type="button" disabled>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 20h16"/></svg>
+              Download Photo
+            </button>
+            <p class="filemeta" id="fileMeta"></p>
+          </div>
+        </aside>
+      </div>
+
+      <ol class="steps">
+        <li><span class="n">1</span><strong>Upload your photo</strong><span>Pick any clear photo from your gallery — your face should be easy to see.</span></li>
+        <li><span class="n">2</span><strong>Background removed automatically</strong><span>The AI finds the person and removes only the background behind them.</span></li>
+        <li><span class="n">3</span><strong>Pick a color and size</strong><span>Keep the white background and choose the passport size your form asks for.</span></li>
+        <li><span class="n">4</span><strong>Download and add it to your form</strong><span>The JPG file uploads straight into online forms.</span></li>
+      </ol>
+
+      <div class="guide">
+        <section class="card">
+          <h2>Which size do you need?</h2>
+          <table class="spec">
+            <tr><th>Purpose</th><th>Common size</th></tr>
+            <tr><td>Passport / Visa (2×2)</td><td>2 × 2 inch — 600 × 600 px, white background</td></tr>
+            <tr><td>Visa / ID (35×45)</td><td>35 × 45 mm — 413 × 531 px, white or light background</td></tr>
+            <tr><td>Job application form</td><td>Usually passport size with a white background — check the form's instructions</td></tr>
+            <tr><td>Stamp size</td><td>25 × 20 mm — for small forms and cards</td></tr>
+          </table>
+          <p class="hint" style="margin-top:10px;">Every form has its own rules — always read the photo instructions on the form before you submit.</p>
+        </section>
+        <section class="card">
+          <h2>Tips for a good photo</h2>
+          <ul>
+            <li><strong>Stand in front of a plain background</strong> — a single-color wall works best; it makes it easier for the AI to cut cleanly.</li>
+            <li><strong>Even light on your face</strong> — take the photo facing a window, with no bright light behind you.</li>
+            <li><strong>Face straight and clearly visible</strong> — glasses or hats can cut into the edges; check your form's rules.</li>
+            <li><strong>Zoom in and check the result</strong> — look at the hair and shoulder edges, and fix any mistakes with the touch-up brush.</li>
+            <li><strong>Dark clothes + white background</strong> — the contrast makes the photo look sharp and clear on the form.</li>
+          </ul>
+        </section>
+      </div>
+
+      <footer>All processing happens in your phone or computer's browser — your photo is never uploaded to a server.</footer>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.1/dist/body-pix.min.js"></script>
+    <script>
+    (function(){
+      "use strict";
+
+      /* ---------------- Elements ---------------- */
+      var $ = function(id){ return document.getElementById(id); };
+      var dropzone = $("dropzone"), fileInput = $("fileInput"), stage = $("stage"),
+          canvasBox = $("canvasBox"), resultCanvas = $("resultCanvas"), beforeCanvas = $("beforeCanvas"),
+          divider = $("divider"), tagBefore = $("tagBefore"),
+          processing = $("processing"), processingText = $("processingText"),
+          compareRow = $("compareRow"), compareSlider = $("compareSlider"),
+          stageActions = $("stageActions"), statusBox = $("statusBox"),
+          methodBadge = $("methodBadge"), downloadBtn = $("downloadBtn"), fileMeta = $("fileMeta"),
+          featherRange = $("featherRange"), featherOut = $("featherOut"),
+          brightRange = $("brightRange"), brightOut = $("brightOut"),
+          contrastRange = $("contrastRange"), contrastOut = $("contrastOut"),
+          brushSize = $("brushSize"), brushSizeOut = $("brushSizeOut"),
+          sizeSelect = $("sizeSelect"), formatSelect = $("formatSelect"),
+          customColor = $("customColor"), toast = $("toast");
+
+      var rctx = resultCanvas.getContext("2d");
+      var bctx = beforeCanvas.getContext("2d");
+
+      /* ---------------- State ---------------- */
+      var MAXDIM = 1600;
+      var state = {
+        loaded: false,
+        workW: 0, workH: 0,
+        bgMode: "white",          // white | blue | grey | transparent | custom
+        bgColor: "#FFFFFF",
+        brushMode: "off",         // off | erase | restore
+        method: null              // "ai" | "simple"
+      };
+
+      var origCanvas = document.createElement("canvas");   // original photo at work size
+      var maskCanvas = document.createElement("canvas");   // editable mask: white = person
+      var baseMask   = document.createElement("canvas");   // snapshot of auto mask (for reset)
+      var modelPromise = null;
+      var renderQueued = false;
+
+      var BG = { white:"#FFFFFF", blue:"#DCE9F7", grey:"#ECECEC" };
+
+      /* ---------------- Helpers ---------------- */
+      function setStatus(msg, type){
+        if(!msg){ statusBox.className = "status"; statusBox.textContent = ""; return; }
+        statusBox.className = "status on " + (type || "info");
+        statusBox.textContent = msg;
+      }
+      function setProcessing(on, text){
+        if(text) processingText.textContent = text;
+        processing.className = on ? "processing on" : "processing";
+      }
+      var toastTimer = null;
+      function showToast(msg){
+        toast.textContent = msg;
+        toast.className = "toast on";
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){ toast.className = "toast"; }, 3200);
+      }
+      function setMethodBadge(){
+        if(!state.method){ methodBadge.className = "method-badge"; return; }
+        methodBadge.className = "method-badge on";
+        methodBadge.textContent = state.method === "ai"
+          ? "Method: AI background removal"
+          : "Method: Simple (color detection) — best on plain backgrounds";
+      }
+      function fmtKB(bytes){
+        if(bytes < 1024) return bytes + " B";
+        if(bytes < 1024*1024) return Math.round(bytes/1024) + " KB";
+        return (bytes/(1024*1024)).toFixed(2) + " MB";
+      }
+
+      /* ---------------- File loading ---------------- */
+      dropzone.addEventListener("click", function(){ fileInput.click(); });
+      dropzone.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); fileInput.click(); }
+      });
+      ["dragenter","dragover"].forEach(function(ev){
+        dropzone.addEventListener(ev, function(e){ e.preventDefault(); dropzone.classList.add("drag"); });
+      });
+      ["dragleave","drop"].forEach(function(ev){
+        dropzone.addEventListener(ev, function(e){ e.preventDefault(); dropzone.classList.remove("drag"); });
+      });
+      dropzone.addEventListener("drop", function(e){
+        var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if(f) handleFile(f);
+      });
+      fileInput.addEventListener("change", function(){
+        if(fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+        fileInput.value = "";
+      });
+      $("changePhotoBtn").addEventListener("click", function(){ fileInput.click(); });
+
+      function handleFile(file){
+        if(!/^image\//.test(file.type) && !/\.(jpe?g|png|webp)$/i.test(file.name)){
+          setStatus("This file doesn't look like a photo. Please choose a JPG or PNG photo.", "err");
+          return;
+        }
+        setStatus("");
+        var url = URL.createObjectURL(file);
+        var img = new Image();
+        img.onload = function(){
+          URL.revokeObjectURL(url);
+          var scale = Math.min(1, MAXDIM / Math.max(img.naturalWidth, img.naturalHeight));
+          var w = Math.max(2, Math.round(img.naturalWidth * scale));
+          var h = Math.max(2, Math.round(img.naturalHeight * scale));
+          state.workW = w; state.workH = h;
+
+          [origCanvas, maskCanvas, baseMask].forEach(function(c){ c.width = w; c.height = h; });
+          origCanvas.getContext("2d").drawImage(img, 0, 0, w, h);
+
+          resultCanvas.width = w; resultCanvas.height = h;
+          beforeCanvas.width = w; beforeCanvas.height = h;
+          bctx.drawImage(origCanvas, 0, 0);
+          rctx.drawImage(origCanvas, 0, 0);
+
+          state.loaded = true; state.method = null; setMethodBadge();
+          dropzone.style.display = "none";
+          stage.className = "stage on";
+          compareRow.className = "compare-row on";
+          stageActions.className = "stage-actions on";
+          compareSlider.value = 0; applyCompare();
+          downloadBtn.disabled = true;
+          fileMeta.textContent = "Original photo: " + img.naturalWidth + " × " + img.naturalHeight + " px · " + fmtKB(file.size);
+
+          runAI();
+        };
+        img.onerror = function(){
+          URL.revokeObjectURL(url);
+          setStatus("This photo couldn't be opened. If it's an iPhone HEIC photo, convert it to JPG first — some browsers can't open HEIC files.", "err");
+        };
+        img.src = url;
+      }
+
+      /* ---------------- AI segmentation (BodyPix) ---------------- */
+      function loadModel(){
+        if(modelPromise) return modelPromise;
+        modelPromise = new Promise(function(resolve, reject){
+          if(typeof window.bodyPix === "undefined" || typeof window.tf === "undefined"){
+            reject(new Error("no-cdn")); return;
+          }
+          window.bodyPix.load({
+            architecture: "MobileNetV1",
+            outputStride: 16,
+            multiplier: 0.75,
+            quantBytes: 2
+          }).then(resolve, reject);
+        });
+        return modelPromise;
+      }
+
+      function runAI(){
+        if(!state.loaded) return;
+        setProcessing(true, "Loading the AI model… the first time can take 10–20 seconds.");
+        loadModel().then(function(net){
+          setProcessing(true, "Removing background…");
+          // Segment on a downscaled copy for speed, then upscale the mask.
+          var SEGMAX = 900;
+          var s = Math.min(1, SEGMAX / Math.max(state.workW, state.workH));
+          var sw = Math.max(2, Math.round(state.workW * s));
+          var sh = Math.max(2, Math.round(state.workH * s));
+          var segCanvas = document.createElement("canvas");
+          segCanvas.width = sw; segCanvas.height = sh;
+          segCanvas.getContext("2d").drawImage(origCanvas, 0, 0, sw, sh);
+          return net.segmentPerson(segCanvas, {
+            flipHorizontal: false,
+            internalResolution: "medium",
+            segmentationThreshold: 0.65
+          }).then(function(seg){ return { seg: seg, sw: sw, sh: sh }; });
+        }).then(function(res){
+          var seg = res.seg;
+          var small = document.createElement("canvas");
+          small.width = res.sw; small.height = res.sh;
+          var sctx = small.getContext("2d");
+          var imgData = sctx.createImageData(res.sw, res.sh);
+          var personCount = 0;
+          for(var i = 0; i < seg.data.length; i++){
+            var v = seg.data[i] ? 255 : 0;
+            if(seg.data[i]) personCount++;
+            imgData.data[i*4] = v; imgData.data[i*4+1] = v; imgData.data[i*4+2] = v; imgData.data[i*4+3] = 255;
+          }
+          if(personCount < seg.data.length * 0.02){
+            throw new Error("no-person");
+          }
+          sctx.putImageData(imgData, 0, 0);
+          var mctx = maskCanvas.getContext("2d");
+          mctx.imageSmoothingEnabled = true;
+          mctx.clearRect(0, 0, state.workW, state.workH);
+          mctx.drawImage(small, 0, 0, state.workW, state.workH);
+          saveBaseMask();
+          state.method = "ai"; setMethodBadge();
+          setProcessing(false);
+          setStatus("Background removed. Check the edges — fix any mistakes with the touch-up brush.", "info");
+          renderResult();
+        }).catch(function(err){
+          setProcessing(false);
+          if(err && err.message === "no-person"){
+            setStatus("The AI couldn't clearly find a person in this photo. Trying the simple method — it works well on plain backgrounds.", "warn");
+          } else {
+            setStatus("The AI model couldn't load (internet is slow or off). Trying the simple method.", "warn");
+          }
+          runSimple();
+        });
+      }
+      $("retryAiBtn").addEventListener("click", function(){ modelPromise = null; runAI(); });
+      $("simpleBtn").addEventListener("click", function(){ runSimple(); });
+
+      /* ---------------- Simple color method (fallback) ----------------
+         Idea: the color along the top and side edges = the background.
+         It removes areas connected to the edges that match that color,
+         so the same color in the middle (like a white shirt) stays.   */
+      function runSimple(){
+        if(!state.loaded) return;
+        setProcessing(true, "Detecting the background color…");
+        setTimeout(function(){
+          try {
+            var GW = 256;
+            var gh = Math.max(2, Math.round(GW * state.workH / state.workW));
+            var small = document.createElement("canvas");
+            small.width = GW; small.height = gh;
+            var sctx = small.getContext("2d");
+            sctx.drawImage(origCanvas, 0, 0, GW, gh);
+            var data = sctx.getImageData(0, 0, GW, gh).data;
+
+            // Background colour = median of border pixels
+            var rs = [], gs = [], bs = [], x, y, idx;
+            function pushPx(px, py){
+              var j = (py * GW + px) * 4;
+              rs.push(data[j]); gs.push(data[j+1]); bs.push(data[j+2]);
+            }
+            for(x = 0; x < GW; x += 2){ pushPx(x, 0); pushPx(x, 1); }
+            for(y = 0; y < gh; y += 2){ pushPx(0, y); pushPx(1, y); pushPx(GW-1, y); pushPx(GW-2, y); }
+            function median(a){ a.sort(function(p,q){return p-q;}); return a[Math.floor(a.length/2)]; }
+            var br = median(rs), bgc = median(gs), bb = median(bs);
+
+            var TOL = 42; // colour distance tolerance
+            function isBg(px, py){
+              var j = (py * GW + px) * 4;
+              var dr = data[j]-br, dg = data[j+1]-bgc, db = data[j+2]-bb;
+              return (dr*dr + dg*dg + db*db) < TOL * TOL;
+            }
+            // Flood fill from top edge + upper sides only (clothes are at the bottom)
+            var mask = new Uint8Array(GW * gh); // 1 = background
+            var queue = [];
+            function seed(px, py){
+              var k = py * GW + px;
+              if(!mask[k] && isBg(px, py)){ mask[k] = 1; queue.push(k); }
+            }
+            for(x = 0; x < GW; x++){ seed(x, 0); }
+            var sideLimit = Math.floor(gh * 0.55);
+            for(y = 0; y < sideLimit; y++){ seed(0, y); seed(GW-1, y); }
+            while(queue.length){
+              var k = queue.pop();
+              var kx = k % GW, ky = (k / GW) | 0;
+              var nb = [[kx+1,ky],[kx-1,ky],[kx,ky+1],[kx,ky-1]];
+              for(var n = 0; n < 4; n++){
+                var nx = nb[n][0], ny = nb[n][1];
+                if(nx < 0 || ny < 0 || nx >= GW || ny >= gh) continue;
+                var nk = ny * GW + nx;
+                if(!mask[nk] && isBg(nx, ny)){ mask[nk] = 1; queue.push(nk); }
+              }
+            }
+            // Grid mask -> full-size mask canvas (white = person)
+            var grid = document.createElement("canvas");
+            grid.width = GW; grid.height = gh;
+            var gctx = grid.getContext("2d");
+            var gimg = gctx.createImageData(GW, gh);
+            for(var i = 0; i < GW * gh; i++){
+              var v = mask[i] ? 0 : 255;
+              gimg.data[i*4] = v; gimg.data[i*4+1] = v; gimg.data[i*4+2] = v; gimg.data[i*4+3] = 255;
+            }
+            gctx.putImageData(gimg, 0, 0);
+            var mctx = maskCanvas.getContext("2d");
+            mctx.imageSmoothingEnabled = true;
+            mctx.clearRect(0, 0, state.workW, state.workH);
+            mctx.drawImage(grid, 0, 0, state.workW, state.workH);
+            saveBaseMask();
+            state.method = "simple"; setMethodBadge();
+            setProcessing(false);
+            setStatus("Background removed with the simple method. Fix any edge mistakes with the touch-up brush, or try the AI button again.", "info");
+            renderResult();
+          } catch(e){
+            setProcessing(false);
+            setStatus("The background couldn't be removed. Try a different, clearer photo.", "err");
+          }
+        }, 30);
+      }
+
+      function saveBaseMask(){
+        var b = baseMask.getContext("2d");
+        b.clearRect(0, 0, state.workW, state.workH);
+        b.drawImage(maskCanvas, 0, 0);
+      }
+      $("resetTouchBtn").addEventListener("click", function(){
+        if(!state.loaded) return;
+        var m = maskCanvas.getContext("2d");
+        m.clearRect(0, 0, state.workW, state.workH);
+        m.drawImage(baseMask, 0, 0);
+        renderResult();
+        showToast("Touch-up reset");
+      });
+
+      /* ---------------- Rendering ---------------- */
+      function scheduleRender(){
+        if(renderQueued) return;
+        renderQueued = true;
+        requestAnimationFrame(function(){ renderQueued = false; renderResult(); });
+      }
+
+      function renderResult(){
+        if(!state.loaded) return;
+        var w = state.workW, h = state.workH;
+        var feather = parseInt(featherRange.value, 10);
+
+        // 1) Smoothed mask with cleaned edges
+        var smooth = document.createElement("canvas");
+        smooth.width = w; smooth.height = h;
+        var sm = smooth.getContext("2d");
+        try { sm.filter = "blur(" + feather + "px)"; } catch(e){}
+        sm.drawImage(maskCanvas, 0, 0);
+        try { sm.filter = "none"; } catch(e){}
+        var mData = sm.getImageData(0, 0, w, h);
+        var md = mData.data;
+        for(var i = 0; i < md.length; i += 4){
+          var v = md[i];
+          v = (v - 70) * 1.9;               // contrast curve: cleans up the edges
+          v = v < 0 ? 0 : (v > 255 ? 255 : v);
+          md[i] = md[i+1] = md[i+2] = v; md[i+3] = 255;
+        }
+        sm.putImageData(mData, 0, 0);
+
+        // 2) Foreground with brightness / contrast
+        var fg = document.createElement("canvas");
+        fg.width = w; fg.height = h;
+        var fx = fg.getContext("2d");
+        var b = 100 + parseInt(brightRange.value, 10);
+        var c = 100 + parseInt(contrastRange.value, 10);
+        try { fx.filter = "brightness(" + (b/100) + ") contrast(" + (c/100) + ")"; } catch(e){}
+        fx.drawImage(origCanvas, 0, 0);
+        try { fx.filter = "none"; } catch(e){}
+        fx.globalCompositeOperation = "destination-in";
+        fx.drawImage(smooth, 0, 0);
+        fx.globalCompositeOperation = "source-over";
+
+        // 3) Composite over chosen background
+        rctx.clearRect(0, 0, w, h);
+        if(state.bgMode !== "transparent"){
+          rctx.fillStyle = state.bgColor;
+          rctx.fillRect(0, 0, w, h);
+        }
+        rctx.drawImage(fg, 0, 0);
+        downloadBtn.disabled = false;
+        updateMeta();
+      }
+
+      var metaTimer = null;
+      function updateMeta(){
+        clearTimeout(metaTimer);
+        metaTimer = setTimeout(function(){
+          if(!state.loaded) return;
+          buildExport("jpeg" === formatSelect.value ? "image/jpeg" : "image/png", 0.9, function(blob, cw, ch){
+            if(blob) fileMeta.textContent = "Download size: " + cw + " × " + ch + " px · about " + fmtKB(blob.size);
+          });
+        }, 250);
+      }
+
+      /* ---------------- Background colour controls ---------------- */
+      var swatches = document.querySelectorAll(".swatch");
+      function selectSwatch(mode, color){
+        state.bgMode = mode;
+        if(mode === "custom") state.bgColor = color;
+        else if(BG[mode]) state.bgColor = BG[mode];
+        swatches.forEach(function(s){ s.setAttribute("aria-pressed", s.getAttribute("data-bg") === mode ? "true" : "false"); });
+        scheduleRender();
+      }
+      swatches.forEach(function(s){
+        s.addEventListener("click", function(){ selectSwatch(s.getAttribute("data-bg")); });
+      });
+      customColor.addEventListener("input", function(){ selectSwatch("custom", customColor.value); });
+
+      /* ---------------- Sliders ---------------- */
+      function bindSlider(range, out, fn){
+        range.addEventListener("input", function(){ out.textContent = range.value; fn(); });
+      }
+      bindSlider(featherRange, featherOut, scheduleRender);
+      bindSlider(brightRange, brightOut, scheduleRender);
+      bindSlider(contrastRange, contrastOut, scheduleRender);
+      bindSlider(brushSize, brushSizeOut, function(){});
+
+      /* ---------------- Compare slider ---------------- */
+      function applyCompare(){
+        var v = parseInt(compareSlider.value, 10);
+        beforeCanvas.style.clipPath = "inset(0 " + (100 - v) + "% 0 0)";
+        divider.style.left = v + "%";
+        var show = v > 0 && v < 100;
+        divider.style.display = show ? "block" : "none";
+        tagBefore.style.display = v > 4 ? "block" : "none";
+      }
+      compareSlider.addEventListener("input", applyCompare);
+
+      /* ---------------- Touch-up brush ---------------- */
+      var brushBtns = { off: $("brushOff"), erase: $("brushErase"), restore: $("brushRestore") };
+      function setBrush(mode){
+        state.brushMode = mode;
+        Object.keys(brushBtns).forEach(function(k){
+          brushBtns[k].setAttribute("aria-pressed", k === mode ? "true" : "false");
+        });
+        canvasBox.style.cursor = mode === "off" ? "default" : "crosshair";
+        if(mode !== "off"){ compareSlider.value = 0; applyCompare(); }
+      }
+      brushBtns.off.addEventListener("click", function(){ setBrush("off"); });
+      brushBtns.erase.addEventListener("click", function(){ setBrush("erase"); });
+      brushBtns.restore.addEventListener("click", function(){ setBrush("restore"); });
+
+      var painting = false;
+      function paintAt(e){
+        var rect = resultCanvas.getBoundingClientRect();
+        var cx = (e.clientX - rect.left) / rect.width * state.workW;
+        var cy = (e.clientY - rect.top) / rect.height * state.workH;
+        var r = parseInt(brushSize.value, 10) / rect.width * state.workW / 2;
+        var m = maskCanvas.getContext("2d");
+        m.fillStyle = state.brushMode === "erase" ? "#000" : "#FFF";
+        m.beginPath(); m.arc(cx, cy, Math.max(2, r), 0, Math.PI * 2); m.fill();
+        scheduleRender();
+      }
+      canvasBox.addEventListener("pointerdown", function(e){
+        if(state.brushMode === "off" || !state.loaded) return;
+        painting = true;
+        try { canvasBox.setPointerCapture(e.pointerId); } catch(err){}
+        paintAt(e);
+        e.preventDefault();
+      });
+      canvasBox.addEventListener("pointermove", function(e){ if(painting) paintAt(e); });
+      ["pointerup","pointercancel"].forEach(function(ev){
+        canvasBox.addEventListener(ev, function(){ painting = false; });
+      });
+
+      /* ---------------- Export / download ---------------- */
+      var SIZES = {
+        "original": null,
+        "passport-in": [600, 600],
+        "visa-3545": [413, 531],
+        "id-2535": [295, 413],
+        "stamp": [295, 236]
+      };
+      function buildExport(mime, quality, cb){
+        var spec = SIZES[sizeSelect.value];
+        var out;
+        if(!spec){
+          out = document.createElement("canvas");
+          out.width = state.workW; out.height = state.workH;
+          var ox = out.getContext("2d");
+          if(mime === "image/jpeg" && state.bgMode === "transparent"){
+            ox.fillStyle = "#FFFFFF"; ox.fillRect(0, 0, out.width, out.height);
+          }
+          ox.drawImage(resultCanvas, 0, 0);
+        } else {
+          out = document.createElement("canvas");
+          out.width = spec[0]; out.height = spec[1];
+          var ctx = out.getContext("2d");
+          if(mime === "image/jpeg" && state.bgMode === "transparent"){
+            ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0, 0, out.width, out.height);
+          }
+          // Cover-crop, biased toward the top (the face sits higher)
+          var targetRatio = spec[0] / spec[1];
+          var srcRatio = state.workW / state.workH;
+          var sw, sh, sx, sy;
+          if(srcRatio > targetRatio){ sw = state.workH * targetRatio; sh = state.workH; sx = (state.workW - sw) / 2; sy = 0; }
+          else { sw = state.workW; sh = state.workW / targetRatio; sx = 0; sy = (state.workH - sh) * 0.22; }
+          ctx.drawImage(resultCanvas, sx, sy, sw, sh, 0, 0, spec[0], spec[1]);
+        }
+        if(out.toBlob){
+          out.toBlob(function(blob){ cb(blob, out.width, out.height); }, mime, quality);
+        } else {
+          cb(null, out.width, out.height);
+        }
+        return out;
+      }
+
+      sizeSelect.addEventListener("change", updateMeta);
+      formatSelect.addEventListener("change", function(){
+        if(formatSelect.value === "jpeg" && state.bgMode === "transparent"){
+          setStatus("JPG doesn't support transparency — the download will get a white background instead. Choose PNG if you need a transparent background.", "warn");
+        } else { setStatus(""); }
+        updateMeta();
+      });
+
+      downloadBtn.addEventListener("click", function(){
+        if(!state.loaded) return;
+        var isPng = formatSelect.value === "png";
+        var mime = isPng ? "image/png" : "image/jpeg";
+        buildExport(mime, 0.92, function(blob){
+          if(!blob){ showToast("Download failed — please try again"); return; }
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = isPng ? "passport-photo-white-bg.png" : "passport-photo-white-bg.jpg";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+          showToast("Photo downloaded — check your gallery or downloads folder");
+        });
+      });
+    })();
+    </script>
+  </body>
+</html>
