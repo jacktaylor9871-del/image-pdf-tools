@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta name="google-site-verification" content="1plmQOYTd2_A3vv_8wCdJy8VOgf5n9KKLGQjeG1G_TY" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZN7KZRTVC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JZN7KZRTVC');
+</script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Signature Maker — Draw &amp; Download Transparent PNG</title>
+    <meta name="description" content="Draw your signature with mouse or finger and download it as a transparent PNG. Free, no sign-up, works in your browser." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@600&family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Pinyon+Script&family=Sacramento&family=Tangerine:wght@700&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4f6f8;
+        --surface:#ffffff;
+        --surface-2:#eef2f5;
+        --ink:#14202b;
+        --ink-2:#4a5a68;
+        --ink-3:#7c8b98;
+        --line:#dde4ea;
+        --accent:#0e7a5f;
+        --accent-dark:#0a5f4a;
+        --accent-soft:#e2f2ec;
+        --danger:#c0392b;
+        --danger-soft:#fbeae8;
+        --checker-a:#ffffff;
+        --checker-b:#e3e8ec;
+        --shadow:0 10px 30px rgba(20,32,43,.08);
+        --radius:14px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#0e151b;
+          --surface:#16212b;
+          --surface-2:#1c2a36;
+          --ink:#eef3f7;
+          --ink-2:#a9bac7;
+          --ink-3:#71838f;
+          --line:#2a3a47;
+          --accent:#2fbf97;
+          --accent-dark:#25a37f;
+          --accent-soft:#173a31;
+          --danger:#e5735f;
+          --danger-soft:#3a211d;
+          --checker-a:#232f3a;
+          --checker-b:#1a242e;
+          --shadow:0 10px 30px rgba(0,0,0,.35);
+        }
+      }
+      *{box-sizing:border-box}
+      html,body{margin:0;padding:0}
+      body{
+        font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+        background:var(--bg);
+        color:var(--ink);
+        -webkit-font-smoothing:antialiased;
+        line-height:1.5;
+      }
+      button,[role="button"],select,input:not([type="checkbox"],[type="radio"]){min-height:2.75rem}
+      .wrap{max-width:880px;margin:0 auto;padding:20px 16px 48px}
+
+      header.top{padding:10px 2px 18px}
+      header.top h1{font-size:clamp(1.7rem,4.5vw,2.3rem);line-height:1.12;margin:0 0 8px;font-weight:800;letter-spacing:-.02em}
+      header.top p{margin:0;color:var(--ink-2);font-size:1rem;max-width:62ch}
+      header.top p strong{color:var(--ink)}
+
+      /* Mode tabs */
+      .tabs{display:flex;gap:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px;margin:4px 0 16px}
+      .tabs button{
+        flex:1;border:0;background:transparent;color:var(--ink-2);font:inherit;font-weight:600;font-size:.95rem;
+        border-radius:999px;cursor:pointer;padding:8px 10px;min-height:2.75rem;
+      }
+      .tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 8px rgba(20,32,43,.12)}
+      .tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+      .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+
+      /* Toolbar */
+      .toolbar{
+        display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+        padding:12px 14px;border-bottom:1px solid var(--line);
+      }
+      .tool-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+      .tool-label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+      .swatches{display:flex;gap:7px}
+      .swatch{
+        width:34px;height:34px;min-height:34px;border-radius:50%;border:2px solid var(--line);
+        cursor:pointer;padding:0;position:relative;flex:none;
+      }
+      .swatch[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
+      .swatch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+      input[type="range"]{accent-color:var(--accent);width:120px;min-height:2.75rem}
+      .size-val{font-size:.85rem;font-weight:600;color:var(--ink-2);min-width:2.2em;text-align:right;font-variant-numeric:tabular-nums}
+      .tbtn{
+        font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;
+        border:1px solid var(--line);background:var(--surface);color:var(--ink);
+        border-radius:9px;padding:7px 13px;display:inline-flex;align-items:center;gap:6px;
+      }
+      .tbtn:hover{background:var(--surface-2)}
+      .tbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-dark)}
+      @media (prefers-color-scheme: dark){.tbtn[aria-pressed="true"]{color:var(--accent)}}
+      .tbtn:disabled{opacity:.45;cursor:not-allowed}
+      .tbtn.danger:hover{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
+      .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+      .toolbar .spacer{flex:1}
+
+      /* Canvas stage */
+      .stage{position:relative}
+      .stage.checker{
+        background:
+          conic-gradient(var(--checker-b) 25%, var(--checker-a) 0 50%, var(--checker-b) 0 75%, var(--checker-a) 0);
+        background-size:22px 22px;
+      }
+      .stage.white{background:#ffffff}
+      .stage.dark{background:#223140}
+      canvas#pad{display:block;width:100%;height:340px;touch-action:none;cursor:crosshair}
+      @media (max-width:560px){canvas#pad{height:280px}}
+      .guide-line{
+        position:absolute;left:6%;right:6%;bottom:26%;border-bottom:2px dashed rgba(124,139,152,.55);
+        pointer-events:none;
+      }
+      .guide-line span{
+        position:absolute;right:0;top:5px;font-size:.72rem;color:var(--ink-3);letter-spacing:.03em;
+      }
+      .stage-hint{
+        position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;
+        color:var(--ink-3);font-size:1rem;font-weight:500;text-align:center;padding:0 20px;
+      }
+      .stage-hint.hidden{display:none}
+
+      .stage-bar{
+        display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+        padding:10px 14px;border-top:1px solid var(--line);background:var(--surface);
+      }
+      .stage-bar .tool-label{margin-right:2px}
+      .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+      .seg button{
+        font:inherit;font-size:.85rem;font-weight:600;border:0;background:var(--surface);color:var(--ink-2);
+        padding:7px 12px;cursor:pointer;min-height:2.5rem;
+      }
+      .seg button + button{border-left:1px solid var(--line)}
+      .seg button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink)}
+      .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+      .status{font-size:.85rem;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums}
+
+      /* Download row */
+      .download-row{
+        display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+        padding:14px;border-top:1px solid var(--line);background:var(--surface-2);
+      }
+      .btn-primary{
+        font:inherit;font-size:1rem;font-weight:700;cursor:pointer;border:0;border-radius:10px;
+        background:var(--accent);color:#fff;padding:12px 20px;display:inline-flex;align-items:center;gap:8px;
+        min-height:3rem;
+      }
+      .btn-primary:hover{background:var(--accent-dark)}
+      .btn-primary:disabled{opacity:.45;cursor:not-allowed}
+      .btn-primary:focus-visible{outline:2px solid var(--accent-dark);outline-offset:2px}
+      .btn-secondary{
+        font:inherit;font-size:.92rem;font-weight:600;cursor:pointer;border-radius:10px;
+        background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:11px 16px;min-height:3rem;
+      }
+      .btn-secondary:hover{background:var(--surface-2)}
+      .btn-secondary:disabled{opacity:.45;cursor:not-allowed}
+      .btn-secondary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+      .dl-note{font-size:.85rem;color:var(--ink-2);width:100%}
+      .dl-note strong{color:var(--ink)}
+      label.scale-pick{font-size:.88rem;font-weight:600;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px}
+      select{
+        font:inherit;font-size:.92rem;font-weight:600;color:var(--ink);background:var(--surface);
+        border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;
+      }
+      select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+      .msg{font-size:.9rem;font-weight:600;color:var(--accent-dark);min-height:1.4em;width:100%}
+      @media (prefers-color-scheme: dark){.msg{color:var(--accent)}}
+      .msg:empty{min-height:0}
+
+      /* Type mode */
+      .type-body{padding:16px 14px 6px}
+      .type-body label{display:block;font-size:.85rem;font-weight:700;color:var(--ink-2);margin:0 0 7px}
+      input[type="text"]{
+        width:100%;font:inherit;font-size:1.05rem;color:var(--ink);background:var(--surface);
+        border:1px solid var(--line);border-radius:10px;padding:11px 13px;
+      }
+      input[type="text"]:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+      .font-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px}
+      .font-card{
+        border:1px solid var(--line);background:var(--surface);border-radius:11px;cursor:pointer;
+        padding:14px 12px 10px;text-align:left;font:inherit;color:var(--ink);min-height:5.2rem;
+        display:flex;flex-direction:column;justify-content:space-between;gap:6px;overflow:hidden;
+      }
+      .font-card:hover{border-color:var(--ink-3)}
+      .font-card[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);background:var(--accent-soft)}
+      .font-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+      .font-card .sample{font-size:1.75rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .font-card .fname{font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+      .type-preview{
+        margin-top:16px;border:1px solid var(--line);border-radius:11px;min-height:130px;
+        display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;overflow:hidden;
+        background:
+          conic-gradient(var(--checker-b) 25%, var(--checker-a) 0 50%, var(--checker-b) 0 75%, var(--checker-a) 0);
+        background-size:22px 22px;
+      }
+      .type-preview .big{font-size:clamp(2.4rem,8vw,4rem);line-height:1.2;word-break:break-word}
+      .type-preview .empty{color:var(--ink-3);font-size:.95rem}
+
+      [hidden]{display:none !important}
+
+      /* Info sections */
+      section.info{margin-top:26px}
+      section.info h2{font-size:1.2rem;margin:0 0 10px;font-weight:700;letter-spacing:-.01em}
+      section.info p, section.info li{color:var(--ink-2);font-size:.95rem}
+      .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0;padding:0;list-style:none;counter-reset:step}
+      .steps li{
+        background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+        padding:14px 14px 12px 48px;position:relative;
+      }
+      .steps li::before{
+        counter-increment:step;content:counter(step);
+        position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;
+        background:var(--accent-soft);color:var(--accent-dark);font-weight:800;font-size:.85rem;
+        display:flex;align-items:center;justify-content:center;
+      }
+      @media (prefers-color-scheme: dark){.steps li::before{color:var(--accent)}}
+      .steps li strong{display:block;color:var(--ink);margin-bottom:3px;font-size:.95rem}
+      .uses{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+      .use{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+      .use strong{display:block;margin-bottom:4px;font-size:.95rem;color:var(--ink)}
+      .use p{margin:0}
+      footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink-3);font-size:.85rem}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <h1>Signature Maker</h1>
+        <p>Draw your signature with a <strong>mouse or your finger</strong>, or type your name in a handwriting style — then download it as a <strong>transparent PNG</strong> you can place on forms, PDFs and documents.</p>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Signature mode">
+        <button type="button" role="tab" id="tab-draw" aria-selected="true" aria-controls="panel-draw">Draw signature</button>
+        <button type="button" role="tab" id="tab-type" aria-selected="false" aria-controls="panel-type">Type signature</button>
+      </div>
+
+      <!-- ============ DRAW MODE ============ -->
+      <section id="panel-draw" role="tabpanel" aria-labelledby="tab-draw">
+        <div class="card">
+          <div class="toolbar">
+            <div class="tool-group">
+              <span class="tool-label" id="lbl-color">Pen colour</span>
+              <div class="swatches" role="group" aria-labelledby="lbl-color">
+                <button type="button" class="swatch" data-color="#1b2a6b" style="background:#1b2a6b" aria-pressed="true" aria-label="Pen blue"></button>
+                <button type="button" class="swatch" data-color="#111111" style="background:#111111" aria-pressed="false" aria-label="Black"></button>
+                <button type="button" class="swatch" data-color="#0e7a5f" style="background:#0e7a5f" aria-pressed="false" aria-label="Green"></button>
+                <button type="button" class="swatch" data-color="#7a1f1f" style="background:#7a1f1f" aria-pressed="false" aria-label="Dark red"></button>
+                <button type="button" class="swatch" data-color="#4a4a4a" style="background:#4a4a4a" aria-pressed="false" aria-label="Grey"></button>
+              </div>
+            </div>
+            <div class="tool-group">
+              <label class="tool-label" for="penSize">Thickness</label>
+              <input type="range" id="penSize" min="1.5" max="9" step="0.5" value="3.5" />
+              <span class="size-val" id="penSizeVal">3.5</span>
+            </div>
+            <div class="tool-group">
+              <button type="button" class="tbtn" id="eraserBtn" aria-pressed="false">Eraser</button>
+              <button type="button" class="tbtn" id="undoBtn" disabled>↩ Undo</button>
+              <button type="button" class="tbtn danger" id="clearBtn" disabled>Clear</button>
+            </div>
+          </div>
+
+          <div class="stage checker" id="stage">
+            <canvas id="pad" aria-label="Signature drawing area. Draw with your mouse or finger."></canvas>
+            <div class="guide-line" id="guideLine"><span>sign above the line</span></div>
+            <div class="stage-hint" id="stageHint">Draw your signature here — with a mouse or your finger</div>
+          </div>
+
+          <div class="stage-bar">
+            <span class="tool-label">Preview on</span>
+            <div class="seg" role="group" aria-label="Preview background">
+              <button type="button" data-bg="checker" aria-pressed="true">Transparent</button>
+              <button type="button" data-bg="white" aria-pressed="false">White</button>
+              <button type="button" data-bg="dark" aria-pressed="false">Dark</button>
+            </div>
+            <span class="status" id="drawStatus">Blank pad</span>
+          </div>
+
+          <div class="download-row">
+            <button type="button" class="btn-primary" id="dlDrawPng" disabled>⬇ Download transparent PNG</button>
+            <button type="button" class="btn-secondary" id="dlDrawWhite" disabled>Download on white</button>
+            <label class="scale-pick">Size
+              <select id="exportScale" aria-label="Export size">
+                <option value="2">2× (recommended)</option>
+                <option value="1">1×</option>
+                <option value="3">3× (large)</option>
+              </select>
+            </label>
+            <p class="msg" id="drawMsg" role="status"></p>
+            <p class="dl-note">The PNG is <strong>auto-cropped</strong> around your signature with a small margin, so there is no empty space. Transparent background means it sits cleanly on any form or PDF.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TYPE MODE ============ -->
+      <section id="panel-type" role="tabpanel" aria-labelledby="tab-type" hidden>
+        <div class="card">
+          <div class="type-body">
+            <label for="nameInput">Your name</label>
+            <input type="text" id="nameInput" placeholder="e.g. Jack Taylor" autocomplete="off" maxlength="40" />
+            <div class="font-grid" id="fontGrid" role="group" aria-label="Handwriting styles"></div>
+            <div class="type-preview" id="typePreview">
+              <span class="empty">Type your name above to see it as a signature</span>
+            </div>
+          </div>
+          <div class="toolbar" style="border-top:1px solid var(--line);border-bottom:0">
+            <div class="tool-group">
+              <span class="tool-label" id="lbl-tcolor">Ink colour</span>
+              <div class="swatches" role="group" aria-labelledby="lbl-tcolor" id="typeSwatches">
+                <button type="button" class="swatch" data-color="#1b2a6b" style="background:#1b2a6b" aria-pressed="true" aria-label="Pen blue"></button>
+                <button type="button" class="swatch" data-color="#111111" style="background:#111111" aria-pressed="false" aria-label="Black"></button>
+                <button type="button" class="swatch" data-color="#0e7a5f" style="background:#0e7a5f" aria-pressed="false" aria-label="Green"></button>
+                <button type="button" class="swatch" data-color="#7a1f1f" style="background:#7a1f1f" aria-pressed="false" aria-label="Dark red"></button>
+              </div>
+            </div>
+          </div>
+          <div class="download-row">
+            <button type="button" class="btn-primary" id="dlTypePng" disabled>⬇ Download transparent PNG</button>
+            <button type="button" class="btn-secondary" id="dlTypeWhite" disabled>Download on white</button>
+            <p class="msg" id="typeMsg" role="status"></p>
+            <p class="dl-note">Typed signatures use a handwriting font — they look neat, but for official forms a <strong>hand-drawn signature</strong> is always the safer choice.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="info">
+        <h2>How to use it</h2>
+        <ol class="steps">
+          <li><strong>Draw or type</strong>Sign in the box above. On a phone, use your finger or a stylus — write at your natural size, not too small.</li>
+          <li><strong>Fix mistakes</strong>Use Undo for the last stroke, the Eraser for a small part, or Clear to start again. Pen blue looks most like a real pen on paper.</li>
+          <li><strong>Download the PNG</strong>The file is cropped tight around your signature with a transparent background — ready to insert into a PDF, Word file or online form.</li>
+        </ol>
+      </section>
+
+      <section class="info">
+        <h2>Where a transparent signature PNG helps</h2>
+        <div class="uses">
+          <div class="use"><strong>Job &amp; visa forms</strong><p>Many online application forms ask you to upload a signature image. A transparent PNG blends into the form instead of showing a white box.</p></div>
+          <div class="use"><strong>PDFs &amp; documents</strong><p>Insert the PNG into a PDF or Word document exactly where the signature line is — no printing, signing and scanning needed.</p></div>
+          <div class="use"><strong>Email &amp; letters</strong><p>Add it at the end of a letter or under your name in an email for a personal, handwritten touch.</p></div>
+        </div>
+      </section>
+
+      <footer>
+        Your signature is created entirely in your browser — nothing is uploaded to a server and no copy is kept. Keep the downloaded PNG somewhere safe, the same way you would guard a photo of your real signature.
+      </footer>
+    </div>
+
+    <script>
+    (function(){
+      "use strict";
+
+      /* ---------- Tabs ---------- */
+      var tabDraw = document.getElementById('tab-draw');
+      var tabType = document.getElementById('tab-type');
+      var panelDraw = document.getElementById('panel-draw');
+      var panelType = document.getElementById('panel-type');
+      function selectTab(which){
+        var draw = which === 'draw';
+        tabDraw.setAttribute('aria-selected', draw ? 'true' : 'false');
+        tabType.setAttribute('aria-selected', draw ? 'false' : 'true');
+        panelDraw.hidden = !draw;
+        panelType.hidden = draw;
+        if (draw) { fitCanvas(); }
+      }
+      tabDraw.addEventListener('click', function(){ selectTab('draw'); });
+      tabType.addEventListener('click', function(){ selectTab('type'); });
+
+      /* ---------- Draw pad ---------- */
+      var stage = document.getElementById('stage');
+      var canvas = document.getElementById('pad');
+      var ctx = canvas.getContext('2d');
+      var hint = document.getElementById('stageHint');
+      var guideLine = document.getElementById('guideLine');
+      var drawStatus = document.getElementById('drawStatus');
+      var undoBtn = document.getElementById('undoBtn');
+      var clearBtn = document.getElementById('clearBtn');
+      var eraserBtn = document.getElementById('eraserBtn');
+      var dlDrawPng = document.getElementById('dlDrawPng');
+      var dlDrawWhite = document.getElementById('dlDrawWhite');
+      var drawMsg = document.getElementById('drawMsg');
+      var penSize = document.getElementById('penSize');
+      var penSizeVal = document.getElementById('penSizeVal');
+      var exportScale = document.getElementById('exportScale');
+
+      var penColor = '#1b2a6b';
+      var erasing = false;
+      var strokes = [];        // {color, width, erase, points:[{x,y}]}
+      var current = null;
+      var drawing = false;
+
+      function fitCanvas(){
+        var rect = canvas.getBoundingClientRect();
+        if (rect.width === 0) return;
+        var dpr = window.devicePixelRatio || 1;
+        var w = Math.round(rect.width * dpr);
+        var h = Math.round(rect.height * dpr);
+        if (canvas.width === w && canvas.height === h) { redraw(); return; }
+        canvas.width = w;
+        canvas.height = h;
+        redraw();
+      }
+
+      function redraw(){
+        var dpr = window.devicePixelRatio || 1;
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        for (var i = 0; i < strokes.length; i++) drawStroke(strokes[i]);
+        if (current) drawStroke(current);
+        updateDrawUI();
+      }
+
+      function drawStroke(s){
+        var pts = s.points;
+        if (!pts.length) return;
+        ctx.save();
+        ctx.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
+        ctx.strokeStyle = s.color;
+        ctx.fillStyle = s.color;
+        ctx.lineWidth = s.width;
+        if (pts.length === 1){
+          ctx.beginPath();
+          ctx.arc(pts[0].x, pts[0].y, s.width/2, 0, Math.PI*2);
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x, pts[0].y);
+          for (var i = 1; i < pts.length - 1; i++){
+            var mx = (pts[i].x + pts[i+1].x) / 2;
+            var my = (pts[i].y + pts[i+1].y) / 2;
+            ctx.quadraticCurveTo(pts[i].x, pts[i].y, mx, my);
+          }
+          ctx.lineTo(pts[pts.length-1].x, pts[pts.length-1].y);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function hasInk(){ return strokes.length > 0 || !!current; }
+
+      function updateDrawUI(){
+        var ink = hasInk();
+        hint.classList.toggle('hidden', ink);
+        guideLine.style.opacity = ink ? '0.35' : '1';
+        undoBtn.disabled = strokes.length === 0 && !current;
+        clearBtn.disabled = !ink;
+        dlDrawPng.disabled = !ink;
+        dlDrawWhite.disabled = !ink;
+        drawStatus.textContent = ink
+          ? (strokes.length + (current ? 1 : 0)) + (strokes.length + (current?1:0) === 1 ? ' stroke' : ' strokes')
+          : 'Blank pad';
+      }
+
+      function posFromEvent(e){
+        var rect = canvas.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      }
+
+      canvas.addEventListener('pointerdown', function(e){
+        e.preventDefault();
+        canvas.setPointerCapture(e.pointerId);
+        drawing = true;
+        drawMsg.textContent = '';
+        current = {
+          color: penColor,
+          width: parseFloat(penSize.value) * (erasing ? 3.2 : 1),
+          erase: erasing,
+          points: [posFromEvent(e)]
+        };
+        redraw();
+      });
+      canvas.addEventListener('pointermove', function(e){
+        if (!drawing || !current) return;
+        var p = posFromEvent(e);
+        var last = current.points[current.points.length - 1];
+        if (Math.abs(p.x - last.x) + Math.abs(p.y - last.y) < 1.2) return;
+        current.points.push(p);
+        redraw();
+      });
+      function endStroke(){
+        if (!drawing) return;
+        drawing = false;
+        if (current && current.points.length) strokes.push(current);
+        current = null;
+        redraw();
+      }
+      canvas.addEventListener('pointerup', endStroke);
+      canvas.addEventListener('pointercancel', endStroke);
+
+      /* Pen colour swatches (draw) */
+      var drawSwatches = panelDraw.querySelectorAll('.swatch');
+      drawSwatches.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          drawSwatches.forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+          btn.setAttribute('aria-pressed','true');
+          penColor = btn.getAttribute('data-color');
+          erasing = false;
+          eraserBtn.setAttribute('aria-pressed','false');
+        });
+      });
+
+      penSize.addEventListener('input', function(){ penSizeVal.textContent = penSize.value; });
+
+      eraserBtn.addEventListener('click', function(){
+        erasing = !erasing;
+        eraserBtn.setAttribute('aria-pressed', erasing ? 'true' : 'false');
+      });
+
+      undoBtn.addEventListener('click', function(){
+        if (current) { current = null; drawing = false; }
+        else strokes.pop();
+        drawMsg.textContent = '';
+        redraw();
+      });
+
+      clearBtn.addEventListener('click', function(){
+        strokes = [];
+        current = null;
+        drawing = false;
+        drawMsg.textContent = '';
+        redraw();
+      });
+
+      /* Preview background */
+      var bgBtns = document.querySelectorAll('.seg button');
+      bgBtns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          bgBtns.forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+          btn.setAttribute('aria-pressed','true');
+          stage.className = 'stage ' + btn.getAttribute('data-bg');
+        });
+      });
+
+      /* ---------- Export helpers ---------- */
+      // Find the bounding box of non-transparent pixels on a canvas.
+      function inkBounds(c){
+        var w = c.width, h = c.height;
+        var data = c.getContext('2d').getImageData(0,0,w,h).data;
+        var minX = w, minY = h, maxX = -1, maxY = -1;
+        for (var y = 0; y < h; y++){
+          for (var x = 0; x < w; x++){
+            if (data[(y*w + x)*4 + 3] > 8){
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+              if (y < minY) minY = y;
+              if (y > maxY) maxY = y;
+            }
+          }
+        }
+        if (maxX < 0) return null;
+        return { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 };
+      }
+
+      function downloadCanvas(c, filename){
+        var a = document.createElement('a');
+        a.download = filename;
+        a.href = c.toDataURL('image/png');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      // Render the current strokes onto a fresh canvas at the given scale,
+      // crop to the ink, optionally paint a white background.
+      function exportDraw(whiteBg){
+        var scale = parseInt(exportScale.value, 10) || 2;
+        var dpr = window.devicePixelRatio || 1;
+        var rect = canvas.getBoundingClientRect();
+        var full = document.createElement('canvas');
+        full.width = Math.round(rect.width * dpr * scale);
+        full.height = Math.round(rect.height * dpr * scale);
+        var fctx = full.getContext('2d');
+        fctx.setTransform(dpr*scale, 0, 0, dpr*scale, 0, 0);
+        fctx.lineCap = 'round';
+        fctx.lineJoin = 'round';
+        var savedCtx = ctx;
+        // Temporarily draw strokes with the export context by swapping the module ctx reference:
+        // drawStroke uses `ctx`, so point it at fctx.
+        ctx = fctx;
+        for (var i = 0; i < strokes.length; i++) drawStroke(strokes[i]);
+        ctx = savedCtx;
+
+        var b = inkBounds(full);
+        if (!b) return;
+        var pad = Math.round(14 * scale);
+        var x0 = Math.max(0, b.x - pad), y0 = Math.max(0, b.y - pad);
+        var x1 = Math.min(full.width, b.x + b.w + pad), y1 = Math.min(full.height, b.y + b.h + pad);
+        var out = document.createElement('canvas');
+        out.width = x1 - x0;
+        out.height = y1 - y0;
+        var octx = out.getContext('2d');
+        if (whiteBg){ octx.fillStyle = '#ffffff'; octx.fillRect(0,0,out.width,out.height); }
+        octx.drawImage(full, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+        downloadCanvas(out, whiteBg ? 'signature-white.png' : 'signature.png');
+        drawMsg.textContent = 'Downloaded — ' + out.width + ' × ' + out.height + ' px PNG' + (whiteBg ? ' on white.' : ', transparent background.');
+      }
+
+      dlDrawPng.addEventListener('click', function(){ exportDraw(false); });
+      dlDrawWhite.addEventListener('click', function(){ exportDraw(true); });
+
+      window.addEventListener('resize', fitCanvas);
+      fitCanvas();
+
+      /* ---------- Type mode ---------- */
+      var FONTS = [
+        { name: 'Great Vibes',  css: '"Great Vibes", cursive' },
+        { name: 'Allura',       css: '"Allura", cursive' },
+        { name: 'Dancing Script', css: '"Dancing Script", cursive' },
+        { name: 'Sacramento',   css: '"Sacramento", cursive' },
+        { name: 'Pinyon Script', css: '"Pinyon Script", cursive' },
+        { name: 'Tangerine',    css: '"Tangerine", cursive' },
+        { name: 'Caveat',       css: '"Caveat", cursive' }
+      ];
+      var nameInput = document.getElementById('nameInput');
+      var fontGrid = document.getElementById('fontGrid');
+      var typePreview = document.getElementById('typePreview');
+      var dlTypePng = document.getElementById('dlTypePng');
+      var dlTypeWhite = document.getElementById('dlTypeWhite');
+      var typeMsg = document.getElementById('typeMsg');
+      var typeColor = '#1b2a6b';
+      var selectedFont = 0;
+      var fontCards = [];
+
+      FONTS.forEach(function(f, i){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'font-card';
+        b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+        var sample = document.createElement('span');
+        sample.className = 'sample';
+        sample.style.fontFamily = f.css;
+        sample.style.color = typeColor;
+        sample.textContent = 'Your Name';
+        var fname = document.createElement('span');
+        fname.className = 'fname';
+        fname.textContent = f.name;
+        b.appendChild(sample);
+        b.appendChild(fname);
+        b.addEventListener('click', function(){
+          selectedFont = i;
+          fontCards.forEach(function(c, j){ c.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+          renderTypePreview();
+        });
+        fontGrid.appendChild(b);
+        fontCards.push(b);
+      });
+
+      function currentName(){
+        return nameInput.value.replace(/\s+/g, ' ').trim();
+      }
+
+      function renderTypePreview(){
+        var name = currentName();
+        fontCards.forEach(function(card){
+          var s = card.querySelector('.sample');
+          s.textContent = name || 'Your Name';
+          s.style.color = typeColor;
+        });
+        typePreview.innerHTML = '';
+        if (!name){
+          var em = document.createElement('span');
+          em.className = 'empty';
+          em.textContent = 'Type your name above to see it as a signature';
+          typePreview.appendChild(em);
+        } else {
+          var big = document.createElement('span');
+          big.className = 'big';
+          big.style.fontFamily = FONTS[selectedFont].css;
+          big.style.color = typeColor;
+          big.textContent = name;
+          typePreview.appendChild(big);
+        }
+        dlTypePng.disabled = !name;
+        dlTypeWhite.disabled = !name;
+      }
+      nameInput.addEventListener('input', function(){ typeMsg.textContent = ''; renderTypePreview(); });
+
+      var typeSwatches = document.querySelectorAll('#typeSwatches .swatch');
+      typeSwatches.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          typeSwatches.forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+          btn.setAttribute('aria-pressed','true');
+          typeColor = btn.getAttribute('data-color');
+          renderTypePreview();
+        });
+      });
+
+      function exportType(whiteBg){
+        var name = currentName();
+        if (!name) return;
+        var fontCss = FONTS[selectedFont].css;
+        var px = 160; // base font size before scaling
+        function build(){
+          var meas = document.createElement('canvas').getContext('2d');
+          meas.font = px + 'px ' + fontCss;
+          var tw = Math.ceil(meas.measureText(name).width);
+          var full = document.createElement('canvas');
+          full.width = tw + 80;
+          full.height = px * 2;
+          var fctx = full.getContext('2d');
+          fctx.font = px + 'px ' + fontCss;
+          fctx.fillStyle = typeColor;
+          fctx.textBaseline = 'middle';
+          fctx.fillText(name, 40, full.height/2 + px*0.05);
+          var b = inkBounds(full);
+          if (!b) return;
+          var pad = 18;
+          var x0 = Math.max(0, b.x - pad), y0 = Math.max(0, b.y - pad);
+          var x1 = Math.min(full.width, b.x + b.w + pad), y1 = Math.min(full.height, b.y + b.h + pad);
+          // Scale up 2x for a crisp file
+          var out = document.createElement('canvas');
+          out.width = (x1 - x0) * 2;
+          out.height = (y1 - y0) * 2;
+          var octx = out.getContext('2d');
+          if (whiteBg){ octx.fillStyle = '#ffffff'; octx.fillRect(0,0,out.width,out.height); }
+          octx.imageSmoothingEnabled = true;
+          octx.imageSmoothingQuality = 'high';
+          octx.drawImage(full, x0, y0, x1-x0, y1-y0, 0, 0, out.width, out.height);
+          downloadCanvas(out, whiteBg ? 'signature-white.png' : 'signature.png');
+          typeMsg.textContent = 'Downloaded — ' + out.width + ' × ' + out.height + ' px PNG' + (whiteBg ? ' on white.' : ', transparent background.');
+        }
+        if (document.fonts && document.fonts.load){
+          document.fonts.load(px + 'px ' + fontCss).then(build).catch(build);
+        } else { build(); }
+      }
+      dlTypePng.addEventListener('click', function(){ exportType(false); });
+      dlTypeWhite.addEventListener('click', function(){ exportType(true); });
+
+      renderTypePreview();
+    })();
+    </script>
+  </body>
+</html>
